@@ -10,26 +10,26 @@ public class Employee {
     // Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int EmployeeID;
+    public int employeeId;
     
-    public String Name;
-    public String HomeAddress;
-    public int PhoneNumber;
-    public String Email;
-    public int ALBalance;
-    public int MCBalance;
+    public String name;
+    public String homeAddress;
+    public int phoneNumber;
+    public String email;
+    public int alBalance;
+    public int mcBalance;
 
     // Constructors
     public Employee() {
         // Default constructor required by JPA
     }
-    public Employee(int EmployeeID, String Name, String HomeAddress, int PhoneNumber, String Email, int ALBalance, int MCBalance) {
-        this.EmployeeID = EmployeeID;
-        this.Name = Name;
-        this.HomeAddress = HomeAddress;
-        this.PhoneNumber = PhoneNumber;
-        this.Email = Email;
-        this.ALBalance = ALBalance;
-        this.MCBalance = MCBalance;
+    public Employee(int employeeId, String name, String homeAddress, int phoneNumber, String email, int alBalance, int mcBalance) {
+        this.employeeId = employeeId;
+        this.name = name;
+        this.homeAddress = homeAddress;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.alBalance = alBalance;
+        this.mcBalance = mcBalance;
     }
 }
