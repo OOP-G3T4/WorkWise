@@ -9,7 +9,6 @@ import sg.com.officecleanings.workwise.service.EmployeeService;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/employees")

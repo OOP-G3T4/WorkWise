@@ -37,7 +37,8 @@ public class Employee {
     @Min(0)
     private int mcBalance = 0;
 
-    public Employee() {}
+    public Employee() {
+    }
 
     public Employee(String name, String homeAddress, String phoneNumber, String email, int alBalance, int mcBalance) {
         this.name = name;
@@ -78,12 +79,12 @@ public class Employee {
         return alBalance;
     }
 
-    public int getMcBalance() {
-        return mcBalance;
-    }
-
     public void setAlBalance(int alBalance) {
         if (alBalance >= 0) this.alBalance = alBalance;
+    }
+
+    public int getMcBalance() {
+        return mcBalance;
     }
 
     public void setMcBalance(int mcBalance) {
