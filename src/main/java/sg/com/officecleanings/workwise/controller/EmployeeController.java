@@ -1,12 +1,15 @@
 package sg.com.officecleanings.workwise.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sg.com.officecleanings.workwise.model.Employee;
 import sg.com.officecleanings.workwise.service.EmployeeService;
 
+import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/employees")
@@ -23,35 +26,40 @@ public class EmployeeController {
     public ResponseEntity<List<Employee>> getAll() {
         List<Employee> employees = employeeService.getAll();
         if (employees.isEmpty()) {
-            return ResponseEntity.noContent().build(); // 204 No Content
+            return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(employees); // 200 OK with the list of employees
+        return ResponseEntity.ok(employees);
     }
 
     @GetMapping("/{employeeId}")
     public ResponseEntity<Employee> getById(@PathVariable int employeeId) {
-        Employee employee = employeeService.getById(employeeId);
-        if (employee == null) {
-            return ResponseEntity.notFound().build(); // 404 Not Found
-        }
-        return ResponseEntity.ok(employee); // 200 OK with the employee
+        return employeeService.getById(employeeId)
+                .map(ResponseEntity::ok)  // Use map to return 200 OK if found
+                .orElse(ResponseEntity.notFound().build());    // Return 404 Not Found if not found
     }
 
     @PostMapping
-    public ResponseEntity<Employee> insert(@RequestBody Employee employee) {
+    public ResponseEntity<Employee> insert(@Valid @RequestBody Employee employee) {
         Employee newEmployee = employeeService.insert(employee);
-        return ResponseEntity.ok(newEmployee); // 200 OK with the new employee
+        return ResponseEntity.created(URI.create("/employees/" + newEmployee.getId())).body(newEmployee); // Fixed getId()
     }
 
-    @PutMapping
-    public ResponseEntity<Employee> update(@RequestBody Employee employee) {
-        Employee updatedEmployee = employeeService.update(employee);
-        return ResponseEntity.ok(updatedEmployee); // 200 OK with the updated employee
+    @PutMapping("/{employeeId}")
+    public ResponseEntity<Employee> update(@PathVariable int employeeId, @Valid @RequestBody Employee employee) {
+        if (employeeService.existsById(employeeId)) {
+            employee.setId(employeeId);  // Ensure the path ID is set to the employee object
+            Employee updatedEmployee = employeeService.update(employee);
+            return ResponseEntity.ok(updatedEmployee);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{employeeId}")
     public ResponseEntity<Void> delete(@PathVariable int employeeId) {
-        employeeService.delete(employeeId);
-        return ResponseEntity.noContent().build(); // 204 No Content
+        if (employeeService.existsById(employeeId)) {
+            employeeService.delete(employeeId);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

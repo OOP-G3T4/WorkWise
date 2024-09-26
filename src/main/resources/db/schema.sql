@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
     `employee_id` int  NOT NULL ,
     `name` varchar(120)  NOT NULL ,
     `home_address` varchar(200)  NOT NULL ,
-    `phone_number` int  NOT NULL ,
+    `phone_number` varchar(20)  NOT NULL ,
     `email` varchar(200)  NOT NULL ,
     `short_bio` varchar(255)  NOT NULL ,
     `al_balance` int  NOT NULL ,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
     `admin_id` int  NOT NULL ,
     `name` varchar(120)  NOT NULL ,
     `email` varchar(200)  NOT NULL ,
-    `phone_number` int  NOT NULL ,
+    `phone_number` varchar(20)  NOT NULL ,
     PRIMARY KEY (`admin_id`)
 );
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `client` (
     `client_id` int  NOT NULL ,
     `name` varchar(120)  NOT NULL ,
     `email` varchar(200)  NOT NULL ,
-    `phone_number` int  NOT NULL ,
+    `phone_number` varchar(20)  NOT NULL ,
     PRIMARY KEY (`client_id`)
 );
 
@@ -47,7 +47,7 @@ DROP TABLE IF EXISTS `property`;
 CREATE TABLE IF NOT EXISTS `property` (
     `property_id` int  NOT NULL ,
     `address` varchar(200)  NOT NULL ,
-    `postal_code` int  NOT NULL ,
+    `postal_code` varchar(6)  NOT NULL ,
     PRIMARY KEY (`property_id`)
 );
 
