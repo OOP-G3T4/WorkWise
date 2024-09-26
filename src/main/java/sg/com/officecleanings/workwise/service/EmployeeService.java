@@ -21,6 +21,20 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    // Other service methods
+    public Employee getById(int employeeId) {
+        return employeeRepository.findById(employeeId).orElse(null);
+    }
+    
+    public Employee insert(Employee employee) {
+        return employeeRepository.save(employee);
+    }
+
+    public Employee update(Employee employee) {
+        return employeeRepository.save(employee);
+    }
+
+    public void delete(int employeeId) {
+        employeeRepository.deleteById(employeeId);
+    }
 }
 

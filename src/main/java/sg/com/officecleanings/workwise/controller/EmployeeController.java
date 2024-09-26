@@ -27,4 +27,31 @@ public class EmployeeController {
         }
         return ResponseEntity.ok(employees); // 200 OK with the list of employees
     }
+
+    @GetMapping("/{employeeId}")
+    public ResponseEntity<Employee> getById(@PathVariable int employeeId) {
+        Employee employee = employeeService.getById(employeeId);
+        if (employee == null) {
+            return ResponseEntity.notFound().build(); // 404 Not Found
+        }
+        return ResponseEntity.ok(employee); // 200 OK with the employee
+    }
+
+    @PostMapping
+    public ResponseEntity<Employee> insert(@RequestBody Employee employee) {
+        Employee newEmployee = employeeService.insert(employee);
+        return ResponseEntity.ok(newEmployee); // 200 OK with the new employee
+    }
+
+    @PutMapping
+    public ResponseEntity<Employee> update(@RequestBody Employee employee) {
+        Employee updatedEmployee = employeeService.update(employee);
+        return ResponseEntity.ok(updatedEmployee); // 200 OK with the updated employee
+    }
+
+    @DeleteMapping("/{employeeId}")
+    public ResponseEntity<Void> delete(@PathVariable int employeeId) {
+        employeeService.delete(employeeId);
+        return ResponseEntity.noContent().build(); // 204 No Content
+    }
 }
