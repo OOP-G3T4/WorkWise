@@ -31,7 +31,7 @@ INSERT INTO admin_employee (admin_id, employee_id)
 VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5);
 
 -- Insert sample package
-INSERT INTO package (package_id, type, price, house_size, house_type, hourly_rate, pax, hours)
+INSERT INTO selected_package (package_id, type, price, house_size, house_type, hourly_rate, pax, hours)
 VALUES ('W_3RM_HDB', 'Weekly', 276, '3-room', 'HDB', 23, 1, 3),
 ('W_4RM_HDB', 'Weekly', 336, '4-room', 'HDB', 21, 1, 4),
 ('W_3RM_CONDO', 'Weekly', 336, '3-room', 'CONDO', 21, 1, 4);
@@ -39,9 +39,18 @@ VALUES ('W_3RM_HDB', 'Weekly', 276, '3-room', 'HDB', 23, 1, 3),
 -- Insert sample jobs
 INSERT INTO job (job_id, client_id, property_id, package_id, date, start_time, status, actual_duration)
 VALUES (1, 1, 1, 'W_3RM_HDB', '2024-10-01', '10:00:00', 'Scheduled', 3),
-       (2, 2, 2, 'W_3RM_CONDO', '2024-09-28', '11:00:00', 'Scheduled', 2);
+       (2, 2, 2, 'W_3RM_CONDO', '2024-09-28', '11:00:00', 'Scheduled', 2),
+       (3, 2, 2, 'W_3RM_CONDO', '2024-09-15', '11:00:00', 'Completed', 2);
 
 -- Link jobs to employees
 INSERT INTO job_employee (job_id, employee_id)
 VALUES (1, 1), 
-       (2, 2);
+       (2, 2),
+       (3, 1);
+
+-- Insert sample events into EmployeeEvents
+INSERT INTO employee_event (event_id, employee_id, event_type, event_date, job_id, duration, mc_used, al_used)
+VALUES (1, 1, 'job_completed', '2024-09-15', 1, 3, NULL, NULL),  -- Completed job on 15th Sep 2024
+    (2, 2, 'mc_taken', '2024-09-10', NULL, NULL, 2, NULL),    -- Took 2 days MC on 10th Sep 2024
+    (3, 3, 'al_taken', '2024-09-20', NULL, NULL, NULL, 1),    -- Took 1 day AL on 20th Sep 2024
+    (4, 4, 'overtime', '2024-09-25', NULL, 2, NULL, NULL);    -- Worked 2 hours overtime on 25th Sep 2024
