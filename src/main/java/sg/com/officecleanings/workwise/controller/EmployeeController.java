@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/employees")
+@RequestMapping("/api/employee")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -40,13 +40,13 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<Employee> insert(@Valid @RequestBody Employee employee) {
         Employee newEmployee = employeeService.insert(employee);
-        return ResponseEntity.created(URI.create("/employees/" + newEmployee.getId())).body(newEmployee); // Fixed getId()
+        return ResponseEntity.created(URI.create("/employees/" + newEmployee.getEmployeeId())).body(newEmployee); // Fixed getId()
     }
 
     @PutMapping("/{employeeId}")
     public ResponseEntity<Employee> update(@PathVariable int employeeId, @Valid @RequestBody Employee employee) {
         if (employeeService.existsById(employeeId)) {
-            employee.setId(employeeId);  // Ensure the path ID is set to the employee object
+            employee.setEmployeeId(employeeId);  // Ensure the path ID is set to the employee object
             Employee updatedEmployee = employeeService.update(employee);
             return ResponseEntity.ok(updatedEmployee);
         }
