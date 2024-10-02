@@ -7,8 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeParseException;
 
 @RestController
 @RequestMapping("/api/job")
@@ -38,7 +43,7 @@ public class JobController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    
+
     @PutMapping("/{id}")
     public ResponseEntity<Job> updateJob(@PathVariable int id, @RequestBody Job jobDetails) {
         Optional<Job> job = jobService.getJobById(id);
@@ -66,4 +71,36 @@ public class JobController {
         }
     }
 
+    @GetMapping("/by-day")
+    public ResponseEntity<List<Job>> getJobsByDay(@RequestParam("date") String dateStr) {
+        try {
+            Date date = Date.valueOf(dateStr);
+            List<Job> jobs = jobService.getJobsByDay(date);
+            return ResponseEntity.ok(jobs);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @GetMapping("/by-week")
+    public ResponseEntity<List<Job>> getJobsByWeek(@RequestParam("date") String dateStr) {
+        try {
+            LocalDate date = LocalDate.parse(dateStr);
+            List<Job> jobs = jobService.getJobsByWeek(date);
+            return ResponseEntity.ok(jobs);
+        } catch (DateTimeParseException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @GetMapping("/by-month")
+    public ResponseEntity<List<Job>> getJobsByMonth(@RequestParam("date") String dateStr) {
+        try {
+            LocalDate date = LocalDate.parse(dateStr);
+            List<Job> jobs = jobService.getJobsByMonth(date);
+            return ResponseEntity.ok(jobs);
+        } catch (DateTimeParseException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 }
