@@ -35,11 +35,10 @@ public class JobController {
             return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("An error occurred while creating the job.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
+    
     @PutMapping("/{id}")
     public ResponseEntity<Job> updateJob(@PathVariable int id, @RequestBody Job jobDetails) {
         Optional<Job> job = jobService.getJobById(id);
@@ -50,7 +49,6 @@ public class JobController {
         return ResponseEntity.notFound().build();
     }
 
-    // Returns 204 No Content if the job is successfully deleted without the success msg 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteJob(@PathVariable int id) {
         try {
@@ -60,10 +58,7 @@ public class JobController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
             }
             jobService.deleteJob(id);
-
-            String successMessage = "Job with ID " + id + " has been successfully deleted.";
-            System.out.println("Returning response: " + successMessage);
-            return ResponseEntity.ok(successMessage);
+            return ResponseEntity.ok().build();
 
         } catch (Exception e) {
             String errorMessage = "An error occurred while deleting the job: " + e.getMessage();

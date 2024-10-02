@@ -5,6 +5,7 @@ import sg.com.officecleanings.workwise.service.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +34,8 @@ public class PackageController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SelectedPackage> updatePackage(@PathVariable String id, @RequestBody SelectedPackage packageDetails) {
+    public ResponseEntity<SelectedPackage> updatePackage(@PathVariable String id,
+            @RequestBody SelectedPackage packageDetails) {
         Optional<SelectedPackage> packageEntity = packageService.getPackageById(id);
         if (packageEntity.isPresent()) {
             packageDetails.setPackageId(id);
@@ -43,9 +45,18 @@ public class PackageController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePackage(@PathVariable String id) {
-        packageService.deletePackage(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deletePackage(@PathVariable String id) {
+        try {
+            Optional<SelectedPackage> packageOptional = packageService.getPackageById(id);
+            if (!packageOptional.isPresent()) {
+                String errorMessage = "Package with ID " + id + " not found.";
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+            }
+            packageService.deletePackage(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
     }
 }
-

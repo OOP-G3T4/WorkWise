@@ -5,6 +5,7 @@ import sg.com.officecleanings.workwise.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,8 +44,18 @@ public class ClientController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteClient(@PathVariable int id) {
-        clientService.deleteClient(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteClient(@PathVariable int id) {
+        try{
+            Optional<Client> clientOptional = clientService.getClientById(id);
+            if (!clientOptional.isPresent()) {
+                String errorMessage = "Client with ID " + id + " not found.";
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+            }
+            clientService.deleteClient(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
     }
 }

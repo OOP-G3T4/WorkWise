@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sg.com.officecleanings.workwise.model.EmployeeEvent;
 import sg.com.officecleanings.workwise.service.EmployeeEventService;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +34,8 @@ public class EmployeeEventController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeEvent> updateEmployeeEvent(@PathVariable int id, @RequestBody EmployeeEvent employeeEvent) {
+    public ResponseEntity<EmployeeEvent> updateEmployeeEvent(@PathVariable int id,
+            @RequestBody EmployeeEvent employeeEvent) {
         Optional<EmployeeEvent> existingEvent = employeeEventService.getEmployeeEventById(id);
         if (existingEvent.isPresent()) {
             employeeEvent.setEventId(id);
@@ -43,8 +45,19 @@ public class EmployeeEventController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmployeeEvent(@PathVariable int id) {
-        employeeEventService.deleteEmployeeEvent(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteEmployeeEvent(@PathVariable int id) {
+        try {
+            Optional<EmployeeEvent> eventOptional = employeeEventService.getEmployeeEventById(id);
+            if (!eventOptional.isPresent()) {
+                String errorMessage = "Employee event with ID " + id + " not found.";
+                return ResponseEntity.status(404).body(errorMessage);
+            }
+            employeeEventService.deleteEmployeeEvent(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+
+        }
     }
 }

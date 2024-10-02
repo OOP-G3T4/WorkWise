@@ -2,6 +2,8 @@ package sg.com.officecleanings.workwise.controller;
 
 import sg.com.officecleanings.workwise.model.Admin;
 import sg.com.officecleanings.workwise.service.AdminService;
+import org.springframework.http.HttpStatus;
+import org.hibernate.internal.util.collections.ConcurrentReferenceHashMap.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +45,20 @@ public class AdminController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAdmin(@PathVariable int id) {
+public ResponseEntity<String> deleteAdmin(@PathVariable int id) {
+    try {
+        Optional<Admin> adminOptional = adminService.getAdminById(id);
+        if (!adminOptional.isPresent()) {
+            String errorMessage = "Admin with ID " + id + " not found.";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+        }
         adminService.deleteAdmin(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
+    } catch (Exception e) {
+        e.printStackTrace();
+        String errorMessage = "An error occurred while deleting the admin.";
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
     }
+}
+
 }

@@ -5,6 +5,7 @@ import sg.com.officecleanings.workwise.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,9 +44,18 @@ public class PropertyController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProperty(@PathVariable int id) {
-        propertyService.deleteProperty(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteProperty(@PathVariable int id) {
+        try {
+            Optional<Property> propertyOptional = propertyService.getPropertyById(id);
+            if (!propertyOptional.isPresent()) {
+                String errorMessage = "Property with ID " + id + " not found.";
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+            }
+            propertyService.deleteProperty(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
     }
 }
-
