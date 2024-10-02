@@ -1,12 +1,7 @@
 <script setup>
-import CalendarTest from './components/CalendarTest.vue'
+import Dashboard from "./Dashboard.vue";
 </script>
 
-
 <template>
-  <CalendarTest />
+    <Dashboard />
 </template>
-
-
-<style scoped>
-</style>
