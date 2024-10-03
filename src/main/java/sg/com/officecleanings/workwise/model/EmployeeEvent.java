@@ -15,12 +15,12 @@ public class EmployeeEvent {
     private int eventId;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", referencedColumnName = "employeeId", nullable = false)
+    @JoinColumn(name = "employeeId", referencedColumnName = "employeeId", nullable = false)
     private Employee employee;
 
     @ManyToOne
     @Nullable
-    @JoinColumn(name = "job_id", referencedColumnName = "jobId")
+    @JoinColumn(name = "jobId", referencedColumnName = "jobId")
     private Job job;
 
     @NotNull

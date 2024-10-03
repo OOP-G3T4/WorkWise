@@ -13,15 +13,15 @@ public class Job {
     private int jobId;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", referencedColumnName = "clientId", nullable = false)
+    @JoinColumn(name = "clientId", referencedColumnName = "clientId", nullable = false)
     private Client client;
 
     @ManyToOne
-    @JoinColumn(name = "property_id", referencedColumnName = "propertyId", nullable = false)
+    @JoinColumn(name = "propertyId", referencedColumnName = "propertyId", nullable = false)
     private Property property;
 
     @ManyToOne
-    @JoinColumn(name = "package_id", referencedColumnName = "packageId", nullable = false)
+    @JoinColumn(name = "packageId", referencedColumnName = "packageId", nullable = false)
     private SelectedPackage selectedPackage; //Note cannot use Package
 
     private Date date;

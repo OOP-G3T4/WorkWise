@@ -13,11 +13,11 @@ public class EmployeeStatistic {
     private int statId;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", referencedColumnName = "employeeId", nullable = false)
+    @JoinColumn(name = "employeeId", referencedColumnName = "employeeId", nullable = false)
     private Employee employee;
 
     @ManyToOne
-    @JoinColumn(name = "event_id", referencedColumnName = "eventId", nullable = false)
+    @JoinColumn(name = "eventId", referencedColumnName = "eventId", nullable = false)
     private EmployeeEvent event;
 
     @NotNull
