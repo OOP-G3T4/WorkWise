@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest // This will load the Spring context for testing
-public class AiServiceTest {
+public class TestAiService {
 
     @Autowired
     private AiService aiService; // Spring will inject the AiService instance
