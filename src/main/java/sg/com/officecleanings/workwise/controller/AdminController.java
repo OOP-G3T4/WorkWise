@@ -48,7 +48,7 @@ public class AdminController {
 public ResponseEntity<String> deleteAdmin(@PathVariable int id) {
     try {
         Optional<Admin> adminOptional = adminService.getAdminById(id);
-        if (!adminOptional.isPresent()) {
+        if (adminOptional.isEmpty()) {
             String errorMessage = "Admin with ID " + id + " not found.";
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
         }

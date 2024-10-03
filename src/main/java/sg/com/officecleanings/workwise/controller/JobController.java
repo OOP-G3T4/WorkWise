@@ -58,7 +58,7 @@ public class JobController {
     public ResponseEntity<String> deleteJob(@PathVariable int id) {
         try {
             Optional<Job> jobOptional = jobService.getJobById(id);
-            if (!jobOptional.isPresent()) {
+            if (jobOptional.isEmpty()) {
                 String errorMessage = "Job with ID " + id + " not found.";
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
             }

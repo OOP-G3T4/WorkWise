@@ -61,7 +61,7 @@ public class EmployeeController {
     public ResponseEntity<String> delete(@PathVariable int employeeId) {
         try {
             Optional<Employee> employeeOptional = employeeService.getById(employeeId);
-            if (!employeeOptional.isPresent()) {
+            if (employeeOptional.isEmpty()) {
                 String errorMessage = "Employee with ID " + employeeId + " not found.";
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
             }

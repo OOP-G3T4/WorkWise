@@ -47,7 +47,7 @@ public class PropertyController {
     public ResponseEntity<String> deleteProperty(@PathVariable int id) {
         try {
             Optional<Property> propertyOptional = propertyService.getPropertyById(id);
-            if (!propertyOptional.isPresent()) {
+            if (propertyOptional.isEmpty()) {
                 String errorMessage = "Property with ID " + id + " not found.";
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
             }

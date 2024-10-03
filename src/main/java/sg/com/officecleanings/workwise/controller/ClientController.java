@@ -47,7 +47,7 @@ public class ClientController {
     public ResponseEntity<String> deleteClient(@PathVariable int id) {
         try{
             Optional<Client> clientOptional = clientService.getClientById(id);
-            if (!clientOptional.isPresent()) {
+            if (clientOptional.isEmpty()) {
                 String errorMessage = "Client with ID " + id + " not found.";
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
             }

@@ -48,7 +48,7 @@ public class EmployeeEventController {
     public ResponseEntity<String> deleteEmployeeEvent(@PathVariable int id) {
         try {
             Optional<EmployeeEvent> eventOptional = employeeEventService.getEmployeeEventById(id);
-            if (!eventOptional.isPresent()) {
+            if (eventOptional.isEmpty()) {
                 String errorMessage = "Employee event with ID " + id + " not found.";
                 return ResponseEntity.status(404).body(errorMessage);
             }

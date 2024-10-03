@@ -48,7 +48,7 @@ public class PackageController {
     public ResponseEntity<String> deletePackage(@PathVariable String id) {
         try {
             Optional<SelectedPackage> packageOptional = packageService.getPackageById(id);
-            if (!packageOptional.isPresent()) {
+            if (packageOptional.isEmpty()) {
                 String errorMessage = "Package with ID " + id + " not found.";
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
             }
