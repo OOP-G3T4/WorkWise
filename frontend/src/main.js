@@ -5,13 +5,40 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import router from "./router";
 
-import { faUser, faCalendar, faUmbrella, faGear, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+    faUser,
+    faCalendar,
+    faUmbrella,
+    faGear,
+    faRightFromBracket,
+    faChevronLeft,
+    faChevronRight,
+    faFilter,
+    faPlus,
+    faCalendarWeek,
+    faMaximize,
+} from "@fortawesome/free-solid-svg-icons";
 
-library.add(faUser, faCalendar, faUmbrella, faGear, faRightFromBracket);
+library.add(
+    faUser,
+    faCalendar,
+    faUmbrella,
+    faGear,
+    faRightFromBracket,
+    faChevronLeft,
+    faChevronRight,
+    faFilter,
+    faPlus,
+    faCalendarWeek,
+    faMaximize
+);
 
 const app = createApp(App);
 
 app.component("font-awesome-icon", FontAwesomeIcon);
+
+app.use(router);
 
 app.mount("#app");
