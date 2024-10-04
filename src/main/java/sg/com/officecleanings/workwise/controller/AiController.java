@@ -1,18 +1,16 @@
 package sg.com.officecleanings.workwise.controller;
 
-import org.springframework.ai.chat.messages.UserMessage;
-import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.prompt.Prompt;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import reactor.core.publisher.Flux;
 import sg.com.officecleanings.workwise.model.Job;
 import sg.com.officecleanings.workwise.service.AiService;
-import java.sql.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
+import java.io.IOException;
+import java.util.*;
+
 
 @RestController
 public class AiController {
@@ -26,27 +24,56 @@ public class AiController {
         this.aiService = aiService;
     }
 
-//    @GetMapping("/ai/generate")
-//    public Map<String, String> generate(@RequestParam(value = "message", defaultValue = "Return: 'Error with AI input'") String message,
-//                                        @RequestParam(value = "context", defaultValue = "General") String context,
-//                                        @RequestParam(value = "instructions", defaultValue = "Be creative") String instructions) {
-//        String complexPrompt = aiService.createComplexPrompt(message, context, instructions);
-//        return Map.of("generation", aiModel.call(complexPrompt));
-//    }
-
     @PostMapping("/ai/generate")
-    public Map<String, String> generate(@RequestBody List<Job> jobs) {
-        // Extract date from the first job in the list (assuming all jobs have the same date)
-        java.util.Date utilDate = jobs.get(0).getDate();
-        Date sqlDate = new Date(utilDate.getTime()); // Convert java.util.Date to java.sql.Date
+    public Map<String, List<Map<String, Object>>> generate(@RequestBody List<Job> jobs) {
 
-        // Create the complex prompt using AiService
-        String complexPrompt = aiService.createComplexPrompt(jobs, sqlDate);
+        // Call the createEmployeeAssignments method
+        StringBuilder prompt = aiService.createEmployeeAssignments(jobs);
 
         // Call the GPT-4 API to get the best candidate(s)
-        String availableEmployees = aiModel.call(complexPrompt);
+        String apiResponse = aiModel.call(prompt.toString());
+//        System.out.println("API Response: " + apiResponse);
+        // Process the API response to create a structured output
+        return parseApiResponse(apiResponse);
+    }
 
-        return Map.of("availableEmployees", availableEmployees);
+    private Map<String, List<Map<String, Object>>> parseApiResponse(String apiResponse) {
+        Map<String, List<Map<String, Object>>> result = new HashMap<>();
+        List<Map<String, Object>> assignments = new ArrayList<>();
+
+        // Find the first '{' and the last '}'
+        int startIndex = apiResponse.indexOf('{');
+        int endIndex = apiResponse.lastIndexOf('}');
+
+        if (startIndex != -1 && endIndex != -1 && startIndex < endIndex) {
+            String jsonContent = apiResponse.substring(startIndex, endIndex + 1);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                JsonNode rootNode = objectMapper.readTree(jsonContent);
+                JsonNode assignmentsNode = rootNode.path("assignments");
+
+                for (JsonNode assignmentNode : assignmentsNode) {
+                    Map<String, Object> assignment = new LinkedHashMap<>(); // Use LinkedHashMap to maintain order
+                    assignment.put("job_id", assignmentNode.path("job_id").get(0).asInt());
+
+                    List<Integer> employeeIds = new ArrayList<>();
+                    for (JsonNode idNode : assignmentNode.path("employees_id")) {
+                        employeeIds.add(idNode.asInt());
+                    }
+                    assignment.put("employees_id", employeeIds);
+
+                    assignment.put("reasoning", assignmentNode.path("reasoning").asText());
+
+                    assignments.add(assignment);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        result.put("assignments", assignments);
+        return result;
     }
 
 }

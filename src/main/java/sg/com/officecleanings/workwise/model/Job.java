@@ -122,14 +122,14 @@ public class Job {
     public String toString() {
         return "Job{" +
                 "jobId=" + jobId +
-                ", client=" + client.getName() + // Assuming Client has a getName method
-                ", property=" + property.getAddress() + // Assuming Property has a getAddress method
-                ", package=" + selectedPackage.getType() + // Assuming SelectedPackage has a getType method
+                ", client=" + client +
+                ", property=" + property +
+                ", selectedPackage=" + selectedPackage +
                 ", date=" + date +
                 ", startTime=" + startTime +
-                ", status=" + status +
+                ", status='" + status + '\'' +
                 ", actualDuration=" + actualDuration +
+                ", employees=" + employees +
                 '}';
     }
-
 }

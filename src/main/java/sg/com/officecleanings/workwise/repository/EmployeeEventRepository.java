@@ -10,4 +10,6 @@ import java.util.List;
 public interface EmployeeEventRepository extends JpaRepository<EmployeeEvent, Integer> {
 
     List<EmployeeEvent> findByEventDate(Date date);
+
+
 }
