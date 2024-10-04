@@ -267,7 +267,7 @@ export default {
 <style scoped>
 .job-container {
     padding: 20px;
-    width: 200px;
+    /* width: 200px; */
     background-color: #e8e8e8;
     border-radius: 10px;
 }
