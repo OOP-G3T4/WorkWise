@@ -115,5 +115,17 @@ public class EmployeeEvent {
         this.alUsed = alUsed;
     }
 
-    
+    @Override
+    public String toString() {
+        return "EmployeeEvent{" +
+                "eventId=" + eventId +
+                ", employee=" + employee +
+                ", job=" + job +
+                ", eventType='" + eventType + '\'' +
+                ", eventDate=" + eventDate +
+                ", duration=" + duration +
+                ", mcUsed=" + mcUsed +
+                ", alUsed=" + alUsed +
+                '}';
+    }
 }

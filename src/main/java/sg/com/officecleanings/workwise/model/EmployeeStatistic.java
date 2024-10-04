@@ -200,4 +200,25 @@ public class EmployeeStatistic {
 
     // Getters and Setters
 
+
+    @Override
+    public String toString() {
+        return "EmployeeStatistic{" +
+                "statId=" + statId +
+                ", employee=" + employee +
+                ", event=" + event +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", periodType='" + periodType + '\'' +
+                ", jobsCompleted=" + jobsCompleted +
+                ", clientsServed=" + clientsServed +
+                ", newJobs=" + newJobs +
+                ", cancelledJobs=" + cancelledJobs +
+                ", rescheduledJobs=" + rescheduledJobs +
+                ", workingHours=" + workingHours +
+                ", overtimeHours=" + overtimeHours +
+                ", mcUsed=" + mcUsed +
+                ", alUsed=" + alUsed +
+                '}';
+    }
 }

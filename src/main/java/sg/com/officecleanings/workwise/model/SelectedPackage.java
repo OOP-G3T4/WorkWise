@@ -110,4 +110,18 @@ public class SelectedPackage {
     public void setHours(int hours) {
         this.hours = hours;
     }
+
+    @Override
+    public String toString() {
+        return "SelectedPackage{" +
+                "packageId='" + packageId + '\'' +
+                ", type='" + type + '\'' +
+                ", price=" + price +
+                ", houseSize='" + houseSize + '\'' +
+                ", houseType='" + houseType + '\'' +
+                ", hourlyRate=" + hourlyRate +
+                ", pax=" + pax +
+                ", hours=" + hours +
+                '}';
+    }
 }

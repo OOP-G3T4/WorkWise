@@ -105,4 +105,18 @@ public class Employee {
     public void setShortBio(String shortBio) {
         this.shortBio = shortBio;
     }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "employeeId=" + employeeId +
+                ", name='" + name + '\'' +
+                ", homeAddress='" + homeAddress + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", shortBio='" + shortBio + '\'' +
+                ", email='" + email + '\'' +
+                ", alBalance=" + alBalance +
+                ", mcBalance=" + mcBalance +
+                '}';
+    }
 }
