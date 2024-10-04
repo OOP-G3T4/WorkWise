@@ -1,6 +1,8 @@
 <template>
     <div>
-        <div class="d-flex flex-column flex-shrink-0 p-3 navbar-container border">
+        <div
+            class="d-flex flex-column flex-shrink-0 p-3 navbar-container border"
+        >
             <div class="mb-4">WorkWise</div>
 
             <div
@@ -22,7 +24,7 @@
 
             <div class="main-menu-container">
                 <div class="main-menu-title mb-2">Main Menu</div>
-                <div class="d-flex align-items-center mb-2 p-2">
+                <router-link to="/" class="btn border d-flex align-items-center mb-2 p-2">
                     <div class="icon-container me-2">
                         <font-awesome-icon
                             icon="fa-bold fa-calendar"
@@ -30,9 +32,12 @@
                         />
                     </div>
                     <span>Calendar</span>
-                </div>
+                </router-link>
 
-                <div class="d-flex align-items-center p-2">
+                <router-link
+                    to="/leaves"
+                    class="btn border d-flex align-items-center p-2"
+                >
                     <div class="icon-container me-2">
                         <font-awesome-icon
                             icon="fa-bold fa-umbrella"
@@ -40,25 +45,25 @@
                         />
                     </div>
                     <span>Leaves</span>
-                </div>
+                </router-link>
             </div>
 
             <div class="mt-auto">
-                <div class="d-flex align-items-center p-2">
+                <btn class="btn border d-flex align-items-center p-2 mb-2">
                     <div class="icon-container me-2">
                         <font-awesome-icon icon="fa-solid fa-gear" />
                     </div>
                     <span>Settings</span>
-                </div>
+                </btn>
 
-                <div class="d-flex align-items-center p-2">
+                <btn class="btn border d-flex align-items-center p-2">
                     <div class="icon-container me-2">
                         <font-awesome-icon
                             icon="fa-solid fa-right-from-bracket"
                         />
                     </div>
                     <span>Log Out</span>
-                </div>
+                </btn>
             </div>
         </div>
     </div>
