@@ -1,21 +1,15 @@
 <script setup>
 import JobDetails from "./components/JobDetails.vue";
-import Navbar from "./components/Navbar.vue";
 import DatePicker from "./components/DatePicker.vue";
+import DailyCalendar from "./components/DailyCalendar.vue";
 </script>
 
 <template>
-    <div class="d-flex">
-        <Navbar />
-        <div class="w-100">
-            <DatePicker />
-            <div class="h-100 w-100 container-fluid">
-                <dov class="row">
-                    <div v-for="(eJobObj, value) in jobDetailsArr" :key="value" class="col">
-                        <JobDetails :jobDetails="eJobObj" :heightInPx="heightsArr[value]" :isCompressed="isCompressed" />
-                    </div>
-                </dov>
-            </div>
+    <div class="main-container">
+        <DatePicker class="datetime-header" />
+
+        <div class="calendar-container">
+            <DailyCalendar />
         </div>
     </div>
 </template>
@@ -134,3 +128,23 @@ export default {
     },
 };
 </script>
+
+
+<style scoped>
+.main-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.datetime-header {
+    flex: 0 1 1px;
+}
+
+.calendar-container {
+    flex: 1 1 1px;
+    overflow-y: auto;
+}
+
+</style>
