@@ -200,7 +200,7 @@
                                     <div class="form-floating">
                                         <select class="form-select" v-model="jobEdit.cleaners[idx]">
                                             <option v-for="(e_employee, e_listed_id) in allEmployees" :value="e_listed_id" :disabled="jobEdit.cleaners.includes(e_listed_id)">
-                                                {{ e_employee }}
+                                                {{ e_employee }} (ID: {{ e_listed_id }})
                                             </option>
                                         </select>
     
@@ -286,6 +286,12 @@ export default {
             required: false,
             default: false,
         },
+        popoverRight: {
+            // Where to show the popover (right or left)
+            type: Boolean,
+            required: false,
+            default: true,
+        }
     },
     data() {
         return {
@@ -294,7 +300,6 @@ export default {
             mainModal: null, // Will be automatically populated with bootstrap.Modal on Mounted
             currentDateTime: new Date(),
             isEditMode: false,
-
 
             // EDITING VARIABLES ==============================
             jobEdit: null, // Will be automatically populated with jobDetails object on Mounted
@@ -371,6 +376,8 @@ export default {
             return {
                 'border border-3 border-danger': this.showJobStartedWarning,
                 'compressed-job-card': this.isCompressed,
+                'showPopoverRight': this.popoverRight && this.isCompressed,
+                'showPopoverLeft': !this.popoverRight && this.isCompressed,
                 'h-100': !this.isCompressed,
                 'd-none': this.isCompressed && !this.isHovering,
             }
@@ -479,10 +486,17 @@ export default {
 .compressed-job-card {
     position: absolute;
     top: 0;
-    left: calc(100% + 10px);
     z-index: 1000;
     pointer-events: none;
     width: 250px;
+}
+
+.showPopoverRight {
+    left: calc(100% + 10px);
+}
+
+.showPopoverLeft {
+    right: calc(100% + 10px);
 }
 
 .compressed-parent-container {

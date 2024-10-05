@@ -5,10 +5,13 @@ import JobDetails from './JobDetails.vue';
 
 <template>
     <div id="main-container-daily-cal">
-        <div class="left-timestamp-container px-2 border-end" :style="{paddingTop: topPaddingPx+'px'}">
+        <div class="left-timestamp-container">
+            <!-- Empty white div for padding (using div instead of padding-top to allow sticky-top to work) -->
+            <div v-if="!isCompressed" class="sticky-top bg-white" :style="{height: topPaddingPx+'px'}"></div>
+            
             <div
                 v-for="i in timeAxisMax - timeAxisMin"
-                class="text-end"
+                class="text-end border-end border-2 px-3 bg-white"
                 :key="i"
                 :style="{ height: heightPerIntervalAxis + 'px' }"
             >
@@ -17,11 +20,10 @@ import JobDetails from './JobDetails.vue';
         </div>
     
         <div class="right-calendar-container">
-            <template v-for="eachJDArr, eachClientId in jobDetailsArrSorted">
-
-                <div class="container-fluid d-flex flex-column" :style="{height: yHeightPx+'px'}">
+            <template v-for="eData, idx in objectEntries(jobDetailsArrSorted)">
+                <div class="container-fluid d-flex flex-column" :style="clientColStyles">
                     <!-- Client Details (TOP) -->
-                    <div class="row justify-content-center align-items-center pt-2" :style="{flex: `0 1 ${topPaddingPx}px`}">
+                    <div v-if="!isCompressed" class="sticky-top bg-white row justify-content-center align-items-center pt-2" :style="{flex: `0 1 ${topPaddingPx}px`}">
                         <!-- Img -->
                         <div class="col-auto">
                             <img src="https://placehold.co/200x200?text=Profile+Pic" alt="Client Image" class="client-img" />
@@ -30,7 +32,7 @@ import JobDetails from './JobDetails.vue';
                         <!-- Name -->
                         <div class="col-auto d-flex align-items-center">
                             <div>
-                                <h6 class="m-0 text-tiny">{{ eachJDArr[0].clientDetails.clientName }}</h6>
+                                <h6 class="m-0 text-tiny">{{ eData[1][0].clientDetails.clientName }}</h6>
                             </div>
                         </div>
                     </div>
@@ -38,9 +40,9 @@ import JobDetails from './JobDetails.vue';
                     <!-- Job Details (BOTTOM) -->
                     <div class="jobs-parent">
                         <!-- Place Each Job Block -->
-                        <template v-for="jobDetails in eachJDArr">
+                        <template v-for="jobDetails in eData[1]">
                             <div class="e-job-child" :style="eJobChildStyle(jobDetails.startTime)">
-                                <JobDetails :heightInPx="calculateHeightPx(jobDetails.startTime, jobDetails.endTime)" :jobDetails="jobDetails" :isCompressed="isCompressed" />
+                                <JobDetails :popoverRight="colIsLeftHalf(idx)" :heightInPx="calculateHeightPx(jobDetails.startTime, jobDetails.endTime)" :jobDetails="jobDetails" :isCompressed="isCompressed" />
                             </div>
                         </template>
                     </div>
@@ -54,6 +56,12 @@ import JobDetails from './JobDetails.vue';
 
 <script>
 export default {
+    props: {
+        isCompressed: {
+            type: Boolean,
+            required: true,
+        },
+    },
     data() {
         return {
             // Axis settings [In 24 hour format (only whole hours)]
@@ -61,6 +69,10 @@ export default {
             timeAxisMax: 22,
             yHeightPx: 1000,
             topPaddingPx: 80,
+
+            // Client column settings
+            clientColWidth: 200,
+            clientColWidthCompressed: 50,
 
             // Job Data (Unsorted)
             jobDetailsArr: [
@@ -164,19 +176,182 @@ export default {
                         clientAge: "49",
                     },
                 },
+                {
+                    appointmentId: "218",
+                    packageType: "W_3RM_CONDO",
+                    jobAddress: "64 Tampanies Road",
+                    date: "2024-10-05", // ISO 8601 standard
+                    startTime: "08:30:00",
+                    endTime: "11:00:00",
+                    cleaners: ["6", "7", "8"],
+                    arrivalProofUploaded: false,
+                    jobStatus: "In Progress",
+                    clientDetails: {
+                        clientId: "4",
+                        clientName: "Mary Tan",
+                        clientContact: "91234567",
+                        clientEmail: "marytan@hotmail.com",
+                        clientAddress: "45 Bukit Timah Road",
+                        clientGender: "Female",
+                        clientAge: "39",
+                    },
+                },
+                {
+                    appointmentId: "219",
+                    packageType: "W_3RM_CONDO",
+                    jobAddress: "64 Tampanies Road",
+                    date: "2024-10-05", // ISO 8601 standard
+                    startTime: "17:00:00",
+                    endTime: "21:00:00",
+                    cleaners: ["6", "7", "8"],
+                    arrivalProofUploaded: false,
+                    jobStatus: "In Progress",
+                    clientDetails: {
+                        clientId: "2",
+                        clientName: "Harry Sim",
+                        clientContact: "9298377",
+                        clientEmail: "harrysim@gmail.com",
+                        clientAddress: "16 Jalan Riang",
+                        clientGender: "Male",
+                        clientAge: "32",
+                    },
+                },
+                {
+                    appointmentId: "220",
+                    packageType: "W_3RM_CONDO",
+                    jobAddress: "64 Tampanies Road",
+                    date: "2024-10-05", // ISO 8601 standard
+                    startTime: "15:30:00",
+                    endTime: "19:00:00",
+                    cleaners: ["6", "7", "8"],
+                    arrivalProofUploaded: false,
+                    jobStatus: "In Progress",
+                    clientDetails: {
+                        clientId: "5",
+                        clientName: "Wally Wales",
+                        clientContact: "9298377",
+                        clientEmail: "harrysim@gmail.com",
+                        clientAddress: "16 Jalan Riang",
+                        clientGender: "Male",
+                        clientAge: "32",
+                    },
+                },
+                {
+                    appointmentId: "221",
+                    packageType: "W_3RM_CONDO",
+                    jobAddress: "64 Tampanies Road",
+                    date: "2024-10-05", // ISO 8601 standard
+                    startTime: "10:00:00",
+                    endTime: "14:00:00",
+                    cleaners: ["6", "7", "8"],
+                    arrivalProofUploaded: false,
+                    jobStatus: "In Progress",
+                    clientDetails: {
+                        clientId: "6",
+                        clientName: "Gregogry Goh",
+                        clientContact: "9298377",
+                        clientEmail: "harrysim@gmail.com",
+                        clientAddress: "16 Jalan Riang",
+                        clientGender: "Male",
+                        clientAge: "32",
+                    },
+                },
+                {
+                    appointmentId: "222",
+                    packageType: "W_3RM_CONDO",
+                    jobAddress: "64 Tampanies Road",
+                    date: "2024-10-05", // ISO 8601 standard
+                    startTime: "14:00:00",
+                    endTime: "18:00:00",
+                    cleaners: ["6", "7", "8"],
+                    arrivalProofUploaded: false,
+                    jobStatus: "In Progress",
+                    clientDetails: {
+                        clientId: "7",
+                        clientName: "Tim Tales",
+                        clientContact: "9298377",
+                        clientEmail: "harrysim@gmail.com",
+                        clientAddress: "16 Jalan Riang",
+                        clientGender: "Male",
+                        clientAge: "32",
+                    },
+                },
+                {
+                    appointmentId: "223",
+                    packageType: "W_3RM_CONDO",
+                    jobAddress: "64 Tampanies Road",
+                    date: "2024-10-05", // ISO 8601 standard
+                    startTime: "14:00:00",
+                    endTime: "18:00:00",
+                    cleaners: ["6", "7", "8"],
+                    arrivalProofUploaded: false,
+                    jobStatus: "In Progress",
+                    clientDetails: {
+                        clientId: "8",
+                        clientName: "Fernando Ferrari",
+                        clientContact: "9298377",
+                        clientEmail: "harrysim@gmail.com",
+                        clientAddress: "16 Jalan Riang",
+                        clientGender: "Male",
+                        clientAge: "32",
+                    },
+                },
+                {
+                    appointmentId: "224",
+                    packageType: "W_3RM_CONDO",
+                    jobAddress: "64 Tampanies Road",
+                    date: "2024-10-05", // ISO 8601 standard
+                    startTime: "14:00:00",
+                    endTime: "18:00:00",
+                    cleaners: ["6", "7", "8"],
+                    arrivalProofUploaded: false,
+                    jobStatus: "In Progress",
+                    clientDetails: {
+                        clientId: "9",
+                        clientName: "Poopy Pants",
+                        clientContact: "9298377",
+                        clientEmail: "harrysim@gmail.com",
+                        clientAddress: "16 Jalan Riang",
+                        clientGender: "Male",
+                        clientAge: "32",
+                    },
+                },
+                {
+                    appointmentId: "225",
+                    packageType: "W_3RM_CONDO",
+                    jobAddress: "64 Tampanies Road",
+                    date: "2024-10-05", // ISO 8601 standard
+                    startTime: "14:00:00",
+                    endTime: "18:00:00",
+                    cleaners: ["6", "7", "8"],
+                    arrivalProofUploaded: false,
+                    jobStatus: "In Progress",
+                    clientDetails: {
+                        clientId: "10",
+                        clientName: "Mammy Poko Pants",
+                        clientContact: "9298377",
+                        clientEmail: "harrysim@gmail.com",
+                        clientAddress: "16 Jalan Riang",
+                        clientGender: "Male",
+                        clientAge: "32",
+                    },
+                },
             ],
 
             // Job Data (Sorted - By Client)
             jobDetailsArrSorted: null,
-
-            // SETTINGS ========================================
-            isCompressed: false,
         }
     },
     computed: {
         heightPerIntervalAxis() {
             return (this.yHeightPx - this.topPaddingPx) / (this.timeAxisMax - this.timeAxisMin);
         },
+        clientColStyles() {
+            return {
+                height: this.yHeightPx+'px',
+                width: this.isCompressed ? `${this.clientColWidthCompressed}px` : `${this.clientColWidth}px`
+            }
+        }
     },
     methods: {
         convertTimeToReadable(hrIn) {
@@ -218,6 +393,15 @@ export default {
             return {
                 top: `${(timeDiffMin / 60) * this.heightPerIntervalAxis}px`
             }
+        },
+        colIsLeftHalf(idx) {
+            var halfNumClients = Math.floor(Object.keys(this.jobDetailsArrSorted).length / 2);
+            return idx < halfNumClients;
+        },
+        objectEntries(obj) {
+            if (!obj) return [];
+
+            return Object.entries(obj);
         }
     },
     mounted() {
@@ -264,6 +448,9 @@ export default {
 .left-timestamp-container {
     flex: 0 1 1px;
     font-size: 0.75em;
+    position: sticky;
+    left: 0;
+    z-index: 2;
 }
 
 .right-calendar-container {

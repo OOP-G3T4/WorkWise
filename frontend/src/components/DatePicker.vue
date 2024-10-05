@@ -41,7 +41,7 @@
                         />
                         <div class="">Today</div>
                     </btn>
-                    <btn class="btn border d-flex p-2 align-items-center">
+                    <btn class="btn border d-flex p-2 align-items-center" @click="toggleZoom()">
                         <font-awesome-icon
                             :icon="['fas', 'maximize']"
                             class="me-2"
@@ -70,6 +70,7 @@ export default {
     data() {
         return {
             currentDate: new Date(),
+            zoomedOut: false,
         };
     },
     computed: {
@@ -101,6 +102,11 @@ export default {
         setToday() {
             this.currentDate = new Date();
         },
+        toggleZoom() {
+            this.zoomedOut = !this.zoomedOut;
+
+            this.$emit('zoomChanged', { zoomedOut: this.zoomedOut });
+        }
     },
 };
 </script>
