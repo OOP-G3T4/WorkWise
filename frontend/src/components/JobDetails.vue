@@ -1,21 +1,21 @@
-<template>
+<template class="smaller-text">
     <!-- Parent Container -->
     <div @mouseover="showHoverContent(true)" @mouseleave="showHoverContent(false)" @click="openMainModal(true)"  :class="parentContainerClasses" :style="parentContainerStyle" class="rounded">
         <!-- Job Card -->
         <div @click="openMainModal()" class="card" :class="jobCardClasses" >
             <!-- Client Name and Warning (optional) -->
-            <div class="card-header fw-semibold">
+            <div class="p-small card-header fw-semibold">
                 <font-awesome-icon v-if="showJobStartedWarning" class="text-danger me-2" icon="fa-solid fa-circle-exclamation" />{{ jobDetails.clientDetails.clientName }}
             </div>
     
             <!-- Job address and Num cleaners -->
-            <div class="card-body overflow-auto">
-                <p>{{ jobDetails.jobAddress }}</p>
-                <p><font-awesome-icon class="me-2" :icon="overOneCleaner ? `fa-solid fa-users` : `fa-solid fa-user`" />{{ Object.keys(jobDetails.cleaners).length }} cleaner{{ overOneCleaner ? `s` : `` }}</p>
+            <div class="card-body overflow-auto py-2">
+                <p class="p-small mb-1">{{ jobDetails.jobAddress }}</p>
+                <p class="p-small mb-0"><font-awesome-icon class="me-2" :icon="overOneCleaner ? `fa-solid fa-users` : `fa-solid fa-user`" />{{ Object.keys(jobDetails.cleaners).length }} cleaner{{ overOneCleaner ? `s` : `` }}</p>
             </div>
     
             <!-- Job status -->
-            <div class="card-footer">
+            <div class="card-footer p-small">
                 <font-awesome-icon class="me-2" icon="fa-solid fa-circle" :style="{ color: statusColorMap[jobDetails.jobStatus] }" />{{ jobDetails.jobStatus }}
             </div>
         </div>
@@ -465,8 +465,6 @@ export default {
         setInterval(() => {
             this.currentDateTime = new Date();
         }, 60000);
-
-        console.log('isCompressed:', this.isCompressed);
     },
 };
 </script>
@@ -490,5 +488,9 @@ export default {
 .compressed-parent-container {
     position: relative;
     cursor: pointer;
+}
+
+.p-small {
+    font-size: 0.8rem;
 }
 </style>

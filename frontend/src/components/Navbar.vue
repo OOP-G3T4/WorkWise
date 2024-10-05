@@ -78,7 +78,7 @@ export default {
 };
 </script>
 
-<style scope>
+<style scoped>
 .navbar-container {
     width: 200px;
     height: 100vh;

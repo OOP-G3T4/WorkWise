@@ -1,11 +1,10 @@
 <script setup>
-import JobDetails from "./components/JobDetails.vue";
 import DatePicker from "./components/DatePicker.vue";
 import DailyCalendar from "./components/DailyCalendar.vue";
 </script>
 
 <template>
-    <div class="main-container">
+    <div class="main-container-dashboard">
         <DatePicker class="datetime-header" />
 
         <div class="calendar-container">
@@ -131,7 +130,7 @@ export default {
 
 
 <style scoped>
-.main-container {
+.main-container-dashboard {
     height: 100%;
     width: 100%;
     display: flex;
