@@ -5,6 +5,9 @@ import JobDetails from './JobDetails.vue';
 
 <template>
     <div id="main-container-daily-cal">
+        <!-- Now Line (Horizontal Line that shows you Current Time) -->
+        <div class="now-line" :style="{top: getNowLineHeight}"></div>
+
         <div class="left-timestamp-container">
             <!-- Empty white div for padding (using div instead of padding-top to allow sticky-top to work) -->
             <div v-if="!isCompressed" class="sticky-top bg-white" :style="{height: topPaddingPx+'px'}"></div>
@@ -348,8 +351,24 @@ export default {
         },
         clientColStyles() {
             return {
-                height: this.yHeightPx+'px',
+                height: (this.yHeightPx - this.topPaddingPx ) +'px',
                 width: this.isCompressed ? `${this.clientColWidthCompressed}px` : `${this.clientColWidth}px`
+            }
+        },
+        getNowLineHeight() {
+            // Returns height at bottom/ top of axis if out of range
+            const now = new Date();
+            const timeAxisMinPadded = this.timeAxisMin.toString().padStart(2, '0');
+            const earliestTimeAllowed = new Date(`${now.toISOString().split('T')[0]}T${timeAxisMinPadded}:00:00`);
+            const timeDiffMin = Math.abs(now - earliestTimeAllowed) / 60000;
+            const nowLineHeight = (timeDiffMin / 60) * this.heightPerIntervalAxis;
+
+            if (0 < nowLineHeight && nowLineHeight < (this.yHeightPx - this.topPaddingPx)) {
+                return `${nowLineHeight}px`;
+            } else if (nowLineHeight < 0) {
+                return '0px';
+            } else {
+                return `${this.yHeightPx}px`;
             }
         }
     },
@@ -443,6 +462,7 @@ export default {
     display: flex;
     flex-direction: row;
     overflow: auto;
+    position: relative;
 }
 
 .left-timestamp-container {
@@ -476,6 +496,14 @@ export default {
 .e-job-child {
     position: absolute;
     width: 100%;
+}
+
+.now-line {
+    position: absolute;
+    width: 100%;
+    height: 0.25rem;
+    background-color: #2a86b491;
+    z-index: 1;
 }
 
 </style>
