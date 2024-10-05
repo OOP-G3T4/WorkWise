@@ -19,6 +19,11 @@ import {
     faPlus,
     faCalendarWeek,
     faMaximize,
+    faUsers,
+    faCircle,
+    faCircleExclamation,
+    faPenToSquare,
+    faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -32,7 +37,12 @@ library.add(
     faFilter,
     faPlus,
     faCalendarWeek,
-    faMaximize
+    faMaximize,
+    faUsers,
+    faCircle,
+    faCircleExclamation,
+    faPenToSquare,
+    faTrash
 );
 
 const app = createApp(App);
