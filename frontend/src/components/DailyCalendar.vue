@@ -386,6 +386,7 @@ export default {
         updateContainerHeight(entries) {
             for (let entry of entries) {
                 this.minYHeightAllowed = entry.contentRect.height;
+                this.yHeightPx = Math.max(this.yHeightPx, this.minYHeightAllowed);
             }
         },
         calculateHeightPx(startTime, endTime) {
