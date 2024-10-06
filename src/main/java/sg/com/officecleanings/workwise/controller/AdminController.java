@@ -1,6 +1,8 @@
 package sg.com.officecleanings.workwise.controller;
 
 import sg.com.officecleanings.workwise.model.Admin;
+import sg.com.officecleanings.workwise.model.Employee;
+import sg.com.officecleanings.workwise.service.AdminEmployeeService;
 import sg.com.officecleanings.workwise.service.AdminService;
 import org.springframework.http.HttpStatus;
 import org.hibernate.internal.util.collections.ConcurrentReferenceHashMap.Option;
@@ -17,6 +19,9 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private AdminEmployeeService adminEmployeeService;
 
     @GetMapping
     public List<Admin> getAllAdmins() {
@@ -45,20 +50,28 @@ public class AdminController {
     }
 
     @DeleteMapping("/{id}")
-public ResponseEntity<String> deleteAdmin(@PathVariable int id) {
-    try {
-        Optional<Admin> adminOptional = adminService.getAdminById(id);
-        if (adminOptional.isEmpty()) {
-            String errorMessage = "Admin with ID " + id + " not found.";
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+    public ResponseEntity<String> deleteAdmin(@PathVariable int id) {
+        try {
+            Optional<Admin> adminOptional = adminService.getAdminById(id);
+            if (adminOptional.isEmpty()) {
+                String errorMessage = "Admin with ID " + id + " not found.";
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+            }
+            adminService.deleteAdmin(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            String errorMessage = "An error occurred while deleting the admin.";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         }
-        adminService.deleteAdmin(id);
-        return ResponseEntity.ok().build();
-    } catch (Exception e) {
-        e.printStackTrace();
-        String errorMessage = "An error occurred while deleting the admin.";
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
     }
-}
 
+    @GetMapping("/{id}/employees")
+    public ResponseEntity<List<Employee>> getEmployeesByAdminId(@PathVariable int id) {
+        List<Employee> employees = adminEmployeeService.findEmployeesByAdminId(id);
+        if (employees.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(employees);
+    }
 }

@@ -11,7 +11,7 @@ public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int employeeId;
+    private Integer employeeId;
 
     @NotNull
     @Size(max = 120)
@@ -104,5 +104,17 @@ public class Employee {
 
     public void setShortBio(String shortBio) {
         this.shortBio = shortBio;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setHomeAddress(String homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
