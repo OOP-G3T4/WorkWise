@@ -8,7 +8,7 @@ import JobDetails from './JobDetails.vue';
         <!-- Now Line (Horizontal Line that shows you Current Time) -->
         <div class="now-line" :style="{top: getNowLineHeight}"></div>
 
-        <div class="left-timestamp-container">
+        <div class="left-timestamp-container" @wheel="handleScroll" @mouseover="enableScroll" @mouseleave="disableScroll">
             <!-- Empty white div for padding (using div instead of padding-top to allow sticky-top to work) -->
             <div v-if="!isCompressed" class="sticky-top bg-white" :style="{height: topPaddingPx+'px'}"></div>
             
@@ -72,6 +72,7 @@ export default {
             timeAxisMax: 22,
             yHeightPx: 1000,
             topPaddingPx: 80,
+            minYHeightAllowed: 500,
 
             // Client column settings
             clientColWidth: 200,
@@ -83,7 +84,7 @@ export default {
                     appointmentId: "213",
                     packageType: "W_3RM_CONDO",
                     jobAddress: "67 Choa Chu Kang Loop",
-                    date: "2024-10-05", // ISO 8601 standard
+                    date: "2024-10-06", // ISO 8601 standard
                     startTime: "14:00:00",
                     endTime: "17:00:00",
                     cleaners: [1,2],
@@ -103,7 +104,7 @@ export default {
                     appointmentId: "214",
                     packageType: "W_3RM_HDB",
                     jobAddress: "32 Bukit Batok West Ave 6",
-                    date: "2024-10-05", // ISO 8601 standard
+                    date: "2024-10-06", // ISO 8601 standard
                     startTime: "12:30:00",
                     endTime: "15:00:00",
                     cleaners: [3],
@@ -123,7 +124,7 @@ export default {
                     appointmentId: "215",
                     packageType: "W_3RM_HDB",
                     jobAddress: "12 Serangoon North Ave 5",
-                    date: "2024-10-05", // ISO 8601 standard
+                    date: "2024-10-06", // ISO 8601 standard
                     startTime: "14:00:00",
                     endTime: "18:00:00",
                     cleaners: [4],
@@ -143,7 +144,7 @@ export default {
                     appointmentId: "216",
                     packageType: "W_4RM_HDB",
                     jobAddress: "19 Clementi Road",
-                    date: "2024-10-05", // ISO 8601 standard
+                    date: "2024-10-06", // ISO 8601 standard
                     startTime: "12:00:00",
                     endTime: "18:00:00",
                     cleaners: [5],
@@ -163,7 +164,7 @@ export default {
                     appointmentId: "217",
                     packageType: "W_3RM_CONDO",
                     jobAddress: "64 Tampanies Road",
-                    date: "2024-10-05", // ISO 8601 standard
+                    date: "2024-10-06", // ISO 8601 standard
                     startTime: "08:00:00",
                     endTime: "11:00:00",
                     cleaners: ["6", "7", "8"],
@@ -183,7 +184,7 @@ export default {
                     appointmentId: "218",
                     packageType: "W_3RM_CONDO",
                     jobAddress: "64 Tampanies Road",
-                    date: "2024-10-05", // ISO 8601 standard
+                    date: "2024-10-06", // ISO 8601 standard
                     startTime: "08:30:00",
                     endTime: "11:00:00",
                     cleaners: ["6", "7", "8"],
@@ -203,7 +204,7 @@ export default {
                     appointmentId: "219",
                     packageType: "W_3RM_CONDO",
                     jobAddress: "64 Tampanies Road",
-                    date: "2024-10-05", // ISO 8601 standard
+                    date: "2024-10-06", // ISO 8601 standard
                     startTime: "17:00:00",
                     endTime: "21:00:00",
                     cleaners: ["6", "7", "8"],
@@ -223,7 +224,7 @@ export default {
                     appointmentId: "220",
                     packageType: "W_3RM_CONDO",
                     jobAddress: "64 Tampanies Road",
-                    date: "2024-10-05", // ISO 8601 standard
+                    date: "2024-10-06", // ISO 8601 standard
                     startTime: "15:30:00",
                     endTime: "19:00:00",
                     cleaners: ["6", "7", "8"],
@@ -243,7 +244,7 @@ export default {
                     appointmentId: "221",
                     packageType: "W_3RM_CONDO",
                     jobAddress: "64 Tampanies Road",
-                    date: "2024-10-05", // ISO 8601 standard
+                    date: "2024-10-06", // ISO 8601 standard
                     startTime: "10:00:00",
                     endTime: "14:00:00",
                     cleaners: ["6", "7", "8"],
@@ -263,7 +264,7 @@ export default {
                     appointmentId: "222",
                     packageType: "W_3RM_CONDO",
                     jobAddress: "64 Tampanies Road",
-                    date: "2024-10-05", // ISO 8601 standard
+                    date: "2024-10-06", // ISO 8601 standard
                     startTime: "14:00:00",
                     endTime: "18:00:00",
                     cleaners: ["6", "7", "8"],
@@ -283,7 +284,7 @@ export default {
                     appointmentId: "223",
                     packageType: "W_3RM_CONDO",
                     jobAddress: "64 Tampanies Road",
-                    date: "2024-10-05", // ISO 8601 standard
+                    date: "2024-10-06", // ISO 8601 standard
                     startTime: "14:00:00",
                     endTime: "18:00:00",
                     cleaners: ["6", "7", "8"],
@@ -303,7 +304,7 @@ export default {
                     appointmentId: "224",
                     packageType: "W_3RM_CONDO",
                     jobAddress: "64 Tampanies Road",
-                    date: "2024-10-05", // ISO 8601 standard
+                    date: "2024-10-06", // ISO 8601 standard
                     startTime: "14:00:00",
                     endTime: "18:00:00",
                     cleaners: ["6", "7", "8"],
@@ -323,7 +324,7 @@ export default {
                     appointmentId: "225",
                     packageType: "W_3RM_CONDO",
                     jobAddress: "64 Tampanies Road",
-                    date: "2024-10-05", // ISO 8601 standard
+                    date: "2024-10-06", // ISO 8601 standard
                     startTime: "14:00:00",
                     endTime: "18:00:00",
                     cleaners: ["6", "7", "8"],
@@ -363,10 +364,12 @@ export default {
             const timeDiffMin = Math.abs(now - earliestTimeAllowed) / 60000;
             const nowLineHeight = (timeDiffMin / 60) * this.heightPerIntervalAxis;
 
+            var buffer = this.isCompressed ? 0 : this.topPaddingPx;
+
             if (0 < nowLineHeight && nowLineHeight < (this.yHeightPx - this.topPaddingPx)) {
-                return `${nowLineHeight}px`;
+                return `${nowLineHeight+buffer}px`;
             } else if (nowLineHeight < 0) {
-                return '0px';
+                return `${buffer}px`;
             } else {
                 return `${this.yHeightPx}px`;
             }
@@ -382,9 +385,7 @@ export default {
         },
         updateContainerHeight(entries) {
             for (let entry of entries) {
-                var newHeight = entry.contentRect.height;
-
-                // this.yHeightPx = entry.contentRect.height;
+                this.minYHeightAllowed = entry.contentRect.height;
             }
         },
         calculateHeightPx(startTime, endTime) {
@@ -421,6 +422,37 @@ export default {
             if (!obj) return [];
 
             return Object.entries(obj);
+        },
+        handleScroll(event) {
+            // Prevent the actual page from scrolling
+            event.preventDefault();
+
+            // Check the scroll direction by looking at `deltaY`
+            if (event.deltaY > 0) {
+                // Custom functionality for scrolling down
+                this.yHeightPx -= 10;
+            } else {
+                // Custom functionality for scrolling up
+                this.yHeightPx += 10;
+            }
+        },
+        enableScroll() {
+            // Optionally add a wheel event listener only when the mouse is over the element
+            const container = this.$el.querySelector('.left-timestamp-container');
+            container.addEventListener('wheel', this.handleScroll, { passive: false }); // Make it passive: false to prevent default scroll
+        },
+        disableScroll() {
+            // Optionally remove the event listener when the mouse leaves the element
+            const container = this.$el.querySelector('.left-timestamp-container');
+            container.removeEventListener('wheel', this.handleScroll);
+        },
+    },
+    watch: {
+        yHeightPx(newVal, oldVal) {
+            // Limit the height of the container
+            if (newVal < this.minYHeightAllowed) {
+                this.yHeightPx = this.minYHeightAllowed;
+            }
         }
     },
     mounted() {
