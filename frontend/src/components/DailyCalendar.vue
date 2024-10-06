@@ -448,10 +448,13 @@ export default {
         },
     },
     watch: {
-        yHeightPx(newVal, oldVal) {
+        yHeightPx(newVal) {
+            var buffer = this.isCompressed ? this.topPaddingPx : 0;
+            var min_height = this.minYHeightAllowed + buffer;
+
             // Limit the height of the container
-            if (newVal < this.minYHeightAllowed) {
-                this.yHeightPx = this.minYHeightAllowed;
+            if (newVal < min_height) {
+                this.yHeightPx = min_height;
             }
         }
     },
