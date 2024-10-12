@@ -49,4 +49,14 @@ public class Property {
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
+
+
+    @Override
+    public String toString() {
+        return "Property{" +
+                "propertyId=" + propertyId +
+                ", address='" + address + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                '}';
+    }
 }
