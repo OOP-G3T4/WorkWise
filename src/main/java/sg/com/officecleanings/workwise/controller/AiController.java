@@ -55,11 +55,16 @@ public class AiController {
 
                 for (JsonNode assignmentNode : assignmentsNode) {
                     Map<String, Object> assignment = new LinkedHashMap<>(); // Use LinkedHashMap to maintain order
-                    assignment.put("job_id", assignmentNode.path("job_id").get(0).asInt());
+                    JsonNode jobIdNode = assignmentNode.path("job_id").get(0);
+                    if (jobIdNode != null && !jobIdNode.isNull()) {
+                        assignment.put("job_id", jobIdNode.asInt());
+                    }
 
                     List<Integer> employeeIds = new ArrayList<>();
                     for (JsonNode idNode : assignmentNode.path("employees_id")) {
-                        employeeIds.add(idNode.asInt());
+                        if (idNode != null && !idNode.isNull()) {
+                            employeeIds.add(idNode.asInt());
+                        }
                     }
                     assignment.put("employees_id", employeeIds);
 
