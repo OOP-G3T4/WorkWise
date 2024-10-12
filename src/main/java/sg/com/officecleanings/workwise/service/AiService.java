@@ -70,8 +70,8 @@ public class AiService {
         StringBuilder promptBuilder = new StringBuilder();
         promptBuilder.append(context);
         String instructions = "The following tables include the information about the jobs, employees and their events. " +
-                "Based on the above criteria, assign the best employee(s) suited for the input job(s) " +
-                "and provide a reasoning on why is that the employee the best suited for the role, explain using the criteria." +
+                "Based on the above criteria, assign the best employee(s) suited for the input job(s). Provide the best employee with the shortest travelling time. " +
+                "Also provide a reasoning on why is that the employee the best suited for the role, explain using the criteria." +
                 "Do not return any other words and only the following format:\n" +
                 "{\n" +
                 "    \"assignments\": [\n" +
