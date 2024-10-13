@@ -119,4 +119,18 @@ public class Job {
         this.employees = employees;
     }
 
+    @Override
+    public String toString() {
+        return "Job{" +
+                "jobId=" + jobId +
+                ", client=" + client +
+                ", property=" + property +
+                ", selectedPackage=" + selectedPackage +
+                ", date=" + date +
+                ", startTime=" + startTime +
+                ", status='" + status + '\'' +
+                ", actualDuration=" + actualDuration +
+                ", employees=" + employees +
+                '}';
+    }
 }
