@@ -11,7 +11,8 @@
             <!-- Job address and Num cleaners -->
             <div class="card-body overflow-auto py-2">
                 <p class="p-small mb-1">{{ jobDetails.jobAddress }}</p>
-                <p class="p-small mb-0"><font-awesome-icon class="me-2" :icon="overOneCleaner ? `fa-solid fa-users` : `fa-solid fa-user`" />{{ Object.keys(jobDetails.cleaners).length }} cleaner{{ overOneCleaner ? `s` : `` }}</p>
+                <p class="p-small mb-1"><font-awesome-icon class="me-2" :icon="overOneCleaner ? `fa-solid fa-users` : `fa-solid fa-user`" />{{ Object.keys(jobDetails.cleaners).length }} cleaner{{ overOneCleaner ? `s` : `` }}</p>
+                <p class="p-small mb-0"><font-awesome-icon class="me-2" icon="fa-solid fa-clock" />{{ convertTimeToReadable(jobDetails.startTime) }} - {{ convertTimeToReadable(jobDetails.endTime) }}</p>
             </div>
     
             <!-- Job status -->
@@ -259,9 +260,9 @@
                     </div>
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                <div class="modal-footer" v-if="isEditMode">
+                    <button type="button" class="btn btn-secondary" @click="revertEdits()">Cancel</button>
+                    <button type="button" class="btn btn-primary" @click="saveChanges()">Save changes</button>
                 </div>
             </div>
         </div>
@@ -455,6 +456,23 @@ export default {
             // Deletes a cleaner from the job
             this.jobEdit.cleaners.splice(idx, 1);
         },
+        revertEdits() {
+            // Reverts all edits made to the jobEdit object
+            this.jobEdit = JSON.parse(JSON.stringify(this.jobDetails));
+            this.isEditMode = false;
+        },
+        saveChanges() {
+            // Saves all changes made to the jobEdit object
+            console.log("OBJECT SAVED PLACEHOLDER");
+            // INSERT API CALL HERE <===========================
+
+            // Check if any errors are present
+            if (this.isJobEndBeforeStart(this.jobEdit.date, this.jobEdit.startTime, this.jobEdit.endTime) ||
+                this.isJobStartBeforeToday(this.jobEdit.date, this.jobEdit.startTime) ||
+                this.isJobTimeOutOfBounds(this.jobEdit.date, this.jobEdit.startTime, this.jobEdit.endTime)) {
+                return;
+            }
+        }
     },
     mounted() {
         // Sets up main modal

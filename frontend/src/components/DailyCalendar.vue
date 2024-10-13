@@ -5,9 +5,6 @@ import JobDetails from './JobDetails.vue';
 
 <template>
     <div id="main-container-daily-cal">
-        <!-- Now Line (Horizontal Line that shows you Current Time) -->
-        <div class="now-line" :style="{top: getNowLineHeight}"></div>
-
         <div class="left-timestamp-container" @wheel="handleScroll" @mouseover="enableScroll" @mouseleave="disableScroll">
             <!-- Empty white div for padding (using div instead of padding-top to allow sticky-top to work) -->
             <div v-if="!isCompressed" class="sticky-top bg-white" :style="{height: topPaddingPx+'px'}"></div>
@@ -23,6 +20,18 @@ import JobDetails from './JobDetails.vue';
         </div>
     
         <div class="right-calendar-container">
+            <!-- Now Line (Horizontal Line that shows you Current Time) -->
+            <div class="now-line" :style="{top: getNowLineHeight, width: nowLineWidth+'px'}"></div>
+
+            <!-- Background Grid -->
+            <div id="bgGridDailyCal" class="position-absolute top-0 start-0 w-100" :style="bgGridStyles">
+                <div
+                    v-for="i in (timeAxisMax - timeAxisMin)"
+                    :key="i"
+                    :style="{ height: heightPerIntervalAxis + 'px' }"
+                ></div>
+            </div>
+
             <template v-for="eData, idx in objectEntries(jobDetailsArrSorted)">
                 <div class="container-fluid d-flex flex-column" :style="clientColStyles">
                     <!-- Client Details (TOP) -->
@@ -70,9 +79,12 @@ export default {
             // Axis settings [In 24 hour format (only whole hours)]
             timeAxisMin: 8,
             timeAxisMax: 22,
+
+            // Container height settings
             yHeightPx: 1000,
             topPaddingPx: 80,
             minYHeightAllowed: 500,
+            nowLineWidth: 0,
 
             // Client column settings
             clientColWidth: 200,
@@ -373,7 +385,13 @@ export default {
             } else {
                 return `${this.yHeightPx}px`;
             }
-        }
+        },
+        bgGridStyles() {
+            return {
+                height: this.isCompressed ? `${this.yHeightPx - this.topPaddingPx}px` : `${this.yHeightPx}px`,
+                paddingTop: this.isCompressed ? '0' : this.topPaddingPx + 'px',
+            }
+        },
     },
     methods: {
         convertTimeToReadable(hrIn) {
@@ -387,6 +405,11 @@ export default {
             for (let entry of entries) {
                 this.minYHeightAllowed = entry.contentRect.height;
                 this.yHeightPx = Math.max(this.yHeightPx, this.minYHeightAllowed);
+            }
+        },
+        updateContainer2Width(entries) {
+            for (let entry of entries) {
+                this.nowLineWidth = entry.contentRect.width;
             }
         },
         calculateHeightPx(startTime, endTime) {
@@ -449,6 +472,15 @@ export default {
         },
     },
     watch: {
+        isCompressed(newVal) {
+            // Update min height allowed if compressed
+            if (newVal) {
+                // If compressed, set the yHeight to fill the gap made by the top padding
+                if (this.yHeightPx < (this.minYHeightAllowed + this.topPaddingPx)) {
+                    this.yHeightPx = this.minYHeightAllowed + this.topPaddingPx;
+                }
+            }
+        },
         yHeightPx(newVal) {
             var buffer = this.isCompressed ? this.topPaddingPx : 0;
             var min_height = this.minYHeightAllowed + buffer;
@@ -470,7 +502,7 @@ export default {
             return acc;
         }, {});
 
-        // Initialize ResizeObserver to track the height changes
+        // Initialize ResizeObserver to track the height changes for #main-container-daily-cal
         const observer = new ResizeObserver(this.updateContainerHeight);
         const mainContainer = document.querySelector('#main-container-daily-cal');
         
@@ -482,6 +514,21 @@ export default {
         onBeforeUnmount(() => {
             if (observer && mainContainer) {
                 observer.unobserve(mainContainer);
+            }
+        });
+
+        // Initialize ResizeObserver to track the width changes for .right-calendar-container
+        const observer2 = new ResizeObserver(this.updateContainer2Width);
+        const rightContainer = document.querySelector('.right-calendar-container');
+
+        if (rightContainer) {
+            observer2.observe(rightContainer);
+        } 
+        
+        // Cleanup the observer when component is destroyed
+        onBeforeUnmount(() => {
+            if (observer2 && rightContainer) {
+                observer2.unobserve(rightContainer);
             }
         });
     }
@@ -512,6 +559,7 @@ export default {
 .right-calendar-container {
     flex: 1 1 1px;
     display: flex;
+    position: relative;
 }
 
 .client-img {
@@ -540,6 +588,10 @@ export default {
     height: 0.25rem;
     background-color: #2a86b491;
     z-index: 1;
+}
+
+#bgGridDailyCal > :nth-child(odd) {
+    background-color: #f4f4f4;
 }
 
 </style>

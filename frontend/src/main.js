@@ -24,6 +24,7 @@ import {
     faCircleExclamation,
     faPenToSquare,
     faTrash,
+    faClock,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -42,7 +43,8 @@ library.add(
     faCircle,
     faCircleExclamation,
     faPenToSquare,
-    faTrash
+    faTrash,
+    faClock,
 );
 
 const app = createApp(App);
