@@ -103,4 +103,14 @@ public class JobController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
+    @GetMapping("/by-status")
+    public ResponseEntity<List<Job>> getJobsByStatus(@RequestParam("status") String status) {
+        try {
+            List<Job> jobs = jobService.getJobsByStatus(status);
+            return ResponseEntity.ok(jobs);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 }

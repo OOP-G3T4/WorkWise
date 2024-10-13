@@ -60,4 +60,8 @@ public class JobService {
         return jobRepository.findByDateBetweenOrderByDateAscStartTimeAsc(startDate, endDate);
     }
 
+    public List<Job> getJobsByStatus(String status) {
+        return jobRepository.findByStatus(status);
+    }
+
 }
