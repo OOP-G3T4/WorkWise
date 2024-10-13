@@ -1,11 +1,13 @@
 package sg.com.officecleanings.workwise.controller;
 
 import sg.com.officecleanings.workwise.model.Client;
+import sg.com.officecleanings.workwise.service.ClientPropertyService;
 import sg.com.officecleanings.workwise.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
+import sg.com.officecleanings.workwise.model.Property;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +18,9 @@ public class ClientController {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private ClientPropertyService clientPropertyService;
 
     @GetMapping
     public List<Client> getAllClients() {
@@ -57,5 +62,14 @@ public class ClientController {
             e.printStackTrace();
             return ResponseEntity.status(500).build();
         }
+    }
+
+    @GetMapping("/{id}/properties")
+    public ResponseEntity<List<Property>> getPropertiesByClientId(@PathVariable int id) {
+        List<Property> properties = clientPropertyService.getPropertiesByClientId(id);
+        if (properties.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(properties);
     }
 }
