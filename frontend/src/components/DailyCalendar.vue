@@ -21,7 +21,7 @@ import JobDetails from './JobDetails.vue';
     
         <div class="right-calendar-container">
             <!-- Now Line (Horizontal Line that shows you Current Time) -->
-            <div class="now-line" :style="{top: getNowLineHeight, width: nowLineWidth+'px'}"></div>
+            <div class="now-line" :style="nowLineStyle"></div>
 
             <!-- Background Grid -->
             <div id="bgGridDailyCal" class="position-absolute top-0 start-0 w-100" :style="bgGridStyles">
@@ -85,6 +85,7 @@ export default {
             topPaddingPx: 80,
             minYHeightAllowed: 500,
             nowLineWidth: 0,
+            nowLineThickness: 4,
 
             // Client column settings
             clientColWidth: 200,
@@ -377,19 +378,30 @@ export default {
             const nowLineHeight = (timeDiffMin / 60) * this.heightPerIntervalAxis;
 
             var buffer = this.isCompressed ? 0 : this.topPaddingPx;
+            var antiBuffer = this.isCompressed ? this.topPaddingPx : 0;
 
-            if (0 < nowLineHeight && nowLineHeight < (this.yHeightPx - this.topPaddingPx)) {
-                return `${nowLineHeight+buffer}px`;
+            if (0 <= nowLineHeight && nowLineHeight < (this.yHeightPx - this.topPaddingPx)) {
+                // If within time range
+                return nowLineHeight + buffer;
             } else if (nowLineHeight < 0) {
-                return `${buffer}px`;
+                // If before time range
+                return buffer;
             } else {
-                return `${this.yHeightPx}px`;
+                // If beyond time range
+                return this.yHeightPx - antiBuffer - this.nowLineThickness;
             }
         },
         bgGridStyles() {
             return {
                 height: this.isCompressed ? `${this.yHeightPx - this.topPaddingPx}px` : `${this.yHeightPx}px`,
                 paddingTop: this.isCompressed ? '0' : this.topPaddingPx + 'px',
+            }
+        },
+        nowLineStyle() {
+            return {
+                top: this.getNowLineHeight + 'px',
+                width: this.nowLineWidth + 'px',
+                height: this.nowLineThickness + 'px',
             }
         },
     },
@@ -585,7 +597,6 @@ export default {
 .now-line {
     position: absolute;
     width: 100%;
-    height: 0.25rem;
     background-color: #2a86b491;
     z-index: 1;
 }

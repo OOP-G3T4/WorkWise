@@ -25,6 +25,8 @@ import {
     faPenToSquare,
     faTrash,
     faClock,
+    faCheck,
+    faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -45,6 +47,8 @@ library.add(
     faPenToSquare,
     faTrash,
     faClock,
+    faCheck,
+    faXmark,
 );
 
 const app = createApp(App);
