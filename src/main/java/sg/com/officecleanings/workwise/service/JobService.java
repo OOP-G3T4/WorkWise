@@ -64,4 +64,14 @@ public class JobService {
         return jobRepository.findByStatus(status);
     }
 
+    public List<Job> getPendingJobsInNextWeek(LocalDate date) {
+        LocalDate startOfWeek = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
+        LocalDate endOfWeek = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
+        Date startDate = Date.valueOf(startOfWeek);
+        Date endDate = Date.valueOf(endOfWeek);
+
+        return jobRepository.findByDateBetweenAndStatusOrderByDateAscStartTimeAsc(startDate, endDate, "PENDING");
+    }
+
 }

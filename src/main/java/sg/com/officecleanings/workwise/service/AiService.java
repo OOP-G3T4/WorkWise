@@ -12,6 +12,7 @@ import sg.com.officecleanings.workwise.repository.EmployeeEventRepository;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,15 +48,20 @@ public class AiService {
 
 
     public StringBuilder createEmployeeAssignments(List<Job> jobs) {
-        // Validate that all jobs have the same date; if not, handle accordingly
         // Retrieve all employees
         List<Employee> allEmployees = employeeRepository.findAll();
 
-        // Retrieve all jobs
-        List<Job> allJobs = jobService.getAllJobs();
+        // Retrieve today's date
+//        LocalDate today = LocalDate.now();
+
+        // Retrieve all pending jobs
+        LocalDate date = LocalDate.parse("2024-11-10");
+        List<Job> allPendingJobs = jobService.getPendingJobsInNextWeek(date);
 
         // Constraints on employees on affected dates
         List<EmployeeEvent> affectedEmployeeEvents = new ArrayList<>();
+
+        
 
         // for each job, retrieve the date and start time
         for (Job job : jobs) {

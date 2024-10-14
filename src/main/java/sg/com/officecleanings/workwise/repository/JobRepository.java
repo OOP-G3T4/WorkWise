@@ -19,4 +19,6 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
 
     List<Job> findByStatus(String status);
 
+    List<Job> findByDateBetweenAndStatusOrderByDateAscStartTimeAsc(Date startDate, Date endDate, String status);
+
 }

@@ -5,8 +5,13 @@ import org.springframework.stereotype.Service;
 import sg.com.officecleanings.workwise.model.EmployeeEvent;
 import sg.com.officecleanings.workwise.repository.EmployeeEventRepository;
 
+import java.sql.Date;
+import java.time.DayOfWeek;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
+
 
 @Service
 public class EmployeeEventService {
@@ -20,6 +25,15 @@ public class EmployeeEventService {
 
     public Optional<EmployeeEvent> getEmployeeEventById(int id) {
         return employeeEventRepository.findById(id);
+    }
+
+    public List<EmployeeEvent> getEmployeeEventsByWeek(LocalDate date) {
+        LocalDate startOfWeek = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
+        LocalDate endOfWeek = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
+        Date startDate = Date.valueOf(startOfWeek);
+        Date endDate = Date.valueOf(endOfWeek);
+        return employeeEventRepository.findByDateBetweenOrderByDateAscStartTimeAsc(startDate, endDate);
     }
 
     public EmployeeEvent saveEmployeeEvent(EmployeeEvent employeeEvent) {
