@@ -1,17 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Dashboard from "../Dashboard.vue";
-import Leaves from "../Leaves.vue";
+import CalendarDashboard from "../CalendarDashboard.vue";
+import LeavesDashboard from "../LeavesDashboard.vue";
 
 const routes = [
     {
         path: "/",
-        name: "Dashboard",
-        component: Dashboard,
+        name: "CalendarDashboard",
+        component: CalendarDashboard,
     },
     {
         path: "/leaves",
-        name: "Leaves",
-        component: Leaves,
+        name: "LeavesDashboard",
+        component: LeavesDashboard,
     },
 ];
 
