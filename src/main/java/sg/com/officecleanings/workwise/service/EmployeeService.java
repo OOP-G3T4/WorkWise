@@ -14,6 +14,9 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     @Autowired
+    private AdminEmployeeService adminEmployeeService;
+
+    @Autowired
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
@@ -40,6 +43,7 @@ public class EmployeeService {
 
     // Delete employee by ID
     public void delete(int employeeId) {
+        adminEmployeeService.deleteByEmployeeId(employeeId);
         employeeRepository.deleteById(employeeId);
     }
 
