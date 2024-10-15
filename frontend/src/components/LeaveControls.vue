@@ -2,9 +2,7 @@
     <div class="container-fluid">
         <div class="row justify-content-between">
             <div class="col-auto p-0 d-flex">
-                <button class="btn btn-secondary me-2">Pending</button>
-                <button class="btn btn-secondary me-2">Approved</button>
-                <button class="btn btn-secondary">Rejected</button>
+                <button v-for="e_status in possibleStatuses" class="btn me-2" :class="statusBtnClass(e_status)" @click="toggleStatus(e_status)" data-bs-toggle="button">{{ e_status }}</button>
             </div>
 
             <div class="col-auto p-0 d-flex">
@@ -20,11 +18,33 @@
 export default {
     data() {
         return {
+            possibleStatuses: ["Pending", "Approved", "Rejected"], // Status buttons auto-generated from this array
+            selectedStatuses: ["Pending"],
         };
     },
     computed: {
     },
     methods: {
+        toggleStatus(status) {
+            const index = this.selectedStatuses.indexOf(status);
+
+            if (index > -1) {
+                // Remove status if already selected
+                this.selectedStatuses.splice(index, 1);
+            } else {
+                // Add status if not already selected
+                this.selectedStatuses.push(status);
+            }
+        },
+        statusBtnClass(status) {
+            var statusSelected = this.selectedStatuses.includes(status);
+
+            return {
+                "btn-secondary": !statusSelected,
+                "btn-primary": statusSelected,
+                "active": statusSelected,
+            };
+        },
     },
 };
 </script>
