@@ -101,17 +101,12 @@ public class JobService {
 
     public List<Job> getPendingJobsInNextWeek(LocalDate date) {
         LocalDate startOfWeek = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
-//        System.out.println("Start of week: " + startOfWeek);
         LocalDate endOfWeek = startOfWeek.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
-//        System.out.println("End of week: " + endOfWeek);
 
         Date startDate = Date.valueOf(startOfWeek);
-//        System.out.println("Start Date: " + startDate);
         Date endDate = Date.valueOf(endOfWeek);
-//        System.out.println("End Date: " + endDate);
 
         List<Job> pendingJobs = jobRepository.findByDateBetweenAndStatusOrderByDateAscStartTimeAsc(startDate, endDate, "PENDING");
-//        System.out.println("Pending Jobs: " + pendingJobs);
 
         return pendingJobs;
     }

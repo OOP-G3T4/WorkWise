@@ -32,7 +32,6 @@ public class AiController {
 
         // Call the GPT-4o API to get the best candidate(s)
         String apiResponse = aiModel.call(prompt.toString());
-//        System.out.println("API Response: " + apiResponse);
         // Process the API response to create a structured output
         return parseApiResponse(apiResponse);
     }
