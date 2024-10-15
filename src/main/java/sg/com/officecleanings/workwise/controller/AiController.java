@@ -25,12 +25,12 @@ public class AiController {
     }
 
     @PostMapping("/ai/generate")
-    public Map<String, List<Map<String, Object>>> generate(@RequestBody List<Job> jobs) {
+    public Map<String, List<Map<String, Object>>> generate() {
 
         // Call the createEmployeeAssignments method
-        StringBuilder prompt = aiService.createEmployeeAssignments(jobs);
+        StringBuilder prompt = aiService.createEmployeeAssignments();
 
-        // Call the GPT-4 API to get the best candidate(s)
+        // Call the GPT-4o API to get the best candidate(s)
         String apiResponse = aiModel.call(prompt.toString());
 //        System.out.println("API Response: " + apiResponse);
         // Process the API response to create a structured output
