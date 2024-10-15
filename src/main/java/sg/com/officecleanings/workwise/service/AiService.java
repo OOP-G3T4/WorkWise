@@ -83,7 +83,7 @@ public class AiService {
                 "{\n" +
                 "    \"assignments\": [\n" +
                 "        {\n" +
-                "            \"job_id\": [<Input Job ID>],\n" +
+                "            \"job_id\": [<Pending Job ID>],\n" +
                 "            \"employees_id\": [<Employee1 ID>, ...],\n" +
                 "            \"reasoning\": \"[<Your reasoning here>]\"\n" +
                 "        }\n" +
