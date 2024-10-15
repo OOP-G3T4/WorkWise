@@ -22,5 +22,6 @@ public class JobEmployeeService {
     public List<JobEmployee> getJobsByEmployee(Employee employee) {
         return jobEmployeeRepository.findByEmployee(employee);
     }
+
 }
 

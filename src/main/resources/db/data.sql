@@ -72,10 +72,10 @@ VALUES (1, 1, 1, 'W_3RM_HDB', '2024-10-11', '10:00:00', 'COMPLETED', 3),
 
 
 -- Link jobs to employees
-INSERT INTO job_employee (job_id, employee_id)
-VALUES (1, 1), 
-        (2, 2),
-        (3, 1);
+INSERT INTO job_employee (job_id, employee_id, reasoning)
+VALUES (1, 1, NULL),
+        (2, 2, NULL),
+        (3, 1, NULL);
 
 -- Insert sample events into EmployeeEvents
 INSERT INTO employee_event (event_id, employee_id, event_type, event_date, job_id, duration, mc_used, al_used)
