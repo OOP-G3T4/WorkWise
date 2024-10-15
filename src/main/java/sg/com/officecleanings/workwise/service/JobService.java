@@ -1,7 +1,11 @@
 package sg.com.officecleanings.workwise.service;
 
+import sg.com.officecleanings.workwise.model.Employee;
 import sg.com.officecleanings.workwise.model.Job;
+import sg.com.officecleanings.workwise.model.JobEmployee;
+import sg.com.officecleanings.workwise.model.id.JobEmployeeId;
 import sg.com.officecleanings.workwise.repository.JobRepository;
+import sg.com.officecleanings.workwise.repository.JobEmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +15,17 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.DayOfWeek;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+
 
 @Service
 public class JobService {
 
     @Autowired
     private JobRepository jobRepository;
+
+    @Autowired
+    private JobEmployeeRepository JobEmployeeRepository;
 
     public List<Job> getAllJobs() {
         return jobRepository.findAll();
@@ -27,11 +36,37 @@ public class JobService {
     }
 
     public Job saveJob(Job job) {
-        return jobRepository.save(job);
+        Job savedJob = jobRepository.save(job);
+        savedJob.getEmployees().forEach(employee -> {
+            JobEmployee jobEmployee = new JobEmployee(savedJob, employee);
+            JobEmployeeRepository.save(jobEmployee);
+        });
+
+        return savedJob;
     }
 
     public void deleteJob(int id) {
         jobRepository.deleteById(id);
+    }
+
+    public List<Job> getJobsByEmployeeId(int employeeId) {
+        List<JobEmployee> jobEmployees = JobEmployeeRepository.findByIdEmployeeId(employeeId);
+        List<Job> jobs = new ArrayList<>();
+        for (JobEmployee jobEmployee : jobEmployees) {
+            jobs.add(jobEmployee.getJob());
+        }
+        return jobs;
+    }
+
+    public List<Employee> getEmployeesByJobId(int jobId) {
+        List<JobEmployee> jobEmployees = JobEmployeeRepository.findByIdJobId(jobId); 
+        List<Employee> employees = new ArrayList<>();
+        
+        for (JobEmployee jobEmployee : jobEmployees) {
+            employees.add(jobEmployee.getEmployee());
+        }
+        
+        return employees;
     }
 
     public List<Job> getJobsByDay(Date date) {

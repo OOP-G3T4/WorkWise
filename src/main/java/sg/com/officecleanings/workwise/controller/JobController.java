@@ -1,7 +1,9 @@
 package sg.com.officecleanings.workwise.controller;
 
+import sg.com.officecleanings.workwise.model.Employee;
 import sg.com.officecleanings.workwise.model.Job;
 import sg.com.officecleanings.workwise.service.JobService;
+import sg.com.officecleanings.workwise.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,9 @@ public class JobController {
 
     @Autowired
     private JobService jobService;
+
+    @Autowired
+    private EmployeeService EmployeeService;
 
     @GetMapping
     public List<Job> getAllJobs() {
@@ -46,12 +51,18 @@ public class JobController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Job> updateJob(@PathVariable int id, @RequestBody Job jobDetails) {
-        Optional<Job> job = jobService.getJobById(id);
-        if (job.isPresent()) {
-            jobDetails.setJobId(id);
-            return ResponseEntity.ok(jobService.saveJob(jobDetails));
+        try {
+            Optional<Job> job = jobService.getJobById(id);
+            if (job.isPresent()) {
+                jobDetails.setJobId(id);
+                return ResponseEntity.ok(jobService.saveJob(jobDetails));
+            }
+            return ResponseEntity.notFound().build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
@@ -68,6 +79,34 @@ public class JobController {
         } catch (Exception e) {
             String errorMessage = "An error occurred while deleting the job: " + e.getMessage();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        }
+    }
+
+    @GetMapping("/employee/{employeeId}")
+    public ResponseEntity<List<Job>> getJobsByEmployeeId(@PathVariable int employeeId) {
+        try {
+            List<Job> jobs = jobService.getJobsByEmployeeId(employeeId);
+            if (jobs.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(jobs, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/{jobId}/employees")
+    public ResponseEntity<List<Employee>> getEmployeesByJobId(@PathVariable int jobId) {
+        try {
+            List<Employee> employees = jobService.getEmployeesByJobId(jobId);
+            if (employees.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(employees, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

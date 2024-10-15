@@ -22,21 +22,22 @@ public class Job {
 
     @ManyToOne
     @JoinColumn(name = "packageId", referencedColumnName = "packageId", nullable = false)
-    private SelectedPackage selectedPackage; //Note cannot use Package
+    private SelectedPackage selectedPackage; // Note cannot use Package
 
     private Date date;
     private Time startTime;
-    private String status; //need to change to enum
+    private String status; // need to change to enum
     private int actualDuration;
 
     @ManyToMany
-    @JoinTable(name = "job_employee", joinColumns = @JoinColumn(name = "jobId"), inverseJoinColumns = @JoinColumn(name = "employeeId"))
+    @JoinTable(name = "jobEmployee", joinColumns = @JoinColumn(name = "jobId"), inverseJoinColumns = @JoinColumn(name = "employeeId"))
     private Set<Employee> employees;
 
     public Job() {
     }
 
-    public Job(Client client, Property property, SelectedPackage selectedPackage, Date date, Time startTime, String status, int actualDuration) {
+    public Job(Client client, Property property, SelectedPackage selectedPackage, Date date, Time startTime,
+            String status, int actualDuration) {
         this.client = client;
         this.property = property;
         this.selectedPackage = selectedPackage;
