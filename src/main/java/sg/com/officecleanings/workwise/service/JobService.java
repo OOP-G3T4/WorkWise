@@ -38,7 +38,7 @@ public class JobService {
     public Job saveJob(Job job) {
         Job savedJob = jobRepository.save(job);
         savedJob.getEmployees().forEach(employee -> {
-            JobEmployee jobEmployee = new JobEmployee(savedJob, employee);
+            JobEmployee jobEmployee = new JobEmployee(savedJob, employee, null);
             JobEmployeeRepository.save(jobEmployee);
         });
 
