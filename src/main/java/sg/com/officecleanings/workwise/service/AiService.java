@@ -50,9 +50,9 @@ public class AiService {
             "2. Ensure the employee is not on annual leave or medical leave. " +
             "3. Verify that the employee has not exceeded the maximum allowed of 44 working hours. Only when all peers have also reached the maximum hours will this constraint be removed." +
             "4. Ensure that the employee has a non-working day throughout the week. (A week is from Monday to Sunday)" +
-            "5. The employee has a lunch (any 1h from 11am to 1pm) and dinner break (any 1h from 5pm to 7pm) " +
-            "6. The employee has enough time to travel to the next location (not including meal breaks) with a 30mins buffer for poor traffic " +
-            "7. The best employee will be the one that satisfy the above constraints with the shortest travelling time. " ;
+            "5. The employee has a lunch (any 1h from 11am to 1pm) and dinner break (any 1h from 5pm to 7pm) before, between or after the job." +
+            "6. The employee has enough time to travel to the next location (not including meal breaks) with a 30mins buffer for poor traffic. " +
+            "7. The best employee will be the one that satisfy the above constraints with the shortest travelling time from their last known location. (can be from home or from the previous job address) " ;
 
 
     public StringBuilder createEmployeeAssignments() {
@@ -77,7 +77,7 @@ public class AiService {
         promptBuilder.append(context);
         String instructions = "The following tables include the information about the jobs, package details, employees and their events. " +
                 "Based on the above criteria, assign the best employee(s) suited for the pending jobs. Check the job against the package details to find out the required manpower for the job. " +
-                "Provide the best employee with the shortest travelling time. " +
+                "Provide the best employee with the shortest travelling time from their last known location. " +
                 "Also provide a reasoning on why is that the employee the best suited for the role, explain using the criteria." +
                 "Do not return any other words and only the following format:\n" +
                 "{\n" +
