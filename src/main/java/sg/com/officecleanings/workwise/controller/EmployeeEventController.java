@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 @RestController
 @RequestMapping("/api/employee-events")
@@ -26,6 +28,18 @@ public class EmployeeEventController {
     public ResponseEntity<EmployeeEvent> getEmployeeEventById(@PathVariable int id) {
         Optional<EmployeeEvent> event = employeeEventService.getEmployeeEventById(id);
         return event.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    //Get all employee events in a week
+    @GetMapping("/week")
+    public ResponseEntity<List<EmployeeEvent>> getEmployeeEventsByWeek(@RequestParam("date") String dateStr) {
+        try {
+            LocalDate date = LocalDate.parse(dateStr);
+            List<EmployeeEvent> events = employeeEventService.getEmployeeEventsByWeek(date);
+            return ResponseEntity.ok(events);
+        } catch (DateTimeParseException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @PostMapping

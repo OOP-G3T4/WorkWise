@@ -38,7 +38,7 @@ public class JobService {
     public Job saveJob(Job job) {
         Job savedJob = jobRepository.save(job);
         savedJob.getEmployees().forEach(employee -> {
-            JobEmployee jobEmployee = new JobEmployee(savedJob, employee);
+            JobEmployee jobEmployee = new JobEmployee(savedJob, employee, null);
             JobEmployeeRepository.save(jobEmployee);
         });
 
@@ -93,6 +93,22 @@ public class JobService {
         System.out.println("End Date: " + endDate);
 
         return jobRepository.findByDateBetweenOrderByDateAscStartTimeAsc(startDate, endDate);
+    }
+
+    public List<Job> getJobsByStatus(String status) {
+        return jobRepository.findByStatus(status);
+    }
+
+    public List<Job> getPendingJobsInNextWeek(LocalDate date) {
+        LocalDate startOfWeek = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
+        LocalDate endOfWeek = startOfWeek.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+
+        Date startDate = Date.valueOf(startOfWeek);
+        Date endDate = Date.valueOf(endOfWeek);
+
+        List<Job> pendingJobs = jobRepository.findByDateBetweenAndStatusOrderByDateAscStartTimeAsc(startDate, endDate, "PENDING");
+
+        return pendingJobs;
     }
 
 }

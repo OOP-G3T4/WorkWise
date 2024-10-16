@@ -18,4 +18,9 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     List<Job> findByDateBetweenOrderByDateAscStartTimeAsc(Date startDate, Date endDate);
 
     List<Job> findByPropertyPropertyId(int propertyId);
+    
+    List<Job> findByStatus(String status);
+
+    List<Job> findByDateBetweenAndStatusOrderByDateAscStartTimeAsc(Date startDate, Date endDate, String status);
+
 }

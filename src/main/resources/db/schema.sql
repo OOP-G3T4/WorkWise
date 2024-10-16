@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS `job` (
 CREATE TABLE IF NOT EXISTS `job_employee` (
     `employee_id` int  NOT NULL ,
     `job_id` int  NOT NULL,
+    `reasoning` varchar(1000) NULL,
     PRIMARY KEY (`employee_id`, `job_id`),
     FOREIGN KEY (`employee_id`) REFERENCES `employee`(`employee_id`) ON DELETE CASCADE,
     FOREIGN KEY (`job_id`) REFERENCES `job`(`job_id`) ON DELETE CASCADE

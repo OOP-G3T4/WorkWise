@@ -23,16 +23,22 @@ public class JobEmployee {
     @JoinColumn(name = "employeeId", referencedColumnName = "employeeId", nullable = false)
     private Employee employee;
 
-    // Getters, setters, constructors
+    private String reasoning;
+
+    // Default constructor
     public JobEmployee() {
+        this.reasoning = null; // Default value
     }
 
-    public JobEmployee(Job job, Employee employee) {
+    // Constructor with Job, Employee, and reasoning
+    public JobEmployee(Job job, Employee employee, String reasoning) {
         this.job = job;
         this.employee = employee;
+        this.reasoning = reasoning;
         this.id = new JobEmployeeId(job.getJobId(), employee.getEmployeeId());
     }
 
+    // Getters and setters
     public Job getJob() {
         return job;
     }
@@ -49,6 +55,28 @@ public class JobEmployee {
         this.employee = employee;
     }
 
+    public String getReasoning() {
+        return reasoning;
+    }
+
+    public void setReasoning(String reasoning) {
+        this.reasoning = reasoning;
+    }
+
+    public void setJobId(int jobId) {
+        if (this.id == null) {
+            this.id = new JobEmployeeId();
+        }
+        this.id.setJobId(jobId);
+    }
+
+    public void setEmployeeId(int employeeId) {
+        if (this.id == null) {
+            this.id = new JobEmployeeId();
+        }
+        this.id.setEmployeeId(employeeId);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -63,5 +91,4 @@ public class JobEmployee {
     public int hashCode() {
         return id.hashCode();
     }
-
 }

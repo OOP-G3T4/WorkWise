@@ -142,4 +142,26 @@ public class JobController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
+    @GetMapping("/by-status")
+    public ResponseEntity<List<Job>> getJobsByStatus(@RequestParam("status") String status) {
+        try {
+            List<Job> jobs = jobService.getJobsByStatus(status);
+            return ResponseEntity.ok(jobs);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    //Get all pending jobs in the next week
+    @GetMapping("/pending-jobs")
+    public ResponseEntity<List<Job>> getPendingJobsInNextWeek(@RequestParam("date") String dateStr) {
+        try {
+            LocalDate date = LocalDate.parse(dateStr);
+            List<Job> jobs = jobService.getPendingJobsInNextWeek(date);
+            return ResponseEntity.ok(jobs);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 }

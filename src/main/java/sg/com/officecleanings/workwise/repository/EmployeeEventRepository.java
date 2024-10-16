@@ -11,5 +11,7 @@ public interface EmployeeEventRepository extends JpaRepository<EmployeeEvent, In
 
     List<EmployeeEvent> findByEventDate(Date date);
 
+    List<EmployeeEvent> findByEventDateBetweenOrderByEventDateAsc(Date startDate, Date endDate);
+
 
 }

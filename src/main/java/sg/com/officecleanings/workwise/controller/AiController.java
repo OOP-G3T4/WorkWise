@@ -2,11 +2,15 @@ package sg.com.officecleanings.workwise.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import sg.com.officecleanings.workwise.model.Job;
 import sg.com.officecleanings.workwise.service.AiService;
+import sg.com.officecleanings.workwise.service.JobEmployeeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.util.*;
@@ -17,24 +21,37 @@ public class AiController {
 
     private final OpenAiChatModel aiModel;
     private final AiService aiService;
+    private final JobEmployeeService jobEmployeeService;
 
     @Autowired
-    public AiController(OpenAiChatModel aiModel, AiService aiService) {
+    public AiController(OpenAiChatModel aiModel, AiService aiService, JobEmployeeService jobEmployeeService) {
         this.aiModel = aiModel;
         this.aiService = aiService;
+        this.jobEmployeeService = jobEmployeeService;
     }
 
     @PostMapping("/ai/generate")
-    public Map<String, List<Map<String, Object>>> generate(@RequestBody List<Job> jobs) {
+    public Map<String, List<Map<String, Object>>> generate() {
 
         // Call the createEmployeeAssignments method
-        StringBuilder prompt = aiService.createEmployeeAssignments(jobs);
+        StringBuilder prompt = aiService.createEmployeeAssignments();
 
-        // Call the GPT-4 API to get the best candidate(s)
+        // Call the GPT-4o API to get the best candidate(s)
         String apiResponse = aiModel.call(prompt.toString());
-//        System.out.println("API Response: " + apiResponse);
         // Process the API response to create a structured output
         return parseApiResponse(apiResponse);
+    }
+
+    @PostMapping("/saveAssignments")
+    public ResponseEntity<String> saveAssignments(@RequestBody Map<String, List<Map<String, Object>>> assignments) {
+        jobEmployeeService.saveAssignments(assignments);
+
+        // return a json success message
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode responseNode = mapper.createObjectNode();
+        responseNode.put("message", "Schedule saved successfully.");
+
+        return new ResponseEntity<>(responseNode.toString(), HttpStatus.OK);
     }
 
     private Map<String, List<Map<String, Object>>> parseApiResponse(String apiResponse) {
