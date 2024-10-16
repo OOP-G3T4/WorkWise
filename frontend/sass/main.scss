@@ -5,8 +5,12 @@ $success:       #008761;
 $info:          #12648C;
 $warning:       #F3B73E;
 $danger:        #FF5E5B;
-$light:         #E4E4E4;
+$light:         #eeeeee;
 $dark:          #001524;
+
+// Accordian styles
+$accordion-button-active-bg: #FFFFFF;
+$accordion-button-focus-box-shadow: 0;
 
 // Import Bootstrap
 @import "../node_modules/bootstrap/scss/bootstrap";
