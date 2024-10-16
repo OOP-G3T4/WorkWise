@@ -27,6 +27,13 @@ import {
     faClock,
     faCheck,
     faXmark,
+    faPhone,
+    faEnvelope,
+    faComment,
+    faBriefcaseMedical,
+    faUmbrellaBeach,
+    faCircleCheck,
+    faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -49,6 +56,13 @@ library.add(
     faClock,
     faCheck,
     faXmark,
+    faPhone,
+    faEnvelope,
+    faComment,
+    faBriefcaseMedical,
+    faUmbrellaBeach,
+    faCircleCheck,
+    faCircleXmark,
 );
 
 const app = createApp(App);

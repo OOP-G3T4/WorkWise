@@ -4,11 +4,26 @@ import LeaveBody from './components/LeaveBody.vue';
 </script>
 
 <template>
-    <div class="d-flex flex-column p-4">
-        <LeaveControls id="leave-dashboard-controls" />
-        <LeaveBody id="leave-dashboard-body" />
+    <div class="d-flex flex-column px-4">
+        <LeaveControls id="leave-dashboard-controls" class="sticky-top" @statusChange="handleStatusChange"/>
+        <LeaveBody id="leave-dashboard-body" :selectedLeaveStatusArr="selectedLeaveStatuses" />
     </div>
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            selectedLeaveStatuses: ["Pending", "Approved", "Rejected"],
+        };
+    },
+    methods: {
+        handleStatusChange(statuses) {
+            this.selectedLeaveStatuses = statuses;
+        },
+    },
+};
+</script>
 
 <style scoped>
 #leave-dashboard-controls {

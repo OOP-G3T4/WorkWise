@@ -32,6 +32,7 @@ import JobDetails from './JobDetails.vue';
                 ></div>
             </div>
 
+            <!-- Each Client Column -->
             <template v-for="eData, idx in objectEntries(jobDetailsArrSorted)">
                 <div class="container-fluid d-flex flex-column" :style="clientColStyles">
                     <!-- Client Details (TOP) -->

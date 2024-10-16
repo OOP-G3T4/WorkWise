@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid bg-white py-4">
         <div class="row justify-content-between">
             <div class="col-auto p-0 d-flex">
                 <button v-for="e_status in possibleStatuses" class="btn me-2" :class="statusBtnClass(e_status)" @click="toggleStatus(e_status)" data-bs-toggle="button">{{ e_status }}</button>
@@ -22,7 +22,13 @@ export default {
             selectedStatuses: ["Pending"],
         };
     },
-    computed: {
+    watch: {
+        selectedStatuses: {
+            handler() {
+                this.$emit("statusChange", this.selectedStatuses);
+            },
+            deep: true, //Watch for changes in within array, rather than just the pointer
+        },
     },
     methods: {
         toggleStatus(status) {
@@ -45,6 +51,10 @@ export default {
                 "active": statusSelected,
             };
         },
+    },
+    mounted() {
+        // Send initial status array to parent
+        this.$emit("statusChange", this.selectedStatuses);
     },
 };
 </script>
