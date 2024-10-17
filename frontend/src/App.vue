@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar.vue";
 </script>
 
 <template>
-    <div class="main-container">
+    <div class="main-container flex-column flex-md-row">
         <Navbar class="navbar" />
         <router-view class="content-container" />
     </div>
@@ -15,7 +15,6 @@ import Navbar from "./components/Navbar.vue";
     height: 100vh;
     width: 100vw;
     display: flex;
-    flex-direction: row;
     overflow: hidden;
 }
 

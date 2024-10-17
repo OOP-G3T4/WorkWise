@@ -4,7 +4,7 @@ import LeavesDashboard from "../LeavesDashboard.vue";
 
 const routes = [
     {
-        path: "/",
+        path: "/admin-calendar",
         name: "CalendarDashboard",
         component: CalendarDashboard,
     },

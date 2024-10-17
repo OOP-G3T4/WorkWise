@@ -34,6 +34,9 @@ import {
     faUmbrellaBeach,
     faCircleCheck,
     faCircleXmark,
+    faCircleRight,
+    faCircleLeft,
+    faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -63,6 +66,9 @@ library.add(
     faUmbrellaBeach,
     faCircleCheck,
     faCircleXmark,
+    faCircleRight,
+    faCircleLeft,
+    faArrowRightFromBracket,
 );
 
 const app = createApp(App);
