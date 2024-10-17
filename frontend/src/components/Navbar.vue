@@ -165,7 +165,7 @@ export default {
                         {
                             "label" : "Leaves",
                             "icon" : "fa-solid fa-umbrella-beach",
-                            "route" : "/leaves"
+                            "route" : "/admin-leaves"
                         },
                     ],
 

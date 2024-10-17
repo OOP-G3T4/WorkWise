@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import CalendarDashboard from "../CalendarDashboard.vue";
-import LeavesDashboard from "../LeavesDashboard.vue";
+import AdminCalendarDashboard from "../AdminCalendarDashboard.vue";
+import AdminLeavesDashboard from "../AdminLeavesDashboard.vue";
 import Login from "../Login.vue";
 
 const routes = [
@@ -12,12 +12,12 @@ const routes = [
     {
         path: "/admin-calendar",
         name: "CalendarDashboard",
-        component: CalendarDashboard,
+        component: AdminCalendarDashboard,
     },
     {
-        path: "/leaves",
+        path: "/admin-leaves",
         name: "LeavesDashboard",
-        component: LeavesDashboard,
+        component: AdminLeavesDashboard,
     },
 ];
 
