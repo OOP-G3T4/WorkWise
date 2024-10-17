@@ -244,7 +244,9 @@ export default {
     mounted() {
         // Initialize sideNavBar elem AND topNavBar elem
         this.sideBarElem = new bootstrap.Offcanvas(document.getElementById("mainSideNavBar"));
-        this.topNavBarElem = new bootstrap.Collapse(document.getElementById("topNavbarMain"));
+        this.topNavBarElem = new bootstrap.Collapse(document.getElementById("topNavbarMain"), {
+            toggle: false
+        });
     },
 };
 </script>

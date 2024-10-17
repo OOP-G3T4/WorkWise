@@ -98,5 +98,31 @@ export default {
             return false;
         }
     },
+    computed: {
+        navbarFormatMap() {
+            // Return object in this format:
+            // {
+            //     navbarFormat1: route1,
+            //     navbarFormat2: route2,
+            //     ...
+            // }
+
+            var navbarFormatMap = {};
+
+            for (const [e_user_type, user_obj] of Object.entries(this.userTypes)) {
+                navbarFormatMap[user_obj.navbarFormat] = user_obj.route;
+            }
+
+            return navbarFormatMap;
+        }
+    },
+    mounted() {
+        // Auto-redirect if already logged in
+        const userType = this.$store.state.userType;
+
+        if (Object.keys(this.navbarFormatMap).includes(userType)) {
+            this.$router.push(this.navbarFormatMap[userType]);
+        }
+    },
 };
 </script>

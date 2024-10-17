@@ -38,6 +38,7 @@ import {
     faCircleRight,
     faCircleLeft,
     faArrowRightFromBracket,
+    faCamera,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -70,6 +71,7 @@ library.add(
     faCircleRight,
     faCircleLeft,
     faArrowRightFromBracket,
+    faCamera,
 );
 
 const app = createApp(App);

@@ -30,7 +30,7 @@ export default {
                     startDate: '2024-10-15',
                     endDate: '2024-10-16',
                     status: 'Pending',
-                    comments: 'Leg break cos football',
+                    comments: 'Leg break cos football 1',
                     mcProofUploaded: false,
                     mcProofImg: '',
                 },
@@ -39,11 +39,11 @@ export default {
                     id: 2,
                     leaveType: 'MC',
                     empId: 2,
-                    applicationDateTime: "2024-10-15T10:00:00", // When the leave was applied
+                    applicationDateTime: "2024-10-17T10:00:00", // When the leave was applied
                     startDate: '2024-10-15',
                     endDate: '2024-10-16',
                     status: 'Pending',
-                    comments: 'Leg break cos football',
+                    comments: 'Leg break cos football 2',
                     mcProofUploaded: false,
                     mcProofImg: '',
                 },
