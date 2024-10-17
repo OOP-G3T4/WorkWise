@@ -1,6 +1,6 @@
 <script setup>
 import { onBeforeUnmount } from 'vue';
-import JobDetails from './JobDetails.vue';
+import JobDetails from '../../general/calendar/JobDetails.vue';
 </script>
 
 <template>

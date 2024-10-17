@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import AdminCalendarDashboard from "../AdminCalendarDashboard.vue";
-import AdminLeavesDashboard from "../AdminLeavesDashboard.vue";
-import Login from "../Login.vue";
+import AdminCalendarDashboard from "../views/AdminCalendarDashboard.vue";
+import AdminLeavesDashboard from "../views/AdminLeavesDashboard.vue";
+import Login from "../views/Login.vue";
 
 const routes = [
     {

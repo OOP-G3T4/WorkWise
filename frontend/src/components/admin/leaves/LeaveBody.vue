@@ -1,5 +1,5 @@
 <script setup>
-import LeaveCard from './LeaveCard.vue';
+import LeaveCard from '../../general/leaves/LeaveCard.vue';
 </script>
 
 <template>
