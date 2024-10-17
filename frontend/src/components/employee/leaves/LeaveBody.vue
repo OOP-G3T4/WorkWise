@@ -4,9 +4,9 @@ import LeaveCard from '../../general/leaves/LeaveCard.vue';
 
 <template>
     <!-- Past Leaves -->
-    <template v-if="showPast" v-for="e_leave in leavesBeforeToday">
-        <LeaveCard v-if="showCardLogic(e_leave)" :leaveDetails="e_leave" class="mb-4 mt-1" />
-    </template>
+    <div v-if="showPast" v-for="e_leave in leavesBeforeToday" class="mb-3">
+        <LeaveCard v-if="showCardLogic(e_leave)" :leaveDetails="e_leave" />
+    </div>
 
     <!-- Today Line -->
     <div v-if="showPast && showUpcoming" class="d-flex justify-content-center align-items-center mb-4">
@@ -16,9 +16,9 @@ import LeaveCard from '../../general/leaves/LeaveCard.vue';
     </div>
 
     <!-- Upcoming Leaves -->
-    <template v-if="showUpcoming" v-for="e_leave in leavesAfterToday">
-        <LeaveCard v-if="showCardLogic(e_leave)" :leaveDetails="e_leave" class="mb-4 mt-1" />
-    </template>
+    <div v-if="showUpcoming" v-for="e_leave in leavesAfterToday" class="mb-3">
+        <LeaveCard v-if="showCardLogic(e_leave)" :leaveDetails="e_leave" />
+    </div>
 </template>
 
 <script>

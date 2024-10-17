@@ -6,7 +6,10 @@ import LeaveBody from '../../components/admin/leaves/LeaveBody.vue';
 <template>
     <div class="d-flex flex-column px-3 px-md-4">
         <LeaveControls id="leave-dashboard-controls" class="sticky-top" @statusChange="handleStatusChange"/>
-        <LeaveBody id="leave-dashboard-body" :selectedLeaveStatusArr="selectedLeaveStatuses" />
+        
+        <div id="leave-dashboard-body">
+            <LeaveBody :selectedLeaveStatusArr="selectedLeaveStatuses" />
+        </div>
     </div>
 </template>
 

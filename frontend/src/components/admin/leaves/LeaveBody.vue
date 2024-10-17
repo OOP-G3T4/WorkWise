@@ -3,9 +3,9 @@ import LeaveCard from '../../general/leaves/LeaveCard.vue';
 </script>
 
 <template>
-    <template v-for="e_leave in leaveDetailsArr">
-        <LeaveCard v-if="selectedLeaveStatusArr.includes(e_leave.status)" :leaveDetails="e_leave" :employeeDetails="empDetailsArr[e_leave.empId]" class="mb-4 mt-1" />
-    </template>
+    <div v-for="e_leave in leaveDetailsArr" class="mb-3">
+        <LeaveCard v-if="selectedLeaveStatusArr.includes(e_leave.status)" :leaveDetails="e_leave" :employeeDetails="empDetailsArr[e_leave.empId]" />
+    </div>
 </template>
 
 <script>

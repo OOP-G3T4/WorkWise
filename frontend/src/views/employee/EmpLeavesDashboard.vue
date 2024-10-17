@@ -6,11 +6,14 @@ import LeaveBody from '../../components/employee/leaves/LeaveBody.vue';
 <template>
     <div class="d-flex flex-column px-3 px-md-4">
         <LeaveControls id="emp-leave-dashboard-controls" class="sticky-top" @filterChange="handleFilterChange" />
-        <LeaveBody id="emp-leave-dashboard-body" :leaveDetailsArr="leaveDetailsArr"
-            :showPast="selectedFilters.includes('Past')"
-            :showUpcoming="selectedFilters.includes('Upcoming')"
-            :showRejected="selectedFilters.includes('Rejected')"
-        />
+        
+        <div id="emp-leave-dashboard-body">
+            <LeaveBody :leaveDetailsArr="leaveDetailsArr"
+                :showPast="selectedFilters.includes('Past')"
+                :showUpcoming="selectedFilters.includes('Upcoming')"
+                :showRejected="selectedFilters.includes('Rejected')"
+            />
+        </div>
     </div>
 </template>
 
