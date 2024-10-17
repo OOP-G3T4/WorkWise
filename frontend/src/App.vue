@@ -4,10 +4,23 @@ import Navbar from "./components/Navbar.vue";
 
 <template>
     <div class="main-container flex-column flex-md-row">
-        <Navbar class="navbar" />
+        <Navbar v-if="!toHideNavbar()" />
         <router-view class="content-container" />
     </div>
 </template>
+
+
+<script>
+export default {
+    methods: {
+        toHideNavbar() {
+            var routesHideNavbar = ["/"];
+
+            return routesHideNavbar.includes(this.$route.path);
+        },
+    },
+};
+</script>
 
 
 <style scoped>

@@ -1,3 +1,7 @@
+<script setup>
+import * as bootstrap from 'bootstrap'
+</script>
+
 <template>
     <!-- Collapsed Side Bar (Always visible on desktop) -->
     <div class="bg-light flex-column justify-content-between align-items-center px-3 py-4 d-none d-md-flex">
@@ -6,11 +10,9 @@
         <!-- Navigation -->
         <div class="d-flex flex-column align-items-center">
             <template v-for="e_nav_obj in navbarMap[userRole].main">
-                <router-link :to="e_nav_obj.route" class="w-100">
-                    <button class="btn w-100 mb-3" :class="isActiveRoute(e_nav_obj.route) ? 'btn-white-selected' : 'btn-light'">
-                        <font-awesome-icon class="fa-lg" :icon="e_nav_obj.icon" />
-                    </button>
-                </router-link>
+                <button class="btn w-100 mb-3" :class="isActiveRoute(e_nav_obj.route) ? 'btn-white-selected' : 'btn-light'" @click="redirectTo(e_nav_obj.route)">
+                    <font-awesome-icon class="fa-lg" :icon="e_nav_obj.icon" />
+                </button>
             </template>
         </div>
 
@@ -49,13 +51,11 @@
 
             <div class="d-flex flex-column align-items-center mt-3">
                 <template v-for="e_nav_obj in navbarMap[userRole].main">
-                    <router-link :to="e_nav_obj.route" class="w-100">
-                        <button class="btn w-100 mb-3 p-3 text-start" :class="isActiveRoute(e_nav_obj.route) ? 'btn-white-selected' : 'btn-light'">
-                            <h6 class="m-0 fw-normal">
-                                <font-awesome-icon class="fa-lg me-2" :icon="e_nav_obj.icon" />{{ e_nav_obj.label }}
-                            </h6>
-                        </button>
-                    </router-link>
+                    <button class="btn w-100 mb-3 p-3 text-start" :class="isActiveRoute(e_nav_obj.route) ? 'btn-white-selected' : 'btn-light'" @click="redirectTo(e_nav_obj.route)">
+                        <h6 class="m-0 fw-normal">
+                            <font-awesome-icon class="fa-lg me-2" :icon="e_nav_obj.icon" />{{ e_nav_obj.label }}
+                        </h6>
+                    </button>
                 </template>
             </div>
 
@@ -67,13 +67,11 @@
 
             <div class="d-flex flex-column align-items-center mt-3">
                 <template v-for="e_nav_obj in navbarMap[userRole].hidden">
-                    <router-link :to="e_nav_obj.route" class="w-100">
-                        <button class="btn w-100 mb-3 p-3 text-start" :class="isActiveRoute(e_nav_obj.route) ? 'btn-white-selected' : 'btn-light'">
-                            <h6 class="m-0 fw-normal">
-                                <font-awesome-icon class="fa-lg me-2" :icon="e_nav_obj.icon" />{{ e_nav_obj.label }}
-                            </h6>
-                        </button>
-                    </router-link>
+                    <button class="btn w-100 mb-3 p-3 text-start" :class="isActiveRoute(e_nav_obj.route) ? 'btn-white-selected' : 'btn-light'" @click="redirectTo(e_nav_obj.route)">
+                        <h6 class="m-0 fw-normal">
+                            <font-awesome-icon class="fa-lg me-2" :icon="e_nav_obj.icon" />{{ e_nav_obj.label }}
+                        </h6>
+                    </button>
                 </template>
             </div>
         </div>
@@ -108,13 +106,13 @@
                 <div class="container-fluid p-0">
                     <div class="row m-0">
                         <template v-for="e_nav_obj in navbarMap[userRole].main">
-                            <router-link :to="e_nav_obj.route" class="col-auto p-0 me-3">
-                                <button class="btn w-100 p-3 text-start" :class="isActiveRoute(e_nav_obj.route) ? 'btn-white-selected' : 'btn-light'">
+                            <div class="col-auto p-0 me-3">
+                                <button class="btn w-100 p-3 text-start" :class="isActiveRoute(e_nav_obj.route) ? 'btn-white-selected' : 'btn-light'" @click="redirectTo(e_nav_obj.route)">
                                     <h6 class="m-0 fw-normal">
                                         <font-awesome-icon class="fa-lg me-2" :icon="e_nav_obj.icon" />{{ e_nav_obj.label }}
                                     </h6>
                                 </button>
-                            </router-link>
+                            </div>
                         </template>
                     </div>
                 </div>
@@ -128,13 +126,13 @@
                 <div class="container-fluid p-0">
                     <div class="row m-0">
                         <template v-for="e_nav_obj in navbarMap[userRole].hidden">
-                            <router-link :to="e_nav_obj.route" class="col-auto p-0 me-3">
-                                <button class="btn w-100 p-3 text-start" :class="isActiveRoute(e_nav_obj.route) ? 'btn-white-selected' : 'btn-light'">
+                            <div class="col-auto p-0 me-3">
+                                <button class="btn w-100 p-3 text-start" :class="isActiveRoute(e_nav_obj.route) ? 'btn-white-selected' : 'btn-light'" @click="redirectTo(e_nav_obj.route)">
                                     <h6 class="m-0 fw-normal">
                                         <font-awesome-icon class="fa-lg me-2" :icon="e_nav_obj.icon" />{{ e_nav_obj.label }}
                                     </h6>
                                 </button>
-                            </router-link>
+                            </div>
                         </template>
                     </div>
                 </div>
@@ -149,6 +147,10 @@ export default {
         return {
             userName: "John Doe",
             userRole: "admin",
+
+            // Offcanvas elem
+            sideBarElem: null,
+            topNavBarElem: null,
 
             // Defines the navigation bar items for each user role
             navbarMap: {
@@ -177,7 +179,7 @@ export default {
                         {
                             "label" : "Log Out",
                             "icon" : "fa-solid fa-arrow-right-from-bracket",
-                            "route" : "/logout" // CHANGE WHEN IMPLEMENTED
+                            "route" : "/" // CHANGE WHEN IMPLEMENTED
                         }
                     ]
                 },
@@ -199,8 +201,18 @@ export default {
     methods: {
         isActiveRoute(route) {
             return this.$route.path === route;
-        }
-    }
+        },
+        redirectTo(route) {
+            this.sideBarElem.hide();
+            this.topNavBarElem.hide();
+            this.$router.push(route);
+        },
+    },
+    mounted() {
+        // Initialize sideNavBar elem AND topNavBar elem
+        this.sideBarElem = new bootstrap.Offcanvas(document.getElementById("mainSideNavBar"));
+        this.topNavBarElem = new bootstrap.Collapse(document.getElementById("topNavbarMain"));
+    },
 };
 </script>
 

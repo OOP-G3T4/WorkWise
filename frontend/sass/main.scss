@@ -15,6 +15,14 @@ $accordion-button-focus-box-shadow: 0;
 // Import Bootstrap
 @import "../node_modules/bootstrap/scss/bootstrap";
 
+// Edit current button styles
+.btn-primary {
+    --bs-btn-color: #FFFFFF;
+    --bs-btn-hover-color: #FFFFFF;
+    --bs-btn-active-color: #FFFFFF;
+    --bs-btn-active-bg: #{$primary};
+}
+
 // Custom button class
 .btn-white {
     @include button-variant(#FFFFFF, #FFFFFF, $secondary); // background, border, text color
