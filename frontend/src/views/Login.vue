@@ -59,9 +59,11 @@ export default {
             userTypes: {
                 "Admin" : {
                     "route": "/admin-calendar",
+                    "navbarFormat": "admin",
                 },
                 "Cleaner" : {
-                    "route": "/user-calendar", // Change this to the user calendar route
+                    "route": "/emp-leaves", // Change this to the user calendar route (adambft)
+                    "navbarFormat": "employee",
                 },
             },
 
@@ -78,6 +80,7 @@ export default {
         handleLoginClick() {
             if (!this.findLoginErrors()) {
                 // If successful login
+                this.$store.dispatch("updateUserType", this.userTypes[this.selectedUserType].navbarFormat);
                 this.$router.push(this.userTypes[this.selectedUserType].route);
             }
         },

@@ -5,6 +5,7 @@ import "../sass/css/main.min.css";
 import "bootstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import store from "./store";
 import router from "./router";
 
 import {
@@ -76,5 +77,6 @@ const app = createApp(App);
 app.component("font-awesome-icon", FontAwesomeIcon);
 
 app.use(router);
+app.use(store);
 
 app.mount("#app");
