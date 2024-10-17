@@ -1,6 +1,6 @@
 <script setup>
-import DatePicker from "../components/admin/calendar/DatePicker.vue";
-import DailyCalendar from "../components/admin/calendar/DailyCalendar.vue";
+import DatePicker from "../../components/admin/calendar/DatePicker.vue";
+import DailyCalendar from "../../components/admin/calendar/DailyCalendar.vue";
 </script>
 
 <template>

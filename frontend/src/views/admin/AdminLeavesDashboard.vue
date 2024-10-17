@@ -1,6 +1,6 @@
 <script setup>
-import LeaveControls from '../components/admin/leaves/LeaveControls.vue';
-import LeaveBody from '../components/admin/leaves/LeaveBody.vue';
+import LeaveControls from '../../components/admin/leaves/LeaveControls.vue';
+import LeaveBody from '../../components/admin/leaves/LeaveBody.vue';
 </script>
 
 <template>
