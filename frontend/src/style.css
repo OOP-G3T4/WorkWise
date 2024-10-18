@@ -1,0 +1,20 @@
+/* For defining: (1) Set height top controls + (2) Responsive bottom containers takes up remaining width  */
+.contain-parent {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.contain-top {
+    flex: 0 1 1px;
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+}
+
+.contain-bottom {
+    flex: 1 1 1px;
+    overflow: auto;
+}
