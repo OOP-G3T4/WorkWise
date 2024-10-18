@@ -5,9 +5,11 @@ import LeaveBody from '../../components/employee/leaves/LeaveBody.vue';
 
 <template>
     <div class="d-flex flex-column px-3 px-md-4">
-        <LeaveControls id="emp-leave-dashboard-controls" class="sticky-top" @filterChange="handleFilterChange" />
+        <div class="contain-top">
+            <LeaveControls @filterChange="handleFilterChange" />
+        </div>
         
-        <div id="emp-leave-dashboard-body">
+        <div class="contain-bottom">
             <LeaveBody :leaveDetailsArr="leaveDetailsArr"
                 :showPast="selectedFilters.includes('Past')"
                 :showUpcoming="selectedFilters.includes('Upcoming')"
@@ -43,7 +45,7 @@ export default {
                     id: 2,
                     leaveType: 'MC',
                     empId: 1,
-                    applicationDateTime: "2024-10-17T10:00:00", // When the leave was applied
+                    applicationDateTime: "2024-10-18T10:00:00", // When the leave was applied
                     startDate: '2024-10-15',
                     endDate: '2024-10-17',
                     status: 'Pending',
@@ -141,14 +143,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-#emp-leave-dashboard-controls {
-    flex: 0 1 1px;
-}
-
-#emp-leave-dashboard-body {
-    flex: 1 1 1px;
-    overflow-y: auto;
-}
-</style>

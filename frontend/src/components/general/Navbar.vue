@@ -198,6 +198,11 @@ export default {
                             "label" : "Leaves",
                             "icon" : "fa-solid fa-umbrella-beach",
                             "route" : "/emp-leaves"
+                        },
+                        {
+                            "label" : "Calendar",
+                            "icon" : "fa-solid fa-calendar",
+                            "route" : "/emp-calendar"
                         }
                     ],
 

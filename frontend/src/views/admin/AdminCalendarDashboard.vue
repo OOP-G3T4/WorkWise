@@ -4,10 +4,12 @@ import DailyCalendar from "../../components/admin/calendar/DailyCalendar.vue";
 </script>
 
 <template>
-    <div class="main-container-dashboard">
-        <DatePicker @zoomChanged="adjustZoom" class="datetime-header" />
+    <div class="contain-parent">
+        <div class="contain-top">
+            <DatePicker @zoomChanged="adjustZoom" />
+        </div>
 
-        <div class="calendar-container">
+        <div class="contain-bottom">
             <DailyCalendar :isCompressed="isCompressed" />
         </div>
     </div>
@@ -27,23 +29,3 @@ export default {
     },
 };
 </script>
-
-
-<style scoped>
-.main-container-dashboard {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.datetime-header {
-    flex: 0 1 1px;
-}
-
-.calendar-container {
-    flex: 1 1 1px;
-    overflow-y: auto;
-}
-
-</style>
