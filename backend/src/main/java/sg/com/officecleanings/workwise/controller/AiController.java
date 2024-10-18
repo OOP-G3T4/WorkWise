@@ -1,5 +1,6 @@
 package sg.com.officecleanings.workwise.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -17,6 +18,7 @@ import java.util.*;
 
 
 @RestController
+// @CrossOrigin(origins = "${cors.allowedOrigins}") SHOULD I ADD? ADAMBFT
 public class AiController {
 
     private final OpenAiChatModel aiModel;

@@ -1,6 +1,7 @@
 <script setup>
 import { onBeforeUnmount } from 'vue';
 import JobDetails from '../../general/calendar/JobDetails.vue';
+import { end, start } from '@popperjs/core';
 </script>
 
 <template>
@@ -34,7 +35,7 @@ import JobDetails from '../../general/calendar/JobDetails.vue';
 
             <!-- Each Client Column -->
             <template v-for="eData, idx in objectEntries(jobDetailsArrSorted)">
-                <div class="container-fluid d-flex flex-column" :style="clientColStyles">
+                <div class="container-fluid d-flex flex-column" :class="canClientColExpand ? 'w-100' : ''" :style="clientColStyles">
                     <!-- Client Details (TOP) -->
                     <div v-if="!isCompressed" class="sticky-top bg-white row justify-content-center align-items-center pt-2" :style="{flex: `0 1 ${topPaddingPx}px`}">
                         <!-- Img -->
@@ -60,7 +61,6 @@ import JobDetails from '../../general/calendar/JobDetails.vue';
                         </template>
                     </div>
                 </div>
-
             </template>
         </div>
     </div>
@@ -91,6 +91,7 @@ export default {
             // Client column settings
             clientColWidth: 200,
             clientColWidthCompressed: 50,
+            canClientColExpand: true,
 
             // Job Data (Unsorted)
             jobDetailsArr: [
@@ -422,7 +423,10 @@ export default {
         },
         updateContainer2Width(entries) {
             for (let entry of entries) {
-                this.nowLineWidth = entry.contentRect.width;
+                const newWidth = entry.contentRect.width;
+                this.nowLineWidth = newWidth;
+
+                this.updateCanClientExpand(newWidth);
             }
         },
         calculateHeightPx(startTime, endTime) {
@@ -483,6 +487,51 @@ export default {
             const container = this.$el.querySelector('.left-timestamp-container');
             container.removeEventListener('wheel', this.handleScroll);
         },
+        getEndTime(startTime, durationHours) {
+            // Returns the end time (string format: "hh:mm:ss") based on the start time (string format: "hh:mm:ss") and duration in hours
+            var today = new Date();
+
+            var today_date_str = today.toISOString().split('T')[0];
+            var start_time_str = today_date_str + "T" + startTime;
+
+            var startObj = new Date(start_time_str);
+
+            var endObj = new Date(startObj.getTime() + durationHours * 60 * 60 * 1000);
+
+            return endObj.toTimeString().split(' ')[0];
+        },
+        updateJobDetailsArrSorted() {
+            // Sort jobDetailsArr into jobDetailsArrSorted by client ID (key: clientID, value: <jobDetails>)
+            this.jobDetailsArrSorted = this.jobDetailsArr.reduce((acc, jobDetails) => {
+                if (acc[jobDetails.clientDetails.clientId]) {
+                    acc[jobDetails.clientDetails.clientId].push(jobDetails);
+                } else {
+                    acc[jobDetails.clientDetails.clientId] = [jobDetails];
+                }
+                return acc;
+            }, {});
+        },
+        updateCanClientExpand(newWidth) {
+            // Break if jobDetailsArrSorted is not initialized yet
+            if (this.jobDetailsArrSorted == null) {
+                return;
+            }
+
+            // Break if compressed
+            if (this.isCompressed) {
+                return;
+            }
+
+            const numCols = Object.keys(this.jobDetailsArrSorted).length;
+            const newPossibleWidth = newWidth / numCols;
+
+            // Check if client column can expand
+            if (newPossibleWidth > this.clientColWidth) {
+                this.canClientColExpand = true;
+            } else {
+                this.canClientColExpand = false;
+            }
+        },
     },
     watch: {
         isCompressed(newVal) {
@@ -492,6 +541,12 @@ export default {
                 if (this.yHeightPx < (this.minYHeightAllowed + this.topPaddingPx)) {
                     this.yHeightPx = this.minYHeightAllowed + this.topPaddingPx;
                 }
+
+                // If compressed, set canClientColExpand to false
+                this.canClientColExpand = false;
+            } else {
+                // If expanded, check and update if client column can expand
+                this.updateCanClientExpand(this.nowLineWidth);
             }
         },
         yHeightPx(newVal) {
@@ -502,19 +557,15 @@ export default {
             if (newVal < min_height) {
                 this.yHeightPx = min_height;
             }
-        }
+        },
+        jobDetailsArr: {
+            handler() {
+                this.updateJobDetailsArrSorted();
+            },
+            deep: true, //Watch for changes in within array, rather than just the pointer
+        },
     },
     mounted() {
-        // Sort jobDetailsArr into jobDetailsArrSorted by client ID (key: clientID, value: <jobDetails>)
-        this.jobDetailsArrSorted = this.jobDetailsArr.reduce((acc, jobDetails) => {
-            if (acc[jobDetails.clientDetails.clientId]) {
-                acc[jobDetails.clientDetails.clientId].push(jobDetails);
-            } else {
-                acc[jobDetails.clientDetails.clientId] = [jobDetails];
-            }
-            return acc;
-        }, {});
-
         // Initialize ResizeObserver to track the height changes for #main-container-daily-cal
         const observer = new ResizeObserver(this.updateContainerHeight);
         const mainContainer = document.querySelector('#main-container-daily-cal');
@@ -544,6 +595,57 @@ export default {
                 observer2.unobserve(rightContainer);
             }
         });
+
+        // Pull data from API
+        fetch('http://localhost:8081/api/job')
+            .then(response => response.json())
+            .then(data => {
+                var formattedArr = []
+
+                for (var i = 0; i < data.length; i++) {
+                    var job = data[i];
+                    const employeeIds = job.employees.map(employee => String(employee.employeeId));
+                    const endTime = this.getEndTime(job.startTime, job.selectedPackage.hours);
+
+                    // Update min and max time axis if needed
+                    var startHour = parseInt(job.startTime.split(":")[0]);
+                    var endHour = parseInt(endTime.split(":")[0]) + 1;
+
+                    if (startHour < this.timeAxisMin) {
+                        this.timeAxisMin = startHour;
+                    }
+
+                    if (endHour > this.timeAxisMax) {
+                        this.timeAxisMax = endHour;
+                    }
+
+                    // Format job details
+                    var formattedJob = {
+                        appointmentId: job.jobId,
+                        packageType: job.selectedPackage.packageId,
+                        jobAddress: job.property.address,
+                        date: job.date,
+                        startTime: job.startTime,
+                        endTime: endTime,
+                        cleaners: employeeIds,
+                        arrivalProofUploaded: true, // Not included yet in DB, replace later (ADAMBFT)
+                        jobStatus: job.status,
+                        clientDetails: {
+                            clientId: job.client.clientId,
+                            clientName: job.client.name,
+                            clientContact: job.client.phoneNumber,
+                            clientEmail: job.client.email,
+                            clientAddress: "MAILING ADDRESS PLACEHOLDER", // Not included yet in DB, replace later (ADAMBFT)
+                            clientGender: "M", // Not included yet in DB, replace later (ADAMBFT)
+                            clientAge: "42", // Not included yet in DB, replace later (ADAMBFT)
+                        },
+                    }
+
+                    formattedArr.push(formattedJob);
+                }
+
+                this.jobDetailsArr = formattedArr;
+            });
     }
 }
 

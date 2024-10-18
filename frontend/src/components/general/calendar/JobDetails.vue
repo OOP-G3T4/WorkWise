@@ -309,9 +309,9 @@ export default {
             // SETTINGS BELOW ===================================
             // To change color of statuses
             statusColorMap: {
-                "In Progress": "#e3b322",
-                "Completed": "#0f6320",
-                "Not Started": "#858585",
+                "IN PROGRESS": "#e3b322", // Not a current field update later (ADAMBFT)
+                "COMPLETED": "#0f6320",
+                "PENDING": "#858585",
             },
 
             // Buffer time allowed after job starts before warning is shown if arrivalProof is not uploaded
@@ -325,14 +325,6 @@ export default {
             
             // Employees (key = ID, value = Name)
             allEmployees: {
-                1: "John",
-                2: "Harry",
-                3: "Sally",
-                4: "Jane",
-                5: "Tom",
-                6: "Zach",
-                7: "Cory",
-                8: "Lily",
             },
         };
     },
@@ -490,6 +482,21 @@ export default {
         setInterval(() => {
             this.currentDateTime = new Date();
         }, 60000);
+
+        // Pull actual employees from API
+        fetch('http://localhost:8081/api/employee')
+            .then(response => response.json())
+            .then(data => {
+                // Format data to match allEmployees object
+                var formattedEmployees = {};
+
+                for (var i = 0; i < data.length; i++) {
+                    var employee = data[i];
+                    formattedEmployees[employee.employeeId] = employee.name;
+                }
+
+                this.allEmployees = formattedEmployees;
+            })
     },
 };
 </script>

@@ -1,5 +1,6 @@
 package sg.com.officecleanings.workwise.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import sg.com.officecleanings.workwise.model.Client;
 import sg.com.officecleanings.workwise.service.ClientPropertyService;
 import sg.com.officecleanings.workwise.service.ClientService;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "${cors.allowedOrigins}")
 @RequestMapping("/api/client")
 public class ClientController {
 
