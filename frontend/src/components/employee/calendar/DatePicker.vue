@@ -9,8 +9,8 @@
             <!-- Date Scroller -->
             <div class="col-auto p-0 d-flex align-items-center">
                 <button class="btn btn-sm btn-white rounded-5"><font-awesome-icon icon="fa-solid fa-circle-chevron-left" @click="shiftDates(false)" /></button>
-                <!-- <p class="text-secondary m-0 fs-7 fs-sm-6">{{ curMonth }}</p> -->
-                <p class="text-secondary m-0 fs-7 fs-sm-6">{{ startDate.toString() }}</p>
+                <p class="text-secondary m-0 fs-7 fs-sm-6">{{ curMonth }}</p>
+                <!-- <p class="text-secondary m-0 fs-7 fs-sm-6">{{ startDate.toString() }}</p> -->
                 <button class="btn btn-sm btn-white rounded-5"><font-awesome-icon icon="fa-solid fa-circle-chevron-right" @click="shiftDates(true)" /></button>
             </div>
 
