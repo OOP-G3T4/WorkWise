@@ -321,11 +321,10 @@ export default {
             latestAllowedJobTime: "22:00",
 
             // TO BE FETCHED FROM API LATER =====================
-            allPackages: ["W_3RM_CONDO", "W_3RM_HDB", "W_4RM_HDB"],
+            allPackages: [],
             
             // Employees (key = ID, value = Name)
-            allEmployees: {
-            },
+            allEmployees: {},
         };
     },
     computed: {
@@ -496,6 +495,21 @@ export default {
                 }
 
                 this.allEmployees = formattedEmployees;
+            })
+        
+        // Pull actual packages from API
+        fetch('http://localhost:8081/api/package')
+            .then(response => response.json())
+            .then(data => {
+                var arr_pkgs = [];
+
+                for (var i = 0; i < data.length; i++) {
+                    const pkg_id = data[i].packageId;
+
+                    arr_pkgs.push(pkg_id);
+                }
+
+                this.allPackages = arr_pkgs;
             })
     },
 };
