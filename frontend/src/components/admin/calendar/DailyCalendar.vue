@@ -1,7 +1,6 @@
 <script setup>
 import { onBeforeUnmount } from 'vue';
 import JobDetails from '../../general/calendar/JobDetails.vue';
-import { end, start } from '@popperjs/core';
 </script>
 
 <template>
@@ -91,7 +90,7 @@ export default {
             // Client column settings
             clientColWidth: 200,
             clientColWidthCompressed: 50,
-            canClientColExpand: true,
+            canClientColExpand: false,
 
             // Job Data (Unsorted)
             jobDetailsArr: [
@@ -561,6 +560,7 @@ export default {
         jobDetailsArr: {
             handler() {
                 this.updateJobDetailsArrSorted();
+                this.updateCanClientExpand(this.nowLineWidth);
             },
             deep: true, //Watch for changes in within array, rather than just the pointer
         },

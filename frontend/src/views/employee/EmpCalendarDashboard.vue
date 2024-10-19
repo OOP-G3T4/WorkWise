@@ -1,7 +1,11 @@
+<script setup>
+import DatePicker from '../../components/employee/calendar/DatePicker.vue';
+</script>
+
 <template>
-    <div class="contain-parent">
+    <div class="contain-parent p-2 p-sm-4">
         <div class="contain-top">
-            <h1>MAK KAU HIJAU</h1>
+            <DatePicker />
         </div>
     
         <div class="contain-bottom">

@@ -39,6 +39,8 @@ import {
     faCircleLeft,
     faArrowRightFromBracket,
     faCamera,
+    faCircleChevronLeft,
+    faCircleChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -72,6 +74,8 @@ library.add(
     faCircleLeft,
     faArrowRightFromBracket,
     faCamera,
+    faCircleChevronLeft,
+    faCircleChevronRight,
 );
 
 const app = createApp(App);
