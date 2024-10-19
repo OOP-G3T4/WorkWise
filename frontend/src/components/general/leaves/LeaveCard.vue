@@ -118,6 +118,7 @@ export default {
     },
     computed: {
         ...mapState(["userType"]),  // Access userType from Vuex state
+        
         accordianClasses() {
             return {
                 "border border-3 border-danger": this.displayMcError(),

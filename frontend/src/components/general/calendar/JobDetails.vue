@@ -1,22 +1,26 @@
-<template class="smaller-text">
+<script setup>
+import { mapState } from 'vuex';
+</script>
+
+<template>
     <!-- Parent Container -->
     <div @mouseover="showHoverContent(true)" @mouseleave="showHoverContent(false)" @click="openMainModal(true)"  :class="parentContainerClasses" :style="parentContainerStyle" class="rounded">
         <!-- Job Card -->
         <div @click="openMainModal()" class="card" :class="jobCardClasses" >
             <!-- Client Name and Warning (optional) -->
-            <div class="p-small card-header fw-semibold">
+            <div class="fs-9 fs-md-7 card-header fw-semibold px-2 px-md-3 py-1 py-md-2 text-truncate">
                 <font-awesome-icon v-if="showJobStartedWarning" class="text-danger me-2" icon="fa-solid fa-circle-exclamation" />{{ jobDetails.clientDetails.clientName }}
             </div>
     
             <!-- Job address and Num cleaners -->
-            <div class="card-body overflow-auto py-2">
-                <p class="p-small mb-1">{{ jobDetails.jobAddress }}</p>
-                <p class="p-small mb-1"><font-awesome-icon class="me-2" :icon="overOneCleaner ? `fa-solid fa-users` : `fa-solid fa-user`" />{{ Object.keys(jobDetails.cleaners).length }} cleaner{{ overOneCleaner ? `s` : `` }}</p>
-                <p class="p-small mb-0"><font-awesome-icon class="me-2" icon="fa-solid fa-clock" />{{ convertTimeToReadable(jobDetails.startTime) }} - {{ convertTimeToReadable(jobDetails.endTime) }}</p>
+            <div class="card-body overflow-auto px-2 px-md-3 py-1 py-md-2">
+                <p class="fs-9 fs-md-7 mb-1">{{ jobDetails.jobAddress }}</p>
+                <p class="fs-9 fs-md-7 mb-1"><font-awesome-icon class="me-2" :icon="overOneCleaner ? `fa-solid fa-users` : `fa-solid fa-user`" />{{ Object.keys(jobDetails.cleaners).length }} <span class="d-none d-md-inline-block">cleaner{{ overOneCleaner ? `s` : `` }}</span></p>
+                <p class="fs-9 fs-md-7 mb-0"><font-awesome-icon class="me-2 d-none d-md-inline-block" icon="fa-solid fa-clock" />{{ convertTimeToReadable(jobDetails.startTime) }} - {{ convertTimeToReadable(jobDetails.endTime) }}</p>
             </div>
     
             <!-- Job status -->
-            <div class="card-footer p-small">
+            <div class="card-footer fs-10 fs-md-8 px-2 px-md-3 py-1 py-md-2 text-truncate">
                 <font-awesome-icon class="me-2" icon="fa-solid fa-circle" :style="{ color: statusColorMap[jobDetails.jobStatus] }" />{{ jobDetails.jobStatus }}
             </div>
         </div>
@@ -30,7 +34,7 @@
                     <h1 class="modal-title fs-5" :id="`job-modal-label-${jobDetails.appointmentId}`"><span class="text-secondary">Appointment ID:</span> {{ jobDetails.appointmentId }}</h1>
                     
                     <div class="d-flex align-items-center">
-                        <button v-if="jobDetails.jobStatus != 'Completed'" @click="toggleEditMode()" type="button" class="btn btn-outline-secondary border-0" :class="isEditMode ? 'active' : ''"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></button>
+                        <button v-if="userType == 'admin' && jobDetails.jobStatus != 'Completed'" @click="toggleEditMode()" type="button" class="btn btn-outline-secondary border-0" :class="isEditMode ? 'active' : ''"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></button>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 </div>
@@ -49,23 +53,32 @@
                         <hr v-if="showJobStartedWarning" class="border-2 rounded border-secondary mt-0">
 
                         <div v-if="showJobStartedWarning" class="row mb-3">
-                            <div class="col-12">
-                                <h6 class="text-danger fw-bold">ACTION REQUIRED</h6>
-                                <p>Employee did not upload proof of arrival within {{ arrivalBufferMinutes }} min. Should this job continue?</p>
-                            </div>
+                            <template v-if="userType == 'admin' ">
+                                <div class="col-12">
+                                    <h6 class="text-danger fw-bold">ACTION REQUIRED</h6>
+                                    <p>Employee did not upload proof of arrival within {{ arrivalBufferMinutes }} min. Should this job continue?</p>
+                                </div>
+    
+                                <div class="col-6">
+                                    <button class="btn btn-sm btn-secondary w-100">Continue</button>
+                                </div>
+                                
+                                <div class="col-6">
+                                    <button class="btn btn-sm btn-danger w-100">Cancel Job</button>
+                                </div>
+                            </template>
 
-                            <div class="col-6">
-                                <button class="btn btn-sm btn-secondary w-100">Continue</button>
-                            </div>
-                            
-                            <div class="col-6">
-                                <button class="btn btn-sm btn-danger w-100">Cancel Job</button>
-                            </div>
+                            <template v-else-if="userType == 'employee' ">
+                                <div class="col-12">
+                                    <h6 class="text-danger fw-bold">ACTION REQUIRED</h6>
+                                    <p class="m-0">Upload proof of arrival within {{ arrivalBufferMinutes }} min to continue this job</p>
+                                </div>
+                            </template>
                         </div>
 
                         <hr class="border-2 rounded border-secondary mt-0">
 
-                        <!-- Client Name & Img (placeholder for now) -->
+                        <!-- Client Name & Img -->
                         <div class="row">
                             <!-- Img -->
                             <div class="col-auto">
@@ -238,7 +251,7 @@
                         </div>
 
                         <!-- Address, Gender, Age -->
-                        <div class="row gy-2 mt-3">
+                        <div v-if="userType == 'admin'" class="row gy-2 mt-3">
                             <!-- Address -->
                             <div class="col-auto">
                                 <p class="text-secondary m-0">Address</p>
@@ -328,7 +341,9 @@ export default {
         };
     },
     computed: {
-        // Returns True if job is within X minutes of start time
+        ...mapState(["userType"]),  // Access userType from Vuex state
+
+        // Returns True if there are more than 1 cleaners in the job
         overOneCleaner() {
             return Object.keys(this.jobDetails.cleaners).length > 1;
         },
@@ -541,9 +556,5 @@ export default {
 .compressed-parent-container {
     position: relative;
     cursor: pointer;
-}
-
-.p-small {
-    font-size: 0.8rem;
 }
 </style>

@@ -11,7 +11,7 @@ import JobDetails from '../../general/calendar/JobDetails.vue';
             
             <div
                 v-for="i in timeAxisMax - timeAxisMin"
-                class="text-end border-end border-2 px-3 bg-white"
+                class="text-end border-end border-2 ps-0 pe-2 pe-md-3 bg-white fs-10 fs-md-9"
                 :key="i"
                 :style="{ height: heightPerIntervalAxis + 'px' }"
             >
@@ -20,11 +20,8 @@ import JobDetails from '../../general/calendar/JobDetails.vue';
         </div>
     
         <div class="right-calendar-container">
-            <!-- Now Line (Horizontal Line that shows you Current Time) -->
-            <div class="now-line" :style="nowLineStyle"></div>
-
             <!-- Background Grid -->
-            <div id="bgGridRangeCal" class="position-absolute top-0 start-0 w-100" :style="bgGridStyles">
+            <div class="bgGridRangeCal position-absolute top-0 start-0 w-100" :style="bgGridStyles">
                 <div
                     v-for="i in (timeAxisMax - timeAxisMin)"
                     :key="i"
@@ -34,13 +31,16 @@ import JobDetails from '../../general/calendar/JobDetails.vue';
 
             <!-- Each Client Column -->
             <template v-for="(eDateObj, idx) in arrDates" :key="idx">
-                <div class="container-fluid d-flex flex-column" :class="canClientColExpand ? 'w-100' : ''" :style="clientColStyles">
+                <div class="container-fluid d-flex flex-column position-relative" :class="canClientColExpand ? 'w-100' : ''" :style="clientColStyles">
+                    <!-- Now Line (Horizontal Line that shows you Current Time) -->
+                    <div v-if="isToday(eDateObj.dateStr)" class="now-line" :style="nowLineStyle"></div>
+
                     <!-- Client Details (TOP) -->
                     <div class="sticky-top bg-white row justify-content-center align-items-center pt-2" :style="{flex: `0 1 ${topPaddingPx}px`}">
                         <!-- Date -->
                         <div class="col-auto d-flex flex-column align-items-center">
-                            <h6 class="m-0 text-tiny d-inline-block mb-2">{{ eDateObj.dayOfWeek }}</h6>
-                            <h6 class="m-0 text-tiny d-inline-block p-2 rounded-5" :class="highlightTodayClass(eDateObj.dateStr)">{{ eDateObj.day }}</h6>
+                            <h6 class="m-0 fs-10 fs-md-9 d-inline-block mb-2">{{ eDateObj.dayOfWeek }}</h6>
+                            <h6 class="m-0 fs-10 fs-md-7 d-inline-block p-2 rounded-5" :class="highlightTodayClass(eDateObj.dateStr)">{{ eDateObj.day }}</h6>
                         </div>
                     </div>
 
@@ -90,7 +90,7 @@ export default {
             nowLineThickness: 4,
 
             // Client column settings
-            clientColWidth: 200,
+            clientColWidth: 100,
             clientColWidthCompressed: 50,
             canClientColExpand: false,
 
@@ -110,7 +110,7 @@ export default {
         },
         clientColStyles() {
             return {
-                height: (this.yHeightPx - this.topPaddingPx ) +'px',
+                height: this.yHeightPx +'px',
                 width: this.isCompressed ? `${this.clientColWidthCompressed}px` : `${this.clientColWidth}px`
             }
         },
@@ -145,7 +145,6 @@ export default {
         nowLineStyle() {
             return {
                 top: this.getNowLineHeight + 'px',
-                width: this.nowLineWidth + 'px',
                 height: this.nowLineThickness + 'px',
             }
         },
@@ -171,7 +170,7 @@ export default {
             }
 
             return arrDates;
-        }
+        },
     },
     methods: {
         convertTimeToReadable(hrIn) {
@@ -395,8 +394,11 @@ export default {
 
             return [...this.jobDetailsArrSorted[dateStr]];
         },
+        isToday(dateStr) {
+            return dateStr === this.today.toISOString().split('T')[0];
+        },
         highlightTodayClass(inpDateStr) {
-            const isToday = inpDateStr === this.today.toISOString().split('T')[0];
+            const isToday = this.isToday(inpDateStr);
 
             return {
                 'bg-primary text-white': isToday,
@@ -482,7 +484,6 @@ export default {
 
 .left-timestamp-container {
     flex: 0 1 1px;
-    font-size: 0.75em;
     position: sticky;
     left: 0;
     z-index: 2;
@@ -492,10 +493,6 @@ export default {
     flex: 1 1 1px;
     display: flex;
     position: relative;
-}
-
-.text-tiny {
-    font-size: 0.75em;
 }
 
 .jobs-parent {
@@ -513,9 +510,24 @@ export default {
     width: 100%;
     background-color: #2a86b491;
     z-index: 1;
+    left: 0;
+    border-radius: 5rem;
 }
 
-#bgGridRangeCal > :nth-child(odd) {
+.now-line::before {
+    content: ''; /* Creates an empty content for the circle */
+    position: absolute;
+    left: -8px; /* Aligns the circle to the left side */
+    top: 50%; /* Centers vertically */
+    transform: translateY(-50%); /* Adjusts vertical position */
+
+    width: 16px; /* Size of the circle */
+    height: 16px; /* Size of the circle */
+    background-color: #3498db; /* Color of the circle */
+    border-radius: 50%; /* Makes the element circular */
+}
+
+.bgGridRangeCal > :nth-child(odd) {
     background-color: #f4f4f4;
 }
 </style>

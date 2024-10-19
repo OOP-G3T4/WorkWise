@@ -704,6 +704,19 @@ export default {
     z-index: 1;
 }
 
+.now-line::before {
+  content: ''; /* Creates an empty content for the circle */
+  position: absolute;
+  left: -8px; /* Aligns the circle to the left side */
+  top: 50%; /* Centers vertically */
+  transform: translateY(-50%); /* Adjusts vertical position */
+  
+  width: 16px; /* Size of the circle */
+  height: 16px; /* Size of the circle */
+  background-color: #3498db; /* Color of the circle */
+  border-radius: 50%; /* Makes the element circular */
+}
+
 #bgGridDailyCal > :nth-child(odd) {
     background-color: #f4f4f4;
 }

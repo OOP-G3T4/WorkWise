@@ -4,7 +4,7 @@ import DateRangeCalendar from '../../components/employee/calendar/DateRangeCalen
 </script>
 
 <template>
-    <div class="contain-parent p-2 p-sm-4">
+    <div class="contain-parent p-2 p-sm-4 pb-0 pb-sm-0">
         <div class="contain-top">
             <DatePicker @dateRangeChange="handleDateChange" />
         </div>
