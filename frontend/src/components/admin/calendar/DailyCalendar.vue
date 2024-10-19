@@ -5,7 +5,7 @@ import JobDetails from '../../general/calendar/JobDetails.vue';
 
 <template>
     <div id="main-container-daily-cal">
-        <div class="left-timestamp-container" @wheel="handleScroll" @mouseover="enableScroll" @mouseleave="disableScroll">
+        <div class="left-timestamp-container" @mouseover="enableScroll" @mouseleave="disableScroll">
             <!-- Empty white div for padding (using div instead of padding-top to allow sticky-top to work) -->
             <div v-if="!isCompressed" class="sticky-top bg-white" :style="{height: topPaddingPx+'px'}"></div>
             

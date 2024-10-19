@@ -38,6 +38,14 @@ export default {
             startDate: new Date(),
         }
     },
+    watch: {
+        startDate() {
+            this.emitDateRangeChange();
+        },
+        selectedTimeRange() {
+            this.emitDateRangeChange();
+        }
+    },
     computed: {
         curMonth() {
             return this.startDate.toLocaleString('default', { month: 'short' }) + " " + this.startDate.getFullYear();
@@ -65,7 +73,16 @@ export default {
         },
         shiftToday() {
             this.startDate = new Date();
+        },
+        emitDateRangeChange() {
+            this.$emit('dateRangeChange', {
+                startDate: this.startDate,
+                numDays: this.timeRanges[this.selectedTimeRange],
+            });
         }
+    },
+    mounted() {
+        this.emitDateRangeChange();
     }
 }
 </script>
