@@ -62,10 +62,10 @@ CREATE TABLE IF NOT EXISTS `client_property` (
 );
 
 CREATE TABLE IF NOT EXISTS `selected_package` (
-    `package_id` varchar(20)  NOT NULL ,
-    `type` varchar(10)  NOT NULL ,
+    `package_id` ENUM('W_2RM_CONDO', 'W_3RM_CONDO', 'W_3RM_HDB', 'W_4RM_CONDO', 'W_4RM_HDB', 'W_5RM_CONDO', 'W_5RM_HDB', 'W_LANDED', 'W_MAISONETTE_CONDO', 'W_MAISONETTE_HDB')  NOT NULL ,
+    `type` ENUM('Weekly', 'Bi-weekly')  NOT NULL ,
     `price` int  NOT NULL ,
-    `house_size` varchar(10)  NOT NULL ,
+    `house_size` ENUM('2-room', '3-room', '4-room', '5-room', 'Landed', 'Maisonette')  NOT NULL ,
     `house_type` varchar(10)  NOT NULL ,
     `hourly_rate` int  NOT NULL ,
     `pax` int  NOT NULL ,
@@ -77,10 +77,10 @@ CREATE TABLE IF NOT EXISTS `job` (
     `job_id` int  NOT NULL AUTO_INCREMENT,
     `client_id` int  NOT NULL ,
     `property_id` int  NOT NULL ,
-    `package_id` varchar(20) NOT NULL ,
+    `package_id` ENUM('W_2RM_CONDO', 'W_3RM_CONDO', 'W_3RM_HDB', 'W_4RM_CONDO', 'W_4RM_HDB', 'W_5RM_CONDO', 'W_5RM_HDB', 'W_LANDED', 'W_MAISONETTE_CONDO', 'W_MAISONETTE_HDB') NOT NULL ,
     `date` date  NOT NULL ,
     `start_time` time  NOT NULL ,
-    `status` varchar(20)  NOT NULL ,
+    `status` ENUM('pending', 'scheduled', 'cancelled', 'in_progress', 'action_required', 'completed')  NOT NULL ,
     `actual_duration` int  NOT NULL ,
     PRIMARY KEY (`job_id`),
     FOREIGN KEY (`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE,
@@ -131,3 +131,11 @@ CREATE TABLE IF NOT EXISTS `employee_statistic` (
     FOREIGN KEY (`event_id`) REFERENCES `employee_event`(`event_id`) ON DELETE CASCADE,
     FOREIGN KEY (`employee_id`) REFERENCES `employee`(`employee_id`) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS `distance_matrix` (
+    `distance_id` int  NOT NULL AUTO_INCREMENT,
+    `origin` varchar(200)  NOT NULL ,
+    `destination` varchar(200)  NOT NULL ,
+    `time_taken` int  NOT NULL ,	
+    PRIMARY KEY (`distance_id`)
+)
