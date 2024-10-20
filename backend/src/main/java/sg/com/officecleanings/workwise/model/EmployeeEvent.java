@@ -1,11 +1,11 @@
 package sg.com.officecleanings.workwise.model;
 
-import jakarta.persistence.*;
-import java.util.Date;
-import jakarta.validation.constraints.NotNull;
-
-
 import io.micrometer.common.lang.Nullable;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
+
+import java.util.Date;
 
 @Entity
 public class EmployeeEvent {
@@ -24,6 +24,7 @@ public class EmployeeEvent {
     private Job job;
 
     @NotNull
+    @Length(max = 50)
     private String eventType; // need to change to enum
 
     @NotNull

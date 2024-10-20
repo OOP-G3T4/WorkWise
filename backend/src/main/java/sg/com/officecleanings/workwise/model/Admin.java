@@ -1,6 +1,9 @@
 package sg.com.officecleanings.workwise.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -16,13 +19,14 @@ public class Admin {
     @Size(max = 120)
     private String name;
 
-    @NotNull
-    private String phoneNumber;
-
     @Email
     @NotNull
     @Size(max = 200)
     private String email;
+
+    @NotNull
+    @Size(max = 20)
+    private String phoneNumber;
 
     public Admin() {
     }

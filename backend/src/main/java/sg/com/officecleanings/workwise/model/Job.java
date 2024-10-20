@@ -1,6 +1,8 @@
 package sg.com.officecleanings.workwise.model;
 
 import jakarta.persistence.*;
+import org.hibernate.validator.constraints.Length;
+
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Set;
@@ -26,6 +28,8 @@ public class Job {
 
     private Date date;
     private Time startTime;
+
+    @Length(max = 20)
     private String status; // need to change to enum
     private int actualDuration;
 
