@@ -1,7 +1,9 @@
 package sg.com.officecleanings.workwise.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -12,6 +14,7 @@ public class Property {
     private int propertyId;
 
     @NotNull
+    @Size(max = 200)
     private String address;
 
     @NotNull
