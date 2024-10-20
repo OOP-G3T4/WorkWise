@@ -1,0 +1,56 @@
+// custom styles
+$primary:       #2a86b4;
+$secondary:     #6e8692;
+$success:       #008761;
+$info:          #12648C;
+$warning:       #F3B73E;
+$danger:        #FF5E5B;
+$light:         #eeeeee;
+$dark:          #001524;
+
+// Accordian styles
+$accordion-button-active-bg: #FFFFFF;
+$accordion-button-focus-box-shadow: 0;
+
+// Import Bootstrap
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+// Custom font sizes
+$font-sizes: map-merge(
+    $font-sizes, 
+    (
+        7: 0.90rem
+    )
+);
+
+$utilities: map-merge(
+    $utilities,
+    (
+        "font-size": map-merge(
+            map-get($utilities, "font-size"),
+            (
+                responsive: true,
+                values: $font-sizes
+            )
+        )
+    )
+);
+
+// Edit current button styles
+.btn-primary {
+    --bs-btn-color: #FFFFFF;
+    --bs-btn-hover-color: #FFFFFF;
+    --bs-btn-active-color: #FFFFFF;
+    --bs-btn-active-bg: #{$primary};
+}
+
+// Custom button class
+.btn-white {
+    @include button-variant(#FFFFFF, #FFFFFF, $secondary); // background, border, text color
+}
+
+.btn-white-selected {
+    @include button-variant(#FFFFFF, darken($secondary, 10%), $secondary); // background, border, text color
+}
+
+@import "../node_modules/bootstrap/scss/utilities/api";
