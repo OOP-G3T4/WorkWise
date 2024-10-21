@@ -7,6 +7,9 @@ import java.util.Set;
 
 @Entity
 public class Job {
+    public enum Status {
+        PENDING, SCHEDULED, CANCELLED, IN_PROGRESS, ACTION_REQUIRED, COMPLETED
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +29,10 @@ public class Job {
 
     private Date date;
     private Time startTime;
-    private String status; // need to change to enum
+
+    @NotNull
+    private Status status; // need to change to enum
+
     private int actualDuration;
 
     @ManyToMany
@@ -37,7 +43,7 @@ public class Job {
     }
 
     public Job(Client client, Property property, SelectedPackage selectedPackage, Date date, Time startTime,
-            String status, int actualDuration) {
+            Status status, int actualDuration) {
         this.client = client;
         this.property = property;
         this.selectedPackage = selectedPackage;
@@ -99,7 +105,7 @@ public class Job {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

@@ -8,6 +8,10 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 public class EmployeeStatistic {
 
+    public enum PeriodType {
+        DAILY, WEEKLY, MONTHLY
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int statId;
@@ -27,7 +31,7 @@ public class EmployeeStatistic {
     private Date endDate;
 
     @NotNull
-    private String periodType; // need to change to enum
+    private PeriodType periodType; // need to change to enum
 
     @NotNull
     private int jobsCompleted;

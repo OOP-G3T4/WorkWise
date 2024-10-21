@@ -7,20 +7,32 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 public class SelectedPackage {
+    public enum PackageType {
+        BASIC, STANDARD, PREMIUM
+    }
+
+    public enum HouseSize {
+        SMALL, MEDIUM, LARGE
+    }
+
+    public enum HouseType {
+        APARTMENT, VILLA, COTTAGE
+    }
+
     @Id
     private String packageId;
 
     @NotNull
-    private String type; // can change to enum
+    private PackageType type; // can change to enum
 
     @Min(0)
     private int price;
 
     @NotNull
-    private String houseSize; // can change to enum
+    private HouseSize houseSize; // can change to enum
 
     @NotNull
-    private String houseType; // can change to enum
+    private HouseType houseType; // can change to enum
 
     @Min(0)
     private int hourlyRate;
@@ -34,7 +46,7 @@ public class SelectedPackage {
     public SelectedPackage() {
     }
 
-    public SelectedPackage(String packageId, String type, int price, String houseSize, String houseType, int hourlyRate,
+    public SelectedPackage(String packageId, PackageType type, int price, HouseSize houseSize, HouseType houseType, int hourlyRate,
             int pax, int hours) {
         this.packageId = packageId;
         this.type = type;
@@ -59,7 +71,7 @@ public class SelectedPackage {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(PackageType type) {
         this.type = type;
     }
 
@@ -75,7 +87,7 @@ public class SelectedPackage {
         return houseSize;
     }
 
-    public void setHouseSize(String houseSize) {
+    public void setHouseSize(HouseSize houseSize) {
         this.houseSize = houseSize;
     }
 
@@ -83,7 +95,7 @@ public class SelectedPackage {
         return houseType;
     }
 
-    public void setHouseType(String houseType) {
+    public void setHouseType(HouseType houseType) {
         this.houseType = houseType;
     }
 
