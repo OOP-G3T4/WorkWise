@@ -30,8 +30,8 @@ public class Job {
     private Date date;
     private Time startTime;
 
-    @NotNull
-    private Status status; // need to change to enum
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     private int actualDuration;
 
@@ -101,7 +101,7 @@ public class Job {
         this.startTime = startTime;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 

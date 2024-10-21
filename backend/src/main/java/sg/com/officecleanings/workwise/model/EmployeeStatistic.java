@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 public class EmployeeStatistic {
 
     public enum PeriodType {
-        DAILY, WEEKLY, MONTHLY
+        WEEKLY, MONTHLY, YEARLY
     }
 
     @Id
@@ -31,7 +31,8 @@ public class EmployeeStatistic {
     private Date endDate;
 
     @NotNull
-    private PeriodType periodType; // need to change to enum
+    @Enumerated(EnumType.STRING)
+    private PeriodType periodType; 
 
     @NotNull
     private int jobsCompleted;
@@ -63,7 +64,7 @@ public class EmployeeStatistic {
     public EmployeeStatistic() {
     }
 
-    public EmployeeStatistic(Employee employee, EmployeeEvent event, Date startDate, Date endDate, String periodType,
+    public EmployeeStatistic(Employee employee, EmployeeEvent event, Date startDate, Date endDate, PeriodType periodType,
             int jobsCompleted, int clientsServed, int newJobs, int cancelledJobs, int rescheduledJobs, int workingHours,
             int overtimeHours, int mcUsed, int alUsed) {
         this.employee = employee;
@@ -122,11 +123,11 @@ public class EmployeeStatistic {
         this.endDate = endDate;
     }
 
-    public String getPeriodType() {
+    public PeriodType getPeriodType() {
         return periodType;
     }
 
-    public void setPeriodType(String periodType) {
+    public void setPeriodType(PeriodType periodType) {
         this.periodType = periodType;
     }
 

@@ -8,30 +8,33 @@ import jakarta.validation.constraints.Size;
 @Entity
 public class SelectedPackage {
     public enum PackageType {
-        BASIC, STANDARD, PREMIUM
+        WEEKLY, BI_WEEKLY
     }
 
     public enum HouseSize {
-        SMALL, MEDIUM, LARGE
+        TWO_ROOM, THREE_ROOM, FOUR_ROOM, FIVE_ROOM, MAISONETTE, LANDED
     }
 
     public enum HouseType {
-        APARTMENT, VILLA, COTTAGE
+        HDB, CONDO, LANDED
     }
 
     @Id
     private String packageId;
 
     @NotNull
-    private PackageType type; // can change to enum
+    @Enumerated(EnumType.STRING)
+    private PackageType packageType; 
 
     @Min(0)
     private int price;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private HouseSize houseSize; // can change to enum
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private HouseType houseType; // can change to enum
 
     @Min(0)
@@ -46,10 +49,10 @@ public class SelectedPackage {
     public SelectedPackage() {
     }
 
-    public SelectedPackage(String packageId, PackageType type, int price, HouseSize houseSize, HouseType houseType, int hourlyRate,
+    public SelectedPackage(String packageId, PackageType packageType, int price, HouseSize houseSize, HouseType houseType, int hourlyRate,
             int pax, int hours) {
         this.packageId = packageId;
-        this.type = type;
+        this.packageType = packageType;
         this.price = price;
         this.houseSize = houseSize;
         this.houseType = houseType;
@@ -67,12 +70,12 @@ public class SelectedPackage {
         this.packageId = packageId;
     }
 
-    public String getType() {
-        return type;
+    public PackageType getType() {
+        return packageType;
     }
 
-    public void setType(PackageType type) {
-        this.type = type;
+    public void setType(PackageType packageType) {
+        this.packageType = packageType;
     }
 
     public int getPrice() {
@@ -83,7 +86,7 @@ public class SelectedPackage {
         this.price = price;
     }
 
-    public String getHouseSize() {
+    public HouseSize getHouseSize() {
         return houseSize;
     }
 
@@ -91,7 +94,7 @@ public class SelectedPackage {
         this.houseSize = houseSize;
     }
 
-    public String getHouseType() {
+    public HouseType getHouseType() {
         return houseType;
     }
 
@@ -127,7 +130,7 @@ public class SelectedPackage {
     public String toString() {
         return "SelectedPackage{" +
                 "packageId='" + packageId + '\'' +
-                ", type='" + type + '\'' +
+                ", packageType='" + packageType + '\'' +
                 ", price=" + price +
                 ", houseSize='" + houseSize + '\'' +
                 ", houseType='" + houseType + '\'' +

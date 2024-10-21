@@ -62,11 +62,11 @@ CREATE TABLE IF NOT EXISTS `client_property` (
 );
 
 CREATE TABLE IF NOT EXISTS `selected_package` (
-    `package_id` varchar(10) NOT NULL ,
-    `type` ENUM('WEEKLY', 'BI-WEEKLY')  NOT NULL ,
+    `package_id` varchar(25) NOT NULL ,
+    `package_type` ENUM('WEEKLY', 'BI_WEEKLY')  NOT NULL ,
     `price` int  NOT NULL ,
-    `house_size` ENUM('2-ROOM', '3-ROOM', '4-ROOM', '5-ROOM', 'LANDED', 'MAISONETTE')  NOT NULL ,
-    `house_type` ENUM('W_2RM_CONDO', 'W_3RM_CONDO', 'W_3RM_HDB', 'W_4RM_CONDO', 'W_4RM_HDB', 'W_5RM_CONDO', 'W_5RM_HDB', 'W_LANDED', 'W_MAISONETTE_CONDO', 'W_MAISONETTE_HDB')  NOT NULL ,
+    `house_size` ENUM('TWO_ROOM', 'THREE_ROOM', 'FOUR_ROOM', 'FIVE_ROOM', 'MAISONETTE', 'LANDED')  NOT NULL ,
+    `house_type` ENUM('HDB', 'CONDO', 'LANDED')  NOT NULL ,
     `hourly_rate` int  NOT NULL ,
     `pax` int  NOT NULL ,
     `hours` int  NOT NULL ,
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `job` (
     `job_id` int  NOT NULL AUTO_INCREMENT,
     `client_id` int  NOT NULL ,
     `property_id` int  NOT NULL ,
-    `package_id` varchar(10) NOT NULL,
+    `package_id` varchar(25) NOT NULL,
     `date` date  NOT NULL ,
     `start_time` time  NOT NULL ,
     `status` ENUM('PENDING', 'SCHEDULED', 'CANCELLED', 'IN_PROGRESS', 'ACTION_REQUIRED', 'COMPLETED')  NOT NULL ,
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `job_employee` (
 CREATE TABLE IF NOT EXISTS `employee_event` (
     `event_id` int  NOT NULL AUTO_INCREMENT,
     `employee_id` int  NOT NULL,
-    `event_type` varchar(50) NOT NULL,
+    `event_type` ENUM('JOB_COMPLETED', 'OVERTIME', 'AL_TAKEN', 'MC_TAKEN', 'UNPAID_LEAVE') NOT NULL,
     `event_date` date NOT NULL,
     `job_id` int NULL,
     `duration` int NULL,
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `employee_statistic` (
     `employee_id` int  NOT NULL ,
     `start_date` date  NOT NULL ,
     `end_date` date  NOT NULL ,
-    `period_type` ENUM('DAILY', 'WEEKLY', 'MONTHLY')  NOT NULL ,
+    `period_type` ENUM('WEEKLY', 'MONTHLY', 'YEARLY')  NOT NULL ,
     `jobs_completed` int  NOT NULL ,
     `clients_served` int  NOT NULL ,
     `new_jobs` int  NOT NULL ,
