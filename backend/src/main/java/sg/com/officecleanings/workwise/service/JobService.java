@@ -95,7 +95,7 @@ public class JobService {
         return jobRepository.findByDateBetweenOrderByDateAscStartTimeAsc(startDate, endDate);
     }
 
-    public List<Job> getJobsByStatus(String status) {
+    public List<Job> getJobsByStatus(Job.Status status) {
         return jobRepository.findByStatus(status);
     }
 
@@ -106,7 +106,7 @@ public class JobService {
         Date startDate = Date.valueOf(startOfWeek);
         Date endDate = Date.valueOf(endOfWeek);
 
-        List<Job> pendingJobs = jobRepository.findByDateBetweenAndStatusOrderByDateAscStartTimeAsc(startDate, endDate, "PENDING");
+        List<Job> pendingJobs = jobRepository.findByDateBetweenAndStatusOrderByDateAscStartTimeAsc(startDate, endDate, Job.Status.PENDING);
 
         return pendingJobs;
     }

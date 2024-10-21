@@ -62,11 +62,11 @@ CREATE TABLE IF NOT EXISTS `client_property` (
 );
 
 CREATE TABLE IF NOT EXISTS `selected_package` (
-    `package_id` varchar(20)  NOT NULL ,
-    `type` varchar(10)  NOT NULL ,
+    `package_id` varchar(25) NOT NULL ,
+    `package_type` ENUM('WEEKLY', 'BI_WEEKLY')  NOT NULL ,
     `price` int  NOT NULL ,
-    `house_size` varchar(10)  NOT NULL ,
-    `house_type` varchar(10)  NOT NULL ,
+    `house_size` ENUM('TWO_ROOM', 'THREE_ROOM', 'FOUR_ROOM', 'FIVE_ROOM', 'MAISONETTE', 'LANDED')  NOT NULL ,
+    `house_type` ENUM('HDB', 'CONDO', 'LANDED')  NOT NULL ,
     `hourly_rate` int  NOT NULL ,
     `pax` int  NOT NULL ,
     `hours` int  NOT NULL ,
@@ -77,10 +77,10 @@ CREATE TABLE IF NOT EXISTS `job` (
     `job_id` int  NOT NULL AUTO_INCREMENT,
     `client_id` int  NOT NULL ,
     `property_id` int  NOT NULL ,
-    `package_id` varchar(20) NOT NULL ,
+    `package_id` varchar(25) NOT NULL,
     `date` date  NOT NULL ,
     `start_time` time  NOT NULL ,
-    `status` varchar(20)  NOT NULL ,
+    `status` ENUM('PENDING', 'SCHEDULED', 'CANCELLED', 'IN_PROGRESS', 'ACTION_REQUIRED', 'COMPLETED')  NOT NULL ,
     `actual_duration` int  NOT NULL ,
     PRIMARY KEY (`job_id`),
     FOREIGN KEY (`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE,
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `job_employee` (
 CREATE TABLE IF NOT EXISTS `employee_event` (
     `event_id` int  NOT NULL AUTO_INCREMENT,
     `employee_id` int  NOT NULL,
-    `event_type` varchar(50) NOT NULL,
+    `event_type` ENUM('JOB_COMPLETED', 'OVERTIME', 'AL_TAKEN', 'MC_TAKEN', 'UNPAID_LEAVE') NOT NULL,
     `event_date` date NOT NULL,
     `job_id` int NULL,
     `duration` int NULL,
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `employee_statistic` (
     `employee_id` int  NOT NULL ,
     `start_date` date  NOT NULL ,
     `end_date` date  NOT NULL ,
-    `period_type` varchar(10)  NOT NULL ,
+    `period_type` ENUM('WEEKLY', 'MONTHLY', 'YEARLY')  NOT NULL ,
     `jobs_completed` int  NOT NULL ,
     `clients_served` int  NOT NULL ,
     `new_jobs` int  NOT NULL ,
@@ -131,3 +131,11 @@ CREATE TABLE IF NOT EXISTS `employee_statistic` (
     FOREIGN KEY (`event_id`) REFERENCES `employee_event`(`event_id`) ON DELETE CASCADE,
     FOREIGN KEY (`employee_id`) REFERENCES `employee`(`employee_id`) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS `distance_matrix` (
+    `distance_id` int  NOT NULL AUTO_INCREMENT,
+    `origin` varchar(200)  NOT NULL ,
+    `destination` varchar(200)  NOT NULL ,
+    `time_taken` int  NOT NULL ,	
+    PRIMARY KEY (`distance_id`)
+)
