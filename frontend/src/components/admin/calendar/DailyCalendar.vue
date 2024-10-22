@@ -7,7 +7,7 @@ import JobDetails from '../../general/calendar/JobDetails.vue';
     <div id="main-container-daily-cal">
         <div class="left-timestamp-container" @mouseover="enableScroll" @mouseleave="disableScroll">
             <!-- Empty white div for padding (using div instead of padding-top to allow sticky-top to work) -->
-            <div v-if="!isCompressed" class="sticky-top bg-white" :style="{height: topPaddingPx+'px'}"></div>
+            <div v-if="!hideTopBar" class="sticky-top bg-white" :style="{height: topPaddingPx+'px'}"></div>
             
             <div
                 v-for="i in timeAxisMax - timeAxisMin"
@@ -21,7 +21,7 @@ import JobDetails from '../../general/calendar/JobDetails.vue';
     
         <div class="right-calendar-container">
             <!-- Now Line (Horizontal Line that shows you Current Time) -->
-            <div class="now-line" :style="nowLineStyle"></div>
+            <div v-if="isToday" class="now-line" :style="nowLineStyle"></div>
 
             <!-- Background Grid -->
             <div id="bgGridDailyCal" class="position-absolute top-0 start-0 w-100" :style="bgGridStyles">
@@ -32,11 +32,16 @@ import JobDetails from '../../general/calendar/JobDetails.vue';
                 ></div>
             </div>
 
+            <!-- No jobs message -->
+            <div v-if="jobDetailsArr.length == 0" class="position-absolute top-0 start-0 w-100 d-flex justify-content-center align-items-center" :style="bgGridStyles">
+                <h1 class="text-secondary"><font-awesome-icon icon="fa-solid fa-question" class="me-3" beat />No Jobs</h1>
+            </div>
+
             <!-- Each Client Column -->
             <template v-for="eData, idx in objectEntries(jobDetailsArrSorted)">
                 <div class="container-fluid d-flex flex-column" :class="canClientColExpand ? 'w-100' : ''" :style="clientColStyles">
                     <!-- Client Details (TOP) -->
-                    <div v-if="!isCompressed" class="sticky-top bg-white row justify-content-center align-items-center pt-2" :style="{flex: `0 1 ${topPaddingPx}px`}">
+                    <div v-if="!hideTopBar" class="sticky-top bg-white row justify-content-center align-items-center pt-2" :style="{flex: `0 1 ${topPaddingPx}px`}">
                         <!-- Img -->
                         <div class="col-auto">
                             <img src="https://placehold.co/200x200?text=Profile+Pic" alt="Client Image" class="client-img" />
@@ -73,10 +78,20 @@ export default {
             type: Boolean,
             required: true,
         },
+        jobDetails: {
+            type: Object,
+            required: true,
+        },
+        dateSelected: {
+            type: Date,
+            required: true,
+        },
     },
     data() {
         return {
             // Axis settings [In 24 hour format (only whole hours)]
+            defaultTimeAxisMin: 8,
+            defaultTimeAxisMax: 22,
             timeAxisMin: 8,
             timeAxisMax: 22,
 
@@ -91,270 +106,6 @@ export default {
             clientColWidth: 200,
             clientColWidthCompressed: 50,
             canClientColExpand: false,
-
-            // Job Data (Unsorted)
-            jobDetailsArr: [
-                {
-                    appointmentId: "213",
-                    packageType: "W_3RM_CONDO",
-                    jobAddress: "67 Choa Chu Kang Loop",
-                    date: "2024-10-13", // ISO 8601 standard
-                    startTime: "14:00:00",
-                    endTime: "17:00:00", // Must be calculated based on startTime and Length
-                    cleaners: [1,2], // Not included yet in DB
-                    arrivalProofUploaded: false,  // Not included yet in DB
-                    jobStatus: "In Progress",
-                    clientDetails: {
-                        clientId: "1",
-                        clientName: "John Doe",
-                        clientContact: "91234567",
-                        clientEmail: "johndoe@gmail.com",
-                        clientAddress: "101 Clementi Road", // Not included yet in DB
-                        clientGender: "Male", // Not included yet in DB
-                        clientAge: "49", // Not included yet in DB
-                    },
-                },
-                {
-                    appointmentId: "214",
-                    packageType: "W_3RM_HDB",
-                    jobAddress: "32 Bukit Batok West Ave 6",
-                    date: "2024-10-13", // ISO 8601 standard
-                    startTime: "12:30:00",
-                    endTime: "15:00:00",
-                    cleaners: [3],
-                    arrivalProofUploaded: false,
-                    jobStatus: "Completed",
-                    clientDetails: {
-                        clientId: "2",
-                        clientName: "Harry Sim",
-                        clientContact: "9298377",
-                        clientEmail: "harrysim@gmail.com",
-                        clientAddress: "16 Jalan Riang",
-                        clientGender: "Male",
-                        clientAge: "32",
-                    },
-                },
-                {
-                    appointmentId: "215",
-                    packageType: "W_3RM_HDB",
-                    jobAddress: "12 Serangoon North Ave 5",
-                    date: "2024-10-13", // ISO 8601 standard
-                    startTime: "14:00:00",
-                    endTime: "18:00:00",
-                    cleaners: [4],
-                    arrivalProofUploaded: false,
-                    jobStatus: "Not Started",
-                    clientDetails: {
-                        clientId: "3",
-                        clientName: "Jane Low",
-                        clientContact: "91234567",
-                        clientEmail: "janelow@yahoo.com",
-                        clientAddress: "34 Jurong East Ave 1",
-                        clientGender: "Female",
-                        clientAge: "29",
-                    },
-                },
-                {
-                    appointmentId: "216",
-                    packageType: "W_4RM_HDB",
-                    jobAddress: "19 Clementi Road",
-                    date: "2024-10-13", // ISO 8601 standard
-                    startTime: "12:00:00",
-                    endTime: "18:00:00",
-                    cleaners: [5],
-                    arrivalProofUploaded: false,
-                    jobStatus: "Not Started",
-                    clientDetails: {
-                        clientId: "4",
-                        clientName: "Mary Tan",
-                        clientContact: "91234567",
-                        clientEmail: "marytan@hotmail.com",
-                        clientAddress: "45 Bukit Timah Road",
-                        clientGender: "Female",
-                        clientAge: "39",
-                    },
-                },
-                {
-                    appointmentId: "217",
-                    packageType: "W_3RM_CONDO",
-                    jobAddress: "64 Tampanies Road",
-                    date: "2024-10-13", // ISO 8601 standard
-                    startTime: "08:00:00",
-                    endTime: "11:00:00",
-                    cleaners: ["6", "7", "8"],
-                    arrivalProofUploaded: false,
-                    jobStatus: "In Progress",
-                    clientDetails: {
-                        clientId: "1",
-                        clientName: "John Doe",
-                        clientContact: "91234567",
-                        clientEmail: "johndoe@gmail.com",
-                        clientAddress: "101 Clementi Road",
-                        clientGender: "Male",
-                        clientAge: "49",
-                    },
-                },
-                {
-                    appointmentId: "218",
-                    packageType: "W_3RM_CONDO",
-                    jobAddress: "64 Tampanies Road",
-                    date: "2024-10-13", // ISO 8601 standard
-                    startTime: "08:30:00",
-                    endTime: "11:00:00",
-                    cleaners: ["6", "7", "8"],
-                    arrivalProofUploaded: false,
-                    jobStatus: "In Progress",
-                    clientDetails: {
-                        clientId: "4",
-                        clientName: "Mary Tan",
-                        clientContact: "91234567",
-                        clientEmail: "marytan@hotmail.com",
-                        clientAddress: "45 Bukit Timah Road",
-                        clientGender: "Female",
-                        clientAge: "39",
-                    },
-                },
-                {
-                    appointmentId: "219",
-                    packageType: "W_3RM_CONDO",
-                    jobAddress: "64 Tampanies Road",
-                    date: "2024-10-13", // ISO 8601 standard
-                    startTime: "17:00:00",
-                    endTime: "21:00:00",
-                    cleaners: ["6", "7", "8"],
-                    arrivalProofUploaded: false,
-                    jobStatus: "In Progress",
-                    clientDetails: {
-                        clientId: "2",
-                        clientName: "Harry Sim",
-                        clientContact: "9298377",
-                        clientEmail: "harrysim@gmail.com",
-                        clientAddress: "16 Jalan Riang",
-                        clientGender: "Male",
-                        clientAge: "32",
-                    },
-                },
-                {
-                    appointmentId: "220",
-                    packageType: "W_3RM_CONDO",
-                    jobAddress: "64 Tampanies Road",
-                    date: "2024-10-13", // ISO 8601 standard
-                    startTime: "15:30:00",
-                    endTime: "19:00:00",
-                    cleaners: ["6", "7", "8"],
-                    arrivalProofUploaded: false,
-                    jobStatus: "In Progress",
-                    clientDetails: {
-                        clientId: "5",
-                        clientName: "Wally Wales",
-                        clientContact: "9298377",
-                        clientEmail: "harrysim@gmail.com",
-                        clientAddress: "16 Jalan Riang",
-                        clientGender: "Male",
-                        clientAge: "32",
-                    },
-                },
-                {
-                    appointmentId: "221",
-                    packageType: "W_3RM_CONDO",
-                    jobAddress: "64 Tampanies Road",
-                    date: "2024-10-13", // ISO 8601 standard
-                    startTime: "10:00:00",
-                    endTime: "14:00:00",
-                    cleaners: ["6", "7", "8"],
-                    arrivalProofUploaded: false,
-                    jobStatus: "In Progress",
-                    clientDetails: {
-                        clientId: "6",
-                        clientName: "Gregogry Goh",
-                        clientContact: "9298377",
-                        clientEmail: "harrysim@gmail.com",
-                        clientAddress: "16 Jalan Riang",
-                        clientGender: "Male",
-                        clientAge: "32",
-                    },
-                },
-                {
-                    appointmentId: "222",
-                    packageType: "W_3RM_CONDO",
-                    jobAddress: "64 Tampanies Road",
-                    date: "2024-10-13", // ISO 8601 standard
-                    startTime: "14:00:00",
-                    endTime: "18:00:00",
-                    cleaners: ["6", "7", "8"],
-                    arrivalProofUploaded: false,
-                    jobStatus: "In Progress",
-                    clientDetails: {
-                        clientId: "7",
-                        clientName: "Tim Tales",
-                        clientContact: "9298377",
-                        clientEmail: "harrysim@gmail.com",
-                        clientAddress: "16 Jalan Riang",
-                        clientGender: "Male",
-                        clientAge: "32",
-                    },
-                },
-                {
-                    appointmentId: "223",
-                    packageType: "W_3RM_CONDO",
-                    jobAddress: "64 Tampanies Road",
-                    date: "2024-10-13", // ISO 8601 standard
-                    startTime: "14:00:00",
-                    endTime: "18:00:00",
-                    cleaners: ["6", "7", "8"],
-                    arrivalProofUploaded: false,
-                    jobStatus: "In Progress",
-                    clientDetails: {
-                        clientId: "8",
-                        clientName: "Fernando Ferrari",
-                        clientContact: "9298377",
-                        clientEmail: "harrysim@gmail.com",
-                        clientAddress: "16 Jalan Riang",
-                        clientGender: "Male",
-                        clientAge: "32",
-                    },
-                },
-                {
-                    appointmentId: "224",
-                    packageType: "W_3RM_CONDO",
-                    jobAddress: "64 Tampanies Road",
-                    date: "2024-10-13", // ISO 8601 standard
-                    startTime: "14:00:00",
-                    endTime: "18:00:00",
-                    cleaners: ["6", "7", "8"],
-                    arrivalProofUploaded: false,
-                    jobStatus: "In Progress",
-                    clientDetails: {
-                        clientId: "9",
-                        clientName: "Poopy Pants",
-                        clientContact: "9298377",
-                        clientEmail: "harrysim@gmail.com",
-                        clientAddress: "16 Jalan Riang",
-                        clientGender: "Male",
-                        clientAge: "32",
-                    },
-                },
-                {
-                    appointmentId: "225",
-                    packageType: "W_3RM_CONDO",
-                    jobAddress: "64 Tampanies Road",
-                    date: "2024-10-13", // ISO 8601 standard
-                    startTime: "14:00:00",
-                    endTime: "18:00:00",
-                    cleaners: ["6", "7", "8"],
-                    arrivalProofUploaded: false,
-                    jobStatus: "In Progress",
-                    clientDetails: {
-                        clientId: "10",
-                        clientName: "Mammy Poko Pants",
-                        clientContact: "9298377",
-                        clientEmail: "harrysim@gmail.com",
-                        clientAddress: "16 Jalan Riang",
-                        clientGender: "Male",
-                        clientAge: "32",
-                    },
-                },
-            ],
 
             // Job Data (Sorted - By Client)
             jobDetailsArrSorted: null,
@@ -378,8 +129,8 @@ export default {
             const timeDiffMin = Math.abs(now - earliestTimeAllowed) / 60000;
             const nowLineHeight = (timeDiffMin / 60) * this.heightPerIntervalAxis;
 
-            var buffer = this.isCompressed ? 0 : this.topPaddingPx;
-            var antiBuffer = this.isCompressed ? this.topPaddingPx : 0;
+            var buffer = this.hideTopBar ? 0 : this.topPaddingPx;
+            var antiBuffer = this.hideTopBar ? this.topPaddingPx : 0;
 
             if (0 <= nowLineHeight && nowLineHeight < (this.yHeightPx - this.topPaddingPx)) {
                 // If within time range
@@ -394,8 +145,8 @@ export default {
         },
         bgGridStyles() {
             return {
-                height: this.isCompressed ? `${this.yHeightPx - this.topPaddingPx}px` : `${this.yHeightPx}px`,
-                paddingTop: this.isCompressed ? '0' : this.topPaddingPx + 'px',
+                height: this.hideTopBar ? `${this.yHeightPx - this.topPaddingPx}px` : `${this.yHeightPx}px`,
+                paddingTop: this.hideTopBar ? '0' : this.topPaddingPx + 'px',
             }
         },
         nowLineStyle() {
@@ -405,6 +156,34 @@ export default {
                 height: this.nowLineThickness + 'px',
             }
         },
+        jobDetailsArr() {
+            // Return the jobDetailsArr for the selected date
+            var return_data = this.getMonthAndDay(this.dateSelected);
+            var monthStr = return_data[0];
+            var day = return_data[1];
+
+            if (!this.jobDetails) {
+                return [];
+            }
+
+            if (!(monthStr in this.jobDetails)) {
+                return [];
+            }
+
+            if (!(day in this.jobDetails[monthStr])) {
+                return [];
+            }
+
+            return this.jobDetails[monthStr][day];
+        },
+        isToday() {
+            // Returns true if the selected date is today
+            var today = new Date();
+            return today.toISOString().split('T')[0] == this.dateSelected.toISOString().split('T')[0];
+        },
+        hideTopBar() {
+            return this.isCompressed || this.jobDetailsArr.length == 0;
+        }
     },
     methods: {
         convertTimeToReadable(hrIn) {
@@ -500,8 +279,24 @@ export default {
             return endObj.toTimeString().split(' ')[0];
         },
         updateJobDetailsArrSorted() {
+            this.timeAxisMin = this.defaultTimeAxisMin;
+            this.timeAxisMax = this.defaultTimeAxisMax;
+
             // Sort jobDetailsArr into jobDetailsArrSorted by client ID (key: clientID, value: <jobDetails>)
             this.jobDetailsArrSorted = this.jobDetailsArr.reduce((acc, jobDetails) => {
+                // Update min and max time axis if needed
+                var startHour = parseInt(jobDetails.startTime.split(":")[0]);
+                var endHour = parseInt(jobDetails.endTime.split(":")[0]) + 1;
+
+                if (startHour < this.timeAxisMin) {
+                    this.timeAxisMin = startHour;
+                }
+
+                if (endHour > this.timeAxisMax) {
+                    this.timeAxisMax = endHour;
+                }
+
+                
                 if (acc[jobDetails.clientDetails.clientId]) {
                     acc[jobDetails.clientDetails.clientId].push(jobDetails);
                 } else {
@@ -531,9 +326,16 @@ export default {
                 this.canClientColExpand = false;
             }
         },
+        getMonthAndDay(dateObj) {
+            // Returns the month and day in string format
+            var jobMonthStr = (dateObj.getMonth()+1) + "-" + dateObj.getFullYear();
+            var jobDay = dateObj.getDate();
+
+            return [jobMonthStr, jobDay];
+        },
     },
     watch: {
-        isCompressed(newVal) {
+        hideTopBar(newVal) {
             // Update min height allowed if compressed
             if (newVal) {
                 // If compressed, set the yHeight to fill the gap made by the top padding
@@ -549,7 +351,7 @@ export default {
             }
         },
         yHeightPx(newVal) {
-            var buffer = this.isCompressed ? this.topPaddingPx : 0;
+            var buffer = this.hideTopBar ? this.topPaddingPx : 0;
             var min_height = this.minYHeightAllowed + buffer;
 
             // Limit the height of the container
@@ -558,7 +360,12 @@ export default {
             }
         },
         jobDetailsArr: {
-            handler() {
+            handler(newVal) {
+                if (newVal.length == 0) {
+                    this.jobDetailsArrSorted = null;
+                    return;
+                }
+
                 this.updateJobDetailsArrSorted();
                 this.updateCanClientExpand(this.nowLineWidth);
             },
@@ -595,58 +402,6 @@ export default {
                 observer2.unobserve(rightContainer);
             }
         });
-
-        // Pull data from API
-        fetch('http://localhost:8081/api/job')
-            .then(response => response.json())
-            .then(data => {
-                var formattedArr = []
-
-                for (var i = 0; i < data.length; i++) {
-                    var job = data[i];
-                    const employeeIds = job.employees.map(employee => String(employee.employeeId));
-                    const endTime = this.getEndTime(job.startTime, job.selectedPackage.hours);
-
-                    // Update min and max time axis if needed
-                    var startHour = parseInt(job.startTime.split(":")[0]);
-                    var endHour = parseInt(endTime.split(":")[0]) + 1;
-
-                    if (startHour < this.timeAxisMin) {
-                        this.timeAxisMin = startHour;
-                    }
-
-                    if (endHour > this.timeAxisMax) {
-                        this.timeAxisMax = endHour;
-                    }
-
-                    // Format job details
-                    var formattedJob = {
-                        appointmentId: job.jobId,
-                        packageType: job.selectedPackage.packageId,
-                        jobAddress: job.property.address,
-                        date: job.date,
-                        startTime: job.startTime,
-                        endTime: endTime,
-                        cleaners: employeeIds,
-                        arrivalProofUploaded: true, // Not included yet in DB, replace later (ADAMBFT)
-                        completionProofUpload: false, // Not included yet in DB, replace later (ADAMBFT)
-                        jobStatus: job.status,
-                        clientDetails: {
-                            clientId: job.client.clientId,
-                            clientName: job.client.name,
-                            clientContact: job.client.phoneNumber,
-                            clientEmail: job.client.email,
-                            clientAddress: "MAILING ADDRESS PLACEHOLDER", // Not included yet in DB, replace later (ADAMBFT)
-                            clientGender: "M", // Not included yet in DB, replace later (ADAMBFT)
-                            clientAge: "42", // Not included yet in DB, replace later (ADAMBFT)
-                        },
-                    }
-
-                    formattedArr.push(formattedJob);
-                }
-
-                this.jobDetailsArr = formattedArr;
-            });
     }
 }
 

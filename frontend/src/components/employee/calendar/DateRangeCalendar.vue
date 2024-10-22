@@ -97,7 +97,7 @@ export default {
             // Job Data (Unsorted)
             jobDetailsArr: [],
 
-            // Job Data (Sorted - By Client)
+            // Job Data (Sorted - By Unqiue Day)
             jobDetailsArrSorted: null,
 
             // Today

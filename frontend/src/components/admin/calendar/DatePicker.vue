@@ -49,6 +49,14 @@ export default {
             zoomedOut: false,
         };
     },
+    watch: {
+        currentDate() {
+            this.$emit('curDateChanged', {
+                date: this.currentDate,
+                range: this.selectedRange,
+            });
+        }
+    },
     computed: {
         formattedDate() {
             const options = {
@@ -102,5 +110,11 @@ export default {
             this.selectedRange = e_range;
         },
     },
+    mounted() {
+        this.$emit('curDateChanged', {
+            date: this.currentDate,
+            range: this.selectedRange,
+        });
+    }
 };
 </script>
