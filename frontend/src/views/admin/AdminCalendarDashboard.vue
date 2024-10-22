@@ -5,7 +5,7 @@ import DailyCalendar from "../../components/admin/calendar/DailyCalendar.vue";
 
 <template>
     <div class="contain-parent">
-        <div class="contain-top">
+        <div class="contain-top pb-0 p-3">
             <DatePicker @zoomChanged="adjustZoom" />
         </div>
 

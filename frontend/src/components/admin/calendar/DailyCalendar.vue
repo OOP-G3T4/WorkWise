@@ -629,6 +629,7 @@ export default {
                         endTime: endTime,
                         cleaners: employeeIds,
                         arrivalProofUploaded: true, // Not included yet in DB, replace later (ADAMBFT)
+                        completionProofUpload: false, // Not included yet in DB, replace later (ADAMBFT)
                         jobStatus: job.status,
                         clientDetails: {
                             clientId: job.client.clientId,

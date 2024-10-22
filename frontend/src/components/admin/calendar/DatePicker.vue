@@ -1,66 +1,39 @@
 <template>
-    <div
-        class="d-flex justify-content-between align-items-center mt-4 ms-4 me-4 mb-2"
-    >
-        <div class="view-container d-flex">
-            <btn class="btn border p-2 me-2">Daily</btn>
-            <btn class="btn border p-2 me-2">Weekly</btn>
-            <btn class="btn border p-2">Monthly</btn>
-        </div>
-
-        <div
-            class="date-picker-container d-flex flex-column align-items-center"
-        >
-            <div class="d-flex">
-                <btn
-                    class="btn border left-button p-2"
-                    @click="decrementDate()"
-                >
-                    <font-awesome-icon icon="fa-solid fa-chevron-left" />
-                </btn>
-                <div class="p-2">{{ formattedDate }}</div>
-                <btn
-                    class="btn border right-button p-2"
-                    @click="incrementDate()"
-                >
-                    <font-awesome-icon icon="fa-solid fa-chevron-right" />
-                </btn>
+    <div class="container-fluid p-0 m-0">
+        <div class="row justify-content-between align-items-center m-0">
+            <!-- Time range buttons -->
+            <div class="col-auto p-0 order-1">
+                <button v-for="(e_range, idx) in timeRanges" :key="idx" class="btn btn-resp" :class="timeRangeClasses(e_range, idx)" @click="handleTimeRangeClick(e_range)">
+                    {{ e_range }}
+                </button>
             </div>
 
-            <div class="">
-                <div
-                    class="d-flex justify-content-center align-items-center mt-1"
-                >
-                    <btn
-                        class="btn border d-flex p-2 align-items-center me-2"
-                        @click="setToday()"
-                    >
-                        <font-awesome-icon
-                            :icon="['fas', 'calendar-week']"
-                            class="me-2"
-                        />
-                        <div class="">Today</div>
-                    </btn>
-                    <btn class="btn border d-flex p-2 align-items-center" @click="toggleZoom()">
-                        <font-awesome-icon
-                            :icon="['fas', 'maximize']"
-                            class="me-2"
-                        />
-                        <div class="">Zoom Out</div>
-                    </btn>
+
+            <!-- Date Scroller -->
+            <div class="col-12 mt-2 mt-md-0 col-md-auto p-0 d-flex flex-column align-items-center order-3 order-md-2">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-resp btn-white rounded-5" @click="shiftDates(false)"><font-awesome-icon icon="fa-solid fa-circle-chevron-left" /></button>
+                    <p class="text-secondary m-0 fs-8 fs-sm-6">{{ formattedDate }}</p>
+                    <button class="btn btn-resp btn-white rounded-5" @click="shiftDates(true)"><font-awesome-icon icon="fa-solid fa-circle-chevron-right" /></button>
+                </div>
+
+                <!-- Today & Zoom Buttons (MD and up) -->
+                <div class="mt-2 d-none d-md-block">
+                    <button class="btn btn-sm btn-resp btn-light" @click="shiftToday()"><font-awesome-icon icon="fa-solid fa-calendar" /><span class="d-none d-sm-inline ms-2 text-secondary">Skip to Today</span></button>
+                    <button class="btn btn-sm btn-resp btn-light ms-3" @click="toggleZoom()"><font-awesome-icon :icon="zoomedOut ? 'fa-solid fa-magnifying-glass-plus' : 'fa-solid fa-magnifying-glass-minus'" /><span class="d-none d-sm-inline ms-2 text-secondary">{{ zoomedOut ? 'Zoom In' : 'Zoom Out' }}</span></button>
                 </div>
             </div>
-        </div>
 
-        <div class="d-flex align-items-center">
-            <btn class="btn border p-2 me-3"
-                ><font-awesome-icon icon="fa-solid fa-filter"
-            /></btn>
 
-            <btn class="btn border p-2 d-flex align-items-center">
-                <font-awesome-icon :icon="['fas', 'plus']" class="me-2" />
-                <div class="">Add Job</div>
-            </btn>
+            <!-- Filter & New Job -->
+            <div class="col-auto p-0 d-flex order-2 order-md-3">
+                <!-- Today & Zoom Buttons (Below MD) -->
+                <button class="btn btn-resp btn-light d-md-none me-2" @click="shiftToday()"><font-awesome-icon icon="fa-solid fa-calendar" /></button>
+                <button class="btn btn-resp btn-light d-md-none me-2" @click="toggleZoom()"><font-awesome-icon :icon="zoomedOut ? 'fa-solid fa-magnifying-glass-plus' : 'fa-solid fa-magnifying-glass-minus'" /></button>
+
+                <button class="btn btn-resp btn-light"><font-awesome-icon icon="fa-solid fa-filter" /></button>
+                <button class="btn btn-resp btn-light ms-2"><font-awesome-icon icon="fa-solid fa-plus" /><span class="ms-2 d-none d-md-inline-block">New Job</span></button>
+            </div>
         </div>
     </div>
 </template>
@@ -69,6 +42,9 @@
 export default {
     data() {
         return {
+            timeRanges: ['Daily', 'Weekly', 'Monthly'],
+            selectedRange: 'Daily',
+
             currentDate: new Date(),
             zoomedOut: false,
         };
@@ -91,22 +67,40 @@ export default {
         },
     },
     methods: {
-        incrementDate() {
-            this.currentDate.setDate(this.currentDate.getDate() + 1);
-            this.currentDate = new Date(this.currentDate);
+        shiftDates(isForward) {
+            const direction = isForward ? 1 : -1;
+            const newDate = new Date(this.currentDate);
+
+            if (this.selectedRange == 'Monthly') {
+                // Shift by 1 month
+                newDate.setMonth(newDate.getMonth() + direction);
+            } else {
+                // Shift by numdays
+                var numdays = this.selectedRange == 'Daily' ? 1 : 7;
+
+                newDate.setDate(newDate.getDate() + (numdays * direction));
+            }
+
+            this.currentDate = newDate;
         },
-        decrementDate() {
-            this.currentDate.setDate(this.currentDate.getDate() - 1);
-            this.currentDate = new Date(this.currentDate);
-        },
-        setToday() {
+        shiftToday() {
             this.currentDate = new Date();
         },
         toggleZoom() {
             this.zoomedOut = !this.zoomedOut;
 
             this.$emit('zoomChanged', { zoomedOut: this.zoomedOut });
-        }
+        },
+        timeRangeClasses(e_range, idx) {
+            return {
+                'btn-primary': e_range === this.selectedRange,
+                'btn-light': e_range !== this.selectedRange,
+                'me-2': idx < this.timeRanges.length - 1,
+            }
+        },
+        handleTimeRangeClick(e_range) {
+            this.selectedRange = e_range;
+        },
     },
 };
 </script>
