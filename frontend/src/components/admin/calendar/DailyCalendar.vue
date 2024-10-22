@@ -373,6 +373,8 @@ export default {
         },
     },
     mounted() {
+        this.updateJobDetailsArrSorted();
+
         // Initialize ResizeObserver to track the height changes for #main-container-daily-cal
         const observer = new ResizeObserver(this.updateContainerHeight);
         const mainContainer = document.querySelector('#main-container-daily-cal');

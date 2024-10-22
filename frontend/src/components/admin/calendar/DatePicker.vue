@@ -56,6 +56,12 @@ export default {
                 range: this.selectedRange,
             });
         },
+        selectedRange() {
+            this.$emit('curDateChanged', {
+                date: this.currentDate,
+                range: this.selectedRange,
+            });
+        },
     },
     computed: {
         formattedDate() {

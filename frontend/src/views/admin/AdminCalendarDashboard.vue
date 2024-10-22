@@ -1,6 +1,8 @@
 <script setup>
 import DatePicker from "../../components/admin/calendar/DatePicker.vue";
 import DailyCalendar from "../../components/admin/calendar/DailyCalendar.vue";
+import WeeklyCalendar from "../../components/admin/calendar/WeeklyCalendar.vue";
+import MonthlyCalendar from "../../components/admin/calendar/MonthlyCalendar.vue";
 </script>
 
 <template>
@@ -13,6 +15,16 @@ import DailyCalendar from "../../components/admin/calendar/DailyCalendar.vue";
             <!-- DAILY CALENDAR -->
             <template v-if="rangeSelected == 'Daily'">
                 <DailyCalendar :isCompressed="isCompressed" :jobDetails="jobDetails" :dateSelected="dateSelected" />
+            </template>
+
+            <!-- WEEKLY CALENDAR -->
+            <template v-else-if="rangeSelected == 'Weekly'">
+                <WeeklyCalendar />
+            </template>
+
+            <!-- MONTHLY CALENDAR -->
+            <template v-else-if="rangeSelected == 'Monthly'">
+                <MonthlyCalendar />
             </template>
         </div>
     </div>
