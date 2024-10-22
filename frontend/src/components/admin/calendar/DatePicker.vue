@@ -28,7 +28,7 @@
             <!-- Filter & New Job -->
             <div class="col-auto p-0 d-flex order-2 order-md-3">
                 <!-- Today & Zoom Buttons (Below MD) -->
-                <button class="btn btn-resp btn-light d-md-none me-2" @click="shiftToday()"><font-awesome-icon icon="fa-solid fa-calendar" /></button>
+                <button class="btn btn-resp btn-primary d-md-none me-2" @click="shiftToday()" :disabled="isToday"><font-awesome-icon icon="fa-solid fa-calendar" /></button>
                 <button class="btn btn-resp btn-light d-md-none me-2" @click="toggleZoom()"><font-awesome-icon :icon="zoomedOut ? 'fa-solid fa-magnifying-glass-plus' : 'fa-solid fa-magnifying-glass-minus'" /></button>
 
                 <button class="btn btn-resp btn-light"><font-awesome-icon icon="fa-solid fa-filter" /></button>
