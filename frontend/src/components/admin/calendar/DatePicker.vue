@@ -19,8 +19,8 @@
 
                 <!-- Today & Zoom Buttons (MD and up) -->
                 <div class="mt-2 d-none d-md-block">
-                    <button class="btn btn-sm btn-resp btn-light" @click="shiftToday()"><font-awesome-icon icon="fa-solid fa-calendar" /><span class="d-none d-sm-inline ms-2 text-secondary">Skip to Today</span></button>
-                    <button class="btn btn-sm btn-resp btn-light ms-3" @click="toggleZoom()"><font-awesome-icon :icon="zoomedOut ? 'fa-solid fa-magnifying-glass-plus' : 'fa-solid fa-magnifying-glass-minus'" /><span class="d-none d-sm-inline ms-2 text-secondary">{{ zoomedOut ? 'Zoom In' : 'Zoom Out' }}</span></button>
+                    <button class="btn btn-sm btn-resp btn-primary" @click="shiftToday()" :disabled="isToday"><font-awesome-icon icon="fa-solid fa-calendar" /><span class="d-none d-sm-inline ms-2">Skip to Today</span></button>
+                    <button class="btn btn-sm btn-resp btn-light ms-3" @click="toggleZoom()"><font-awesome-icon :icon="zoomedOut ? 'fa-solid fa-magnifying-glass-plus' : 'fa-solid fa-magnifying-glass-minus'" /><span class="d-none d-sm-inline ms-2">{{ zoomedOut ? 'Zoom In' : 'Zoom Out' }}</span></button>
                 </div>
             </div>
 
@@ -55,7 +55,7 @@ export default {
                 date: this.currentDate,
                 range: this.selectedRange,
             });
-        }
+        },
     },
     computed: {
         formattedDate() {
@@ -72,6 +72,10 @@ export default {
             });
 
             return date.replace(weekday + ",", "") + ` (${weekday})`;
+        },
+        isToday() {
+            const today = new Date();
+            return this.currentDate.toDateString() === today.toDateString();
         },
     },
     methods: {
