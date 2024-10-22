@@ -3,7 +3,7 @@ import { mapState } from 'vuex';
 </script>
 
 <template>
-    <!-- Parent Container -->
+    <!-- Parent Container -->   
     <div @mouseover="showHoverContent(true)" @mouseleave="showHoverContent(false)" @click="openMainModal(true)"  :class="parentContainerClasses" :style="parentContainerStyle" class="rounded">
         <!-- Job Card -->
         <div @click="openMainModal()" class="card" :class="jobCardClasses" >
@@ -34,7 +34,7 @@ import { mapState } from 'vuex';
                     <h1 class="modal-title fs-5" :id="`job-modal-label-${jobDetails.appointmentId}`"><span class="text-secondary">Appointment ID:</span> {{ jobDetails.appointmentId }}</h1>
                     
                     <div class="d-flex align-items-center">
-                        <button v-if="userType == 'admin' && jobDetails.jobStatus != 'Completed'" @click="toggleEditMode()" type="button" class="btn btn-outline-secondary border-0" :class="isEditMode ? 'active' : ''"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></button>
+                        <button v-if="userType == 'admin' && jobDetails.jobStatus != 'COMPLETED'" @click="toggleEditMode()" type="button" class="btn btn-outline-secondary border-0" :class="isEditMode ? 'active' : ''"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></button>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 </div>
@@ -543,6 +543,12 @@ export default {
     z-index: 1000;
     pointer-events: none;
     width: 250px;
+}
+
+@media (max-width: 768px) {
+    .compressed-job-card {
+        width: auto;
+    }
 }
 
 .showPopoverRight {
