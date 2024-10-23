@@ -105,7 +105,11 @@ export default {
                     var formattedJob = {
                         appointmentId: job.jobId,
                         packageType: job.selectedPackage.packageId,
-                        jobAddress: job.property.address,
+                        jobAddress: {
+                            id: job.property.propertyId,
+                            address: job.property.address,
+                            postalCode: job.property.postalCode,
+                        },
                         date: job.date,
                         startTime: job.startTime,
                         endTime: endTime,

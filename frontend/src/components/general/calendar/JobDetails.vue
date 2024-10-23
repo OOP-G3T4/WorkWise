@@ -14,7 +14,7 @@ import { mapState } from 'vuex';
     
             <!-- Job address and Num cleaners -->
             <div class="card-body overflow-auto px-2 px-md-3 py-1 py-md-2">
-                <p class="fs-9 fs-md-7 mb-1">{{ jobDetails.jobAddress }}</p>
+                <p class="fs-9 fs-md-7 mb-1">{{ jobDetails.jobAddress.address }}</p>
                 <p class="fs-9 fs-md-7 mb-1"><font-awesome-icon class="me-2" :icon="overOneCleaner ? `fa-solid fa-users` : `fa-solid fa-user`" />{{ Object.keys(jobDetails.cleaners).length }} <span class="d-none d-md-inline-block">cleaner{{ overOneCleaner ? `s` : `` }}</span></p>
                 <p class="fs-9 fs-md-7 mb-0"><font-awesome-icon class="me-2 d-none d-md-inline-block" icon="fa-solid fa-clock" />{{ convertTimeToReadable(jobDetails.startTime) }} - {{ convertTimeToReadable(jobDetails.endTime) }}</p>
             </div>
@@ -116,13 +116,13 @@ import { mapState } from 'vuex';
                             <!-- Address -->
                             <div v-if="!isEditMode" class="col-auto">
                                 <p class="text-secondary m-0">Address</p>
-                                <h6 class="m-0">{{ jobDetails.jobAddress }}</h6>
+                                <h6 class="m-0">{{ jobDetails.jobAddress.address }}</h6>
                             </div>
 
                             <!-- Address [Edit Mode] -->
                             <div v-else class="col-auto">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" v-model="jobEdit.jobAddress" />
+                                    <input type="text" class="form-control" v-model="jobEdit.jobAddress.address" />
                                     <label for="floatingInput">Address</label>
                                 </div>
                             </div>

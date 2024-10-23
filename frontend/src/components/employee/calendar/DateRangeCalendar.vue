@@ -350,7 +350,11 @@ export default {
 
                     newJob.appointmentId = jobID;
                     newJob.packageType = "W_3RM_CONDO";
-                    newJob.jobAddress = "1234 Random St";
+                    newJob.jobAddress = {
+                        id: "1",
+                        address: "101 Clementi Road",
+                        postalCode: "123456",
+                    };
                     newJob.date = eDate.toISOString().split('T')[0];
                     newJob.startTime = timeRanges[i].start + ":00:00";
                     newJob.endTime = timeRanges[i].end + ":00:00";

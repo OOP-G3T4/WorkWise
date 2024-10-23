@@ -19,7 +19,7 @@ import JobDetails from '../../general/calendar/JobDetails.vue';
             </div>
         </div>
     
-        <div class="right-calendar-container">
+        <div class="right-calendar-container justify-content-center">
             <!-- Now Line (Horizontal Line that shows you Current Time) -->
             <div v-if="isToday" class="now-line" :style="nowLineStyle"></div>
 
@@ -37,32 +37,37 @@ import JobDetails from '../../general/calendar/JobDetails.vue';
                 <h1 class="text-secondary"><font-awesome-icon icon="fa-solid fa-question" class="me-3" beat />No Jobs</h1>
             </div>
 
-            <!-- Each Client Column -->
+            <!-- Each Client Column(s) -->
             <template v-for="eData, idx in objectEntries(jobDetailsArrSorted)">
-                <div class="container-fluid d-flex flex-column" :class="canClientColExpand ? 'w-100' : ''" :style="clientColStyles">
-                    <!-- Client Details (TOP) -->
-                    <div v-if="!hideTopBar" class="sticky-top bg-white row justify-content-center align-items-center pt-2" :style="{flex: `0 1 ${topPaddingPx}px`}">
+                <div class="d-flex flex-column" :class="idx != 0 ?  'border-start border-3 border-light' : ''" :style="clientColStyles(Object.keys(eData[1]).length)">
+                    <!-- Client Details (Fills all cols per client) -->
+                    <div v-if="!hideTopBar" class="sticky-top bg-white d-flex justify-content-center align-items-center overflow-hidden" :style="{flex: `0 1 ${topPaddingPx}px`, height: `${topPaddingPx}px`}">
                         <!-- Img -->
-                        <div class="col-auto">
+                        <div class="col-auto me-2">
                             <img src="https://placehold.co/200x200?text=Profile+Pic" alt="Client Image" class="client-img" />
                         </div>
-
+    
                         <!-- Name -->
                         <div class="col-auto d-flex align-items-center">
                             <div>
-                                <h6 class="m-0 text-tiny">{{ eData[1][0].clientDetails.clientName }}</h6>
+                                <h6 class="m-0 text-tiny">{{ clientData[eData[0]].clientName }}</h6>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Job Details (BOTTOM) -->
-                    <div class="jobs-parent">
-                        <!-- Place Each Job Block -->
-                        <template v-for="jobDetails in eData[1]">
-                            <div class="e-job-child" :style="eJobChildStyle(jobDetails.startTime)">
-                                <JobDetails :popoverRight="colIsLeftHalf(idx)" :heightInPx="calculateHeightPx(jobDetails.startTime, jobDetails.endTime)" :jobDetails="jobDetails" :isCompressed="isCompressed" />
+                    <!-- Job Blocks Container (Contains all job columns below client details) -->
+                    <div class="job-block h-100 row m-0 p-0">
+                        <!-- Each Job Column -->
+                        <div class="h-100 col" v-for="eArrJobs, idx2 in objectEntries(eData[1])">
+                            <div class="position-relative">
+                                <!-- Place Each Job Block -->
+                                <template v-for="jobDetails in eArrJobs[1]">
+                                    <div class="e-job-child" :style="eJobChildStyle(jobDetails.startTime)">
+                                        <JobDetails :popoverRight="colIsLeftHalf(idx,idx2)" :heightInPx="calculateHeightPx(jobDetails.startTime, jobDetails.endTime)" :jobDetails="jobDetails" :isCompressed="isCompressed" />
+                                    </div>
+                                </template>
                             </div>
-                        </template>
+                        </div>
                     </div>
                 </div>
             </template>
@@ -105,21 +110,15 @@ export default {
             // Client column settings
             clientColWidth: 200,
             clientColWidthCompressed: 50,
-            canClientColExpand: false,
 
             // Job Data (Sorted - By Client)
             jobDetailsArrSorted: null,
+            clientData: {},
         }
     },
     computed: {
         heightPerIntervalAxis() {
             return (this.yHeightPx - this.topPaddingPx) / (this.timeAxisMax - this.timeAxisMin);
-        },
-        clientColStyles() {
-            return {
-                height: (this.yHeightPx - this.topPaddingPx ) +'px',
-                width: this.isCompressed ? `${this.clientColWidthCompressed}px` : `${this.clientColWidth}px`
-            }
         },
         getNowLineHeight() {
             // Returns height at bottom/ top of axis if out of range
@@ -183,7 +182,16 @@ export default {
         },
         hideTopBar() {
             return this.isCompressed || this.jobDetailsArr.length == 0;
-        }
+        },
+        numCols() {
+            var numCols = 0;
+
+            for (var clientId in this.jobDetailsArrSorted) {
+                numCols += Object.keys(this.jobDetailsArrSorted[clientId]).length;
+            }
+
+            return numCols;
+        },
     },
     methods: {
         convertTimeToReadable(hrIn) {
@@ -203,8 +211,6 @@ export default {
             for (let entry of entries) {
                 const newWidth = entry.contentRect.width;
                 this.nowLineWidth = newWidth;
-
-                this.updateCanClientExpand(newWidth);
             }
         },
         calculateHeightPx(startTime, endTime) {
@@ -233,9 +239,18 @@ export default {
                 top: `${(timeDiffMin / 60) * this.heightPerIntervalAxis}px`
             }
         },
-        colIsLeftHalf(idx) {
-            var halfNumClients = Math.floor(Object.keys(this.jobDetailsArrSorted).length / 2);
-            return idx < halfNumClients;
+        colIsLeftHalf(idx1, idx2) {
+            var jobEntries = this.objectEntries(this.jobDetailsArrSorted);
+            var colIdx = 0;
+
+            // Loop trough up to idx1 to count columns up to previous client
+            for (var i = 0; i < idx1; i++) {
+                colIdx += Object.keys(jobEntries[i][1]).length;
+            }
+
+            colIdx += idx2 + 1;
+            var halfNumClients = Math.floor(this.numCols / 2);
+            return colIdx <= halfNumClients;
         },
         objectEntries(obj) {
             if (!obj) return [];
@@ -279,9 +294,6 @@ export default {
             return endObj.toTimeString().split(' ')[0];
         },
         updateJobDetailsArrSorted() {
-            this.timeAxisMin = this.defaultTimeAxisMin;
-            this.timeAxisMax = this.defaultTimeAxisMax;
-
             // Sort jobDetailsArr into jobDetailsArrSorted by client ID (key: clientID, value: <jobDetails>)
             this.jobDetailsArrSorted = this.jobDetailsArr.reduce((acc, jobDetails) => {
                 // Update min and max time axis if needed
@@ -296,35 +308,30 @@ export default {
                     this.timeAxisMax = endHour;
                 }
 
-                
-                if (acc[jobDetails.clientDetails.clientId]) {
-                    acc[jobDetails.clientDetails.clientId].push(jobDetails);
-                } else {
-                    acc[jobDetails.clientDetails.clientId] = [jobDetails];
+                // Get vars
+                const clientId = jobDetails.clientDetails.clientId;
+                const jobAddressId = jobDetails.jobAddress.id;
+
+                // Add client ID to clientData
+                if (!this.clientData[clientId]) {
+                    this.clientData[clientId] = jobDetails.clientDetails;
                 }
+
+                // Create client ID key if not in acc
+                if (!acc[clientId]) {
+                    acc[clientId] = {};
+                }
+
+                // Create sub property ID key if not in acc
+                if (!acc[clientId][jobAddressId]) {
+                    acc[clientId][jobAddressId] = [];
+                }
+
+                // Push
+                acc[clientId][jobAddressId].push(jobDetails);
+
                 return acc;
             }, {});
-        },
-        updateCanClientExpand(newWidth) {
-            // Break if jobDetailsArrSorted is not initialized yet
-            if (this.jobDetailsArrSorted == null) {
-                return;
-            }
-
-            // Break if compressed
-            if (this.isCompressed) {
-                return;
-            }
-
-            const numCols = Object.keys(this.jobDetailsArrSorted).length;
-            const newPossibleWidth = newWidth / numCols;
-
-            // Check if client column can expand
-            if (newPossibleWidth > this.clientColWidth) {
-                this.canClientColExpand = true;
-            } else {
-                this.canClientColExpand = false;
-            }
         },
         getMonthAndDay(dateObj) {
             // Returns the month and day in string format
@@ -332,6 +339,17 @@ export default {
             var jobDay = dateObj.getDate();
 
             return [jobMonthStr, jobDay];
+        },
+        clientColStyles(numColsInp) {
+            var padding = this.hideTopBar ? this.topPaddingPx : 0;
+            var properWidthPerCol = this.isCompressed ? this.clientColWidthCompressed : this.clientColWidth;
+            var flexGrow = this.isCompressed ? 0 : numColsInp;
+
+            return {
+                height: (this.yHeightPx - padding) +'px',
+                width: `${properWidthPerCol * numColsInp}px`,
+                flex: `${flexGrow} 1 ${properWidthPerCol * numColsInp}px`,
+            }
         },
     },
     watch: {
@@ -342,12 +360,6 @@ export default {
                 if (this.yHeightPx < (this.minYHeightAllowed + this.topPaddingPx)) {
                     this.yHeightPx = this.minYHeightAllowed + this.topPaddingPx;
                 }
-
-                // If compressed, set canClientColExpand to false
-                this.canClientColExpand = false;
-            } else {
-                // If expanded, check and update if client column can expand
-                this.updateCanClientExpand(this.nowLineWidth);
             }
         },
         yHeightPx(newVal) {
@@ -361,13 +373,15 @@ export default {
         },
         jobDetailsArr: {
             handler(newVal) {
+                this.timeAxisMin = this.defaultTimeAxisMin;
+                this.timeAxisMax = this.defaultTimeAxisMax;
+
                 if (newVal.length == 0) {
                     this.jobDetailsArrSorted = null;
                     return;
                 }
 
                 this.updateJobDetailsArrSorted();
-                this.updateCanClientExpand(this.nowLineWidth);
             },
             deep: true, //Watch for changes in within array, rather than just the pointer
         },
@@ -406,8 +420,6 @@ export default {
         });
     }
 }
-
-
 </script>
 
 
@@ -445,9 +457,8 @@ export default {
     font-size: 0.75em;
 }
 
-.jobs-parent {
+.job-block {
     flex: 1 1 1px;
-    position: relative;
 }
 
 .e-job-child {
@@ -476,7 +487,6 @@ export default {
 }
 
 #bgGridDailyCal > :nth-child(odd) {
-    background-color: #f4f4f4;
+    background-color: #dfdfdf84;
 }
-
 </style>
