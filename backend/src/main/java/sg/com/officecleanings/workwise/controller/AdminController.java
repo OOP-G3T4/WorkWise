@@ -74,4 +74,14 @@ public class AdminController {
         }
         return ResponseEntity.ok(employees);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestParam int adminId, @RequestParam String password) {
+        boolean isValid = adminService.verifyPassword(adminId, password);
+        if (isValid) {
+            return ResponseEntity.ok("Login successful");
+        } else {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
+    }
 }

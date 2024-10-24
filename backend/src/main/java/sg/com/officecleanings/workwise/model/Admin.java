@@ -24,12 +24,18 @@ public class Admin {
     @Size(max = 200)
     private String email;
 
+    @NotNull
+    @Size(max = 255)
+    private String password;
+
+
     public Admin() {
     }
 
-    public Admin(String name, String phoneNumber, String email) {
+    public Admin(String name, String phoneNumber, String email, String password) {
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.password = password;
     }
 
     // Getters and Setters
@@ -65,6 +71,14 @@ public class Admin {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 
     @Override
     public String toString() {
@@ -73,6 +87,7 @@ public class Admin {
                 ", name='" + name + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password +
                 '}';
     }
 }
