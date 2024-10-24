@@ -19,12 +19,12 @@ import MonthlyCalendar from "../../components/admin/calendar/MonthlyCalendar.vue
 
             <!-- WEEKLY CALENDAR -->
             <template v-else-if="rangeSelected == 'Weekly'">
-                <WeeklyCalendar />
+                <WeeklyCalendar :jobDetails="jobDetails" :dateSelected="dateSelected" @navToDate="navToDate" />
             </template>
 
             <!-- MONTHLY CALENDAR -->
             <template v-else-if="rangeSelected == 'Monthly'">
-                <MonthlyCalendar :jobDetails="jobDetails" :dateSelected="dateSelected" @navToDate="navToDate" />
+                <MonthlyCalendar :jobDetails="jobDetails" :dateSelected="dateSelected" @navToDate="navToDate" @navToWeek="navToWeek" />
             </template>
         </div>
     </div>
@@ -70,6 +70,10 @@ export default {
         navToDate(date) {
             this.dateSelected = date;
             this.rangeSelected = "Daily";
+        },
+        navToWeek(date) {
+            this.dateSelected = date;
+            this.rangeSelected = "Weekly";
         },
     },
     mounted() {

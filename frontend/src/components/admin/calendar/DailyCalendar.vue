@@ -11,7 +11,7 @@ import JobDetails from '../../general/calendar/JobDetails.vue';
             
             <div
                 v-for="i in timeAxisMax - timeAxisMin"
-                class="text-end border-end border-2 px-3 bg-white"
+                class="text-end border-end border-2 px-2 px-md-3 bg-white fs-10 fs-md-8"
                 :key="i"
                 :style="{ height: heightPerIntervalAxis + 'px' }"
             >

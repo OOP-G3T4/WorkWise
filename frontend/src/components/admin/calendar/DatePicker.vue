@@ -86,7 +86,6 @@ export default {
     computed: {
         formattedDate() {
             const options = {
-                weekday: "short",
                 day: "numeric",
                 month: "short",
                 year: "numeric",
@@ -102,8 +101,23 @@ export default {
 
             if (this.selectedRange == 'Monthly') {
                 return month + " " + this.currentDate.getFullYear();
-            } else if (this.selectedRange == 'Daily') {
-                return date.replace(weekday + ",", "") + ` (${weekday})`;
+            }
+            
+            if (this.selectedRange == 'Daily') {
+                return `${date} (${weekday})`;
+            }
+
+            // If weekly, start = sunday, end = saturday
+            if (this.selectedRange == 'Weekly') {
+                options.year = "2-digit";
+
+                const start = new Date(this.currentDate);
+                const end = new Date(this.currentDate);
+
+                start.setDate(start.getDate() - start.getDay());
+                end.setDate(end.getDate() + (6 - end.getDay()));
+
+                return start.toLocaleDateString("en-GB", options) + " - " + end.toLocaleDateString("en-GB", options);
             }
         },
         isToday() {
@@ -117,6 +131,16 @@ export default {
 
             if (this.selectedRange == 'Monthly') {
                 return this.currentDate.getMonth() === todayMonth && this.currentDate.getFullYear() === today.getFullYear();
+            }
+
+            if (this.selectedRange == 'Weekly') {
+                const start = new Date(this.currentDate);
+                const end = new Date(this.currentDate);
+
+                start.setDate(start.getDate() - start.getDay());
+                end.setDate(end.getDate() + (6 - end.getDay()));
+
+                return start <= today && today <= end;
             }
         },
     },

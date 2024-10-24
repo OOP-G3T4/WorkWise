@@ -2,6 +2,10 @@
     <div class="container-fluid px-4 pb-2 d-flex flex-column w-100 h-100">
         <!-- Display days of week (Mon, Tue, ..., Sun) -->
         <div class="row">
+            <!-- Skip to week padding -->
+            <div :style="skipWeekStyle" class="d-none d-md-block"></div>
+
+            <!-- Days of the week -->
             <div v-for="eDay in allDaysInWk" class="date-block">
                 <p class="text-center">{{ eDay }}</p>
             </div>
@@ -9,20 +13,26 @@
 
         <!-- Display date rows and columns -->
         <div v-for="eRow in datesMaster" class="row flex-grow-1">
-            <div v-for="eDate in eRow" class="date-block p-2">
-                <div class="rounded-4 h-100 w-100 py-2 px-3 container-fluid d-flex flex-column" :class="eDate == null ? 'bg-light' : 'cursor-pointer'" :style="dateBlockStyles(getNumJobs(eDate))" @click="navigateToDate(eDate)">
+            <!-- Skip to week padding -->
+            <div :style="skipWeekStyle" class="d-none d-md-block px-0 py-3 me-2">
+                <div class="bg-primary rounded w-100 h-100 cursor-pointer" @click="navigateToWeek(eRow)"></div>
+            </div>
+
+            <!-- Date blocks -->
+            <div v-for="eDate in eRow" class="date-block p-1 p-md-2">
+                <div class="rounded-3 h-100 w-100 py-2 px-3 container-fluid d-flex flex-column" :class="eDate == null ? 'bg-light' : 'cursor-pointer'" :style="dateBlockStyles(getNumJobs(eDate))" @click="navigateToDate(eDate)">
                     <template v-if="eDate != null">
                         <!-- Show day of month -->
                         <div class="row px-1">
                             <div class="col-auto d-flex justify-content-center align-items-center px-2 rounded-5" :class="isToday(eDate) ? 'bg-primary-dark text-white' : 'bg-white text-dark'">
-                                <p class="d-inline-block m-0">{{ eDate.getDate() }}</p>
+                                <p class="d-inline-block m-0 fs-9 fs-md-6">{{ eDate.getDate() }}</p>
                             </div>
                         </div>
 
                         <!-- Show num jobs -->
                         <div class="row flex-grow-1 align-items-center">
                             <div class="col-12">
-                                <h4 class="text-center">{{ getNumJobs(eDate) }}</h4>
+                                <h4 class="text-center fs-6 fs-sm-4">{{ getNumJobs(eDate) }}</h4>
                             </div>
                         </div>
                     </template>
@@ -50,6 +60,9 @@ export default {
             today: new Date(),
             minJobs: 0,
             maxJobs: 0,
+
+            // Skip to week button padding
+            skipToWeekPadding: 12,
 
             // Color settings
             zeroJobsLightness: 96,
@@ -136,6 +149,18 @@ export default {
 
             this.$emit('navToDate', dateObj);
         },
+        navigateToWeek(dateArr) {
+            // Get the first non-null date in the week
+            for (var i in dateArr) {
+                const dateObj = dateArr[i];
+
+                if (dateObj != null) {
+                    // Emit the navToWeek event
+                    this.$emit('navToWeek', dateObj);
+                    return
+                }
+            }
+        },
     },
     computed: {
         datesMaster() {
@@ -179,6 +204,11 @@ export default {
             res[res.length - 1].push(...Array(6 - lastDay.getDay()).fill(null));
 
             return res;
+        },
+        skipWeekStyle() {
+            return {
+                flex: `0 0 ${this.skipToWeekPadding}px`,
+            };
         },
     },
     watch: {
