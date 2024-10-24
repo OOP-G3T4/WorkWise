@@ -11,7 +11,7 @@
 
             <!-- Date Scroller -->
             <div class="col-12 mt-2 mt-md-0 col-md-auto p-0 d-flex flex-column align-items-center order-3 order-md-2">
-                <div class="d-flex align-items-center">
+                <div class="d-flex justify-content-between align-items-center w-100">
                     <button class="btn btn-resp btn-white rounded-5" @click="shiftDates(false)"><font-awesome-icon icon="fa-solid fa-circle-chevron-left" /></button>
                     <p class="text-secondary m-0 fs-8 fs-sm-6">{{ formattedDate }}</p>
                     <button class="btn btn-resp btn-white rounded-5" @click="shiftDates(true)"><font-awesome-icon icon="fa-solid fa-circle-chevron-right" /></button>
