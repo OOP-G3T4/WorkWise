@@ -1,4 +1,6 @@
-// custom styles
+@import "../node_modules/bootstrap/scss/functions";
+
+// Color settings
 $primary:       #2a86b4;
 $secondary:     #6e8692;
 $success:       #008761;
@@ -7,6 +9,18 @@ $warning:       #F3B73E;
 $danger:        #FF5E5B;
 $light:         #eeeeee;
 $dark:          #001524;
+
+// Custom colors
+$custom-colors: (
+   "light2": #acacac,
+   "lighter": #fafafa,
+   "primary-dark": darken($primary, 10%),
+);
+
+@import "../node_modules/bootstrap/scss/variables";
+
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $custom-colors);
 
 // Accordian styles
 $accordion-button-active-bg: #FFFFFF;

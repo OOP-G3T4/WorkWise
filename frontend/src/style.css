@@ -19,6 +19,11 @@
     overflow: auto;
 }
 
+/* Enabling cursors */
+.cursor-pointer {
+    cursor: pointer;
+}
+
 /* BREAKPOINT CUSTOMIZATION ================================================== [START] */
 
 /* Styling UP TO md (576px) */

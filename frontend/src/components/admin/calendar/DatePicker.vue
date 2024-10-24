@@ -40,6 +40,16 @@
 
 <script>
 export default {
+    props: {
+        dateSelected: {
+            type: Date,
+            required: false,
+        },
+        rangeSelected: {
+            type: String,
+            required: false,
+        },
+    },
     data() {
         return {
             timeRanges: ['Daily', 'Weekly', 'Monthly'],
@@ -62,6 +72,16 @@ export default {
                 range: this.selectedRange,
             });
         },
+        dateSelected() {
+            if (this.dateSelected instanceof Date) {
+                this.currentDate = this.dateSelected;
+            }
+        },
+        rangeSelected() {
+            if (this.timeRanges.includes(this.rangeSelected)) {
+                this.selectedRange = this.rangeSelected;
+            }
+        }
     },
     computed: {
         formattedDate() {
@@ -76,8 +96,15 @@ export default {
             const weekday = this.currentDate.toLocaleDateString("en-GB", {
                 weekday: "short",
             });
+            const month = this.currentDate.toLocaleDateString("en-GB", {
+                month: "short",
+            });
 
-            return date.replace(weekday + ",", "") + ` (${weekday})`;
+            if (this.selectedRange == 'Monthly') {
+                return month + " " + this.currentDate.getFullYear();
+            } else if (this.selectedRange == 'Daily') {
+                return date.replace(weekday + ",", "") + ` (${weekday})`;
+            }
         },
         isToday() {
             const today = new Date();
@@ -121,6 +148,14 @@ export default {
         },
     },
     mounted() {
+        if (this.dateSelected instanceof Date) {
+            this.currentDate = this.dateSelected;
+        }
+
+        if (this.timeRanges.includes(this.rangeSelected)) {
+            this.selectedRange = this.rangeSelected;
+        }
+
         this.$emit('curDateChanged', {
             date: this.currentDate,
             range: this.selectedRange,

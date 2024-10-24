@@ -24,7 +24,7 @@ export default {
         },
     },
     mounted() {
-        // Reroute to login if userRole not set yet on VUEX (adambft)
+        // Reroute to login if userRole not set yet on VUEX
         if (!this.userType) {
             this.$router.push("/");
         }

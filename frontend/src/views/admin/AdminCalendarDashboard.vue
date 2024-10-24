@@ -8,7 +8,7 @@ import MonthlyCalendar from "../../components/admin/calendar/MonthlyCalendar.vue
 <template>
     <div class="contain-parent">
         <div class="contain-top p-3">
-            <DatePicker @zoomChanged="adjustZoom" @curDateChanged="dateChanged" />
+            <DatePicker @zoomChanged="adjustZoom" :dateSelected="dateSelected" :rangeSelected="rangeSelected" @curDateChanged="dateChanged" />
         </div>
 
         <div class="contain-bottom">
@@ -24,7 +24,7 @@ import MonthlyCalendar from "../../components/admin/calendar/MonthlyCalendar.vue
 
             <!-- MONTHLY CALENDAR -->
             <template v-else-if="rangeSelected == 'Monthly'">
-                <MonthlyCalendar />
+                <MonthlyCalendar :jobDetails="jobDetails" :dateSelected="dateSelected" @navToDate="navToDate" />
             </template>
         </div>
     </div>
@@ -39,7 +39,7 @@ export default {
             // Job Details (Sorted by month, then day)
             jobDetails: null,
 
-            dateSelected: null,
+            dateSelected: new Date(),
             rangeSelected: "",
         };
     },
@@ -66,6 +66,10 @@ export default {
             var endObj = new Date(startObj.getTime() + durationHours * 60 * 60 * 1000);
 
             return endObj.toTimeString().split(' ')[0];
+        },
+        navToDate(date) {
+            this.dateSelected = date;
+            this.rangeSelected = "Daily";
         },
     },
     mounted() {
