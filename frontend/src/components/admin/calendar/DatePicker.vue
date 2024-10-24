@@ -20,7 +20,7 @@
                 <!-- Today & Zoom Buttons (MD and up) -->
                 <div class="mt-2 d-none d-md-block">
                     <button class="btn btn-sm btn-resp btn-primary" @click="shiftToday()" :disabled="isToday"><font-awesome-icon icon="fa-solid fa-calendar" /><span class="d-none d-sm-inline ms-2">Skip to Today</span></button>
-                    <button class="btn btn-sm btn-resp btn-light ms-3" @click="toggleZoom()"><font-awesome-icon :icon="zoomedOut ? 'fa-solid fa-magnifying-glass-plus' : 'fa-solid fa-magnifying-glass-minus'" /><span class="d-none d-sm-inline ms-2">{{ zoomedOut ? 'Zoom In' : 'Zoom Out' }}</span></button>
+                    <button v-if="selectedRange == 'Daily'" class="btn btn-sm btn-resp btn-light ms-3" @click="toggleZoom()"><font-awesome-icon :icon="zoomedOut ? 'fa-solid fa-magnifying-glass-plus' : 'fa-solid fa-magnifying-glass-minus'" /><span class="d-none d-sm-inline ms-2">{{ zoomedOut ? 'Zoom In' : 'Zoom Out' }}</span></button>
                 </div>
             </div>
 
@@ -108,7 +108,16 @@ export default {
         },
         isToday() {
             const today = new Date();
-            return this.currentDate.toDateString() === today.toDateString();
+
+            if (this.selectedRange == 'Daily') {
+                return this.currentDate.toDateString() === today.toDateString();
+            }
+
+            const todayMonth = today.getMonth();
+
+            if (this.selectedRange == 'Monthly') {
+                return this.currentDate.getMonth() === todayMonth && this.currentDate.getFullYear() === today.getFullYear();
+            }
         },
     },
     methods: {
