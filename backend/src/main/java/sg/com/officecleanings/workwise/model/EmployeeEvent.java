@@ -9,6 +9,9 @@ import java.util.Date;
 
 @Entity
 public class EmployeeEvent {
+    public enum EventType {
+        JOB_COMPLETED,OVERTIME, AL_TAKEN, MC_TAKEN, UNPAID_LEAVE
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +27,8 @@ public class EmployeeEvent {
     private Job job;
 
     @NotNull
-    @Length(max = 50)
-    private String eventType; // need to change to enum
+    @Enumerated(EnumType.STRING)
+    private EventType eventType;
 
     @NotNull
     private Date eventDate;
@@ -42,7 +45,7 @@ public class EmployeeEvent {
     public EmployeeEvent() {
     }
 
-    public EmployeeEvent(Employee employee, Job job, String eventType, Date eventDate, Integer duration, Integer mcUsed, Integer alUsed) {
+    public EmployeeEvent(Employee employee, Job job, EventType eventType, Date eventDate, Integer duration, Integer mcUsed, Integer alUsed) {
         this.employee = employee;
         this.job = job;
         this.eventType = eventType;
@@ -76,11 +79,11 @@ public class EmployeeEvent {
         this.job = job;
     }
 
-    public String getEventType() {
+    public EventType getEventType() {
         return eventType;
     }
 
-    public void setEventType(String eventType) {
+    public void setEventType(EventType eventType) {
         this.eventType = eventType;
     }
 

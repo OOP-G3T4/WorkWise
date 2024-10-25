@@ -8,24 +8,36 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 public class SelectedPackage {
+    public enum PackageType {
+        WEEKLY, BI_WEEKLY
+    }
+
+    public enum HouseSize {
+        TWO_ROOM, THREE_ROOM, FOUR_ROOM, FIVE_ROOM, MAISONETTE, LANDED
+    }
+
+    public enum HouseType {
+        HDB, CONDO, LANDED
+    }
+
     @Id
     @Size(max = 20)
     private String packageId;
 
     @NotNull
-    @Size(max = 10)
-    private String type; // can change to enum
+    @Enumerated(EnumType.STRING)
+    private PackageType packageType; 
 
     @Min(0)
     private int price;
 
     @NotNull
-    @Size(max = 10)
-    private String houseSize; // can change to enum
+    @Enumerated(EnumType.STRING)
+    private HouseSize houseSize; // can change to enum
 
     @NotNull
-    @Size(max = 10)
-    private String houseType; // can change to enum
+    @Enumerated(EnumType.STRING)
+    private HouseType houseType; // can change to enum
 
     @Min(0)
     private int hourlyRate;
@@ -39,10 +51,10 @@ public class SelectedPackage {
     public SelectedPackage() {
     }
 
-    public SelectedPackage(String packageId, String type, int price, String houseSize, String houseType, int hourlyRate,
+    public SelectedPackage(String packageId, PackageType packageType, int price, HouseSize houseSize, HouseType houseType, int hourlyRate,
             int pax, int hours) {
         this.packageId = packageId;
-        this.type = type;
+        this.packageType = packageType;
         this.price = price;
         this.houseSize = houseSize;
         this.houseType = houseType;
@@ -60,12 +72,12 @@ public class SelectedPackage {
         this.packageId = packageId;
     }
 
-    public String getType() {
-        return type;
+    public PackageType getType() {
+        return packageType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setType(PackageType packageType) {
+        this.packageType = packageType;
     }
 
     public int getPrice() {
@@ -76,19 +88,19 @@ public class SelectedPackage {
         this.price = price;
     }
 
-    public String getHouseSize() {
+    public HouseSize getHouseSize() {
         return houseSize;
     }
 
-    public void setHouseSize(String houseSize) {
+    public void setHouseSize(HouseSize houseSize) {
         this.houseSize = houseSize;
     }
 
-    public String getHouseType() {
+    public HouseType getHouseType() {
         return houseType;
     }
 
-    public void setHouseType(String houseType) {
+    public void setHouseType(HouseType houseType) {
         this.houseType = houseType;
     }
 
@@ -120,7 +132,7 @@ public class SelectedPackage {
     public String toString() {
         return "SelectedPackage{" +
                 "packageId='" + packageId + '\'' +
-                ", type='" + type + '\'' +
+                ", packageType='" + packageType + '\'' +
                 ", price=" + price +
                 ", houseSize='" + houseSize + '\'' +
                 ", houseType='" + houseType + '\'' +

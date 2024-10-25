@@ -27,13 +27,17 @@ public class Employee {
     @Size(max = 20)
     private String phoneNumber;
 
-    @Size(max = 255) 
+    @Size(max = 255)
     private String shortBio;
 
     @Email
     @NotNull
     @Size(max = 200)
     private String email;
+
+    @NotNull
+    @Size(max = 255)
+    private String password;
 
     @Min(0)
     private int alBalance = 0;
@@ -44,7 +48,8 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String name, String homeAddress, String phoneNumber, String shortBio, String email, int alBalance, int mcBalance) {
+    public Employee(String name, String homeAddress, String phoneNumber, String shortBio, String email, int alBalance,
+            int mcBalance, String password) {
         this.name = name;
         this.homeAddress = homeAddress;
         this.phoneNumber = phoneNumber;
@@ -52,6 +57,7 @@ public class Employee {
         this.shortBio = shortBio;
         this.alBalance = alBalance;
         this.mcBalance = mcBalance;
+        this.password = password;
     }
 
     // Getters and Setters
@@ -82,6 +88,14 @@ public class Employee {
 
     public int getAlBalance() {
         return alBalance;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setAlBalance(int alBalance) {
@@ -133,6 +147,7 @@ public class Employee {
                 ", email='" + email + '\'' +
                 ", alBalance=" + alBalance +
                 ", mcBalance=" + mcBalance +
+                ", password='" + password + '\'' +
                 '}';
     }
 }
