@@ -195,14 +195,14 @@ export default {
                     // To be displayed on the collapsed side bar
                     "main" : [
                         {
-                            "label" : "Leaves",
-                            "icon" : "fa-solid fa-umbrella-beach",
-                            "route" : "/emp-leaves"
-                        },
-                        {
                             "label" : "Calendar",
                             "icon" : "fa-solid fa-calendar",
                             "route" : "/emp-calendar"
+                        },
+                        {
+                            "label" : "Leaves",
+                            "icon" : "fa-solid fa-umbrella-beach",
+                            "route" : "/emp-leaves"
                         }
                     ],
 

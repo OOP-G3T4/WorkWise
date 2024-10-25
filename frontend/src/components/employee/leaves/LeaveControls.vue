@@ -2,11 +2,11 @@
     <div class="container-fluid bg-white py-4">
         <div class="row justify-content-between">
             <div class="col-auto p-0 d-flex">
-                <button v-for="e_status in possibleFilters" class="btn me-2 fs-7 fs-sm-6 px-2 px-md-3" :class="statusBtnClass(e_status)" @click="toggleStatus(e_status)" data-bs-toggle="button">{{ e_status }}</button>
+                <button v-for="e_status in possibleFilters" class="btn btn-resp me-2" :class="statusBtnClass(e_status)" @click="toggleStatus(e_status)" data-bs-toggle="button">{{ e_status }}</button>
             </div>
 
             <div class="col-auto p-0 d-flex">
-                <button class="btn btn-light me-2"><font-awesome-icon icon="fa-solid fa-plus" /><span class="ms-2 d-none d-sm-inline">New</span></button>
+                <button class="btn btn-resp btn-light me-2"><font-awesome-icon icon="fa-solid fa-plus" /><span class="ms-2 d-none d-sm-inline">New</span></button>
             </div>
         </div>
     </div>
