@@ -1,4 +1,3 @@
--- Insert data into database
 -- Insert sample clients
 INSERT INTO client (client_id, name, email, phone_number)
 VALUES (1, 'Tommy Tallwalk', 'tommy.tallwalk@example.com', '82345678'),
@@ -12,7 +11,6 @@ VALUES (1, '123 Changi Road, East', '427466'),
         (3, '11 Mount Faber Rd, South', '099209'),
         (4, '900 Dunearn Rd, Central', '589473'),
         (5, '767 Pasir Ris Street 71', '510767');
-
 
 -- Link properties to clients
 INSERT INTO client_property (client_id, property_id)
@@ -41,17 +39,17 @@ INSERT INTO admin_employee (admin_id, employee_id)
 VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5);
 
 -- Insert sample package
-INSERT INTO selected_package (package_id, type, price, house_size, house_type, hourly_rate, pax, hours)
-VALUES ('W_3RM_HDB', 'Weekly', 276, '3-room', 'HDB', 23, 1, 3),
-        ('W_4RM_HDB', 'Weekly', 336, '4-room', 'HDB', 21, 1, 4),
-        ('W_5RM_HDB', 'Weekly', 396, '5-room', 'HDB', 20, 1, 4),
-        ('W_MAISONETTE_HDB', 'Weekly', 516, 'Maisonette', 'HDB', 20, 2, 3),
-        ('W_2RM_CONDO', 'Weekly', 276, '2-room', 'CONDO', 23, 1, 3),
-        ('W_3RM_CONDO', 'Weekly', 336, '3-room', 'CONDO', 21, 1, 4),
-        ('W_4RM_CONDO', 'Weekly', 396, '4-room', 'CONDO', 20, 1, 4),
-        ('W_5RM_CONDO', 'Weekly', 456, '5-room', 'CONDO', 20, 1, 4),
-        ('W_MAISONETTE_CONDO', 'Weekly', 516, 'Maisonette', 'CONDO', 20, 2, 3),
-        ('W_LANDED', 'Weekly', 576, 'Landed', 'Landed', 20, 2, 3);
+INSERT INTO selected_package (package_id, package_type, price, house_size, house_type, hourly_rate, pax, hours)
+VALUES ('W_3RM_HDB', 'WEEKLY', 276, 'THREE_ROOM', 'HDB', 23, 1, 3),
+        ('W_4RM_HDB', 'WEEKLY', 336, 'FOUR_ROOM', 'HDB', 21, 1, 4),
+        ('W_5RM_HDB', 'WEEKLY', 396, 'FIVE_ROOM', 'HDB', 20, 1, 4),
+        ('W_MAISONETTE_HDB', 'WEEKLY', 516, 'MAISONETTE', 'HDB', 20, 2, 3),
+        ('W_2RM_CONDO', 'WEEKLY', 276, 'TWO_ROOM', 'CONDO', 23, 1, 3),
+        ('W_3RM_CONDO', 'WEEKLY', 336, 'THREE_ROOM', 'CONDO', 21, 1, 4),
+        ('W_4RM_CONDO', 'WEEKLY', 396, 'FOUR_ROOM', 'CONDO', 20, 1, 4),
+        ('W_5RM_CONDO', 'WEEKLY', 456, 'FIVE_ROOM', 'CONDO', 20, 1, 4),
+        ('W_MAISONETTE_CONDO', 'WEEKLY', 516, 'MAISONETTE', 'CONDO', 20, 2, 3),
+        ('W_LANDED', 'WEEKLY', 576, 'LANDED', 'LANDED', 20, 2, 3);
 
 -- Insert sample jobs
 INSERT INTO job (job_id, client_id, property_id, package_id, date, start_time, status, actual_duration)
@@ -70,7 +68,6 @@ VALUES (1, 1, 1, 'W_3RM_HDB', '2024-10-11', '10:00:00', 'COMPLETED', 3),
         (13, 2, 5, 'W_4RM_HDB', '2024-11-11', '18:00:00', 'PENDING', 4),
         (14, 2, 5, 'W_4RM_HDB', '2024-11-11', '08:00:00', 'PENDING', 4);
 
-
 -- Link jobs to employees
 INSERT INTO job_employee (job_id, employee_id, reasoning)
 VALUES (1, 1, NULL),
@@ -79,8 +76,8 @@ VALUES (1, 1, NULL),
 
 -- Insert sample events into EmployeeEvents
 INSERT INTO employee_event (event_id, employee_id, event_type, event_date, job_id, duration, mc_used, al_used)
-VALUES (1, 1, 'job_completed', '2024-09-15', 1, 3, NULL, NULL),  -- Completed job on 15th Sep 2024
-        (2, 2, 'mc_taken', '2024-09-10', NULL, NULL, 2, NULL),    -- Took 2 days MC on 10th Sep 2024
-        (3, 3, 'al_taken', '2024-09-20', NULL, NULL, NULL, 1),    -- Took 1 day AL on 20th Sep 2024
-        (4, 4, 'overtime', '2024-09-25', NULL, 2, NULL, NULL),    -- Worked 2 hours overtime on 25th Sep 2024
-        (5, 2, 'al_taken', '2024-11-12', NULL, NULL, NULL, 2);    -- Took 2 day AL on 12th Nov 2024
+VALUES (1, 1, 'JOB_COMPLETED', '2024-09-15', 1, 3, NULL, NULL),  -- Completed job on 15th Sep 2024
+        (2, 2, 'MC_TAKEN', '2024-09-10', NULL, NULL, 2, NULL),    -- Took 2 days MC on 10th Sep 2024
+        (3, 3, 'AL_TAKEN', '2024-09-20', NULL, NULL, NULL, 1),    -- Took 1 day AL on 20th Sep 2024
+        (4, 4, 'OVERTIME', '2024-09-25', NULL, 2, NULL, NULL),    -- Worked 2 hours overtime on 25th Sep 2024
+        (5, 2, 'AL_TAKEN', '2024-11-12', NULL, NULL, NULL, 2);    -- Took 2 day AL on 12th Nov 2024
