@@ -1,4 +1,6 @@
-// custom styles
+@import "../node_modules/bootstrap/scss/functions";
+
+// Color settings
 $primary:       #2a86b4;
 $secondary:     #6e8692;
 $success:       #008761;
@@ -7,6 +9,18 @@ $warning:       #F3B73E;
 $danger:        #FF5E5B;
 $light:         #eeeeee;
 $dark:          #001524;
+
+// Custom colors
+$custom-colors: (
+   "light2": #acacac,
+   "lighter": #fafafa,
+   "primary-dark": darken($primary, 10%),
+);
+
+@import "../node_modules/bootstrap/scss/variables";
+
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $custom-colors);
 
 // Accordian styles
 $accordion-button-active-bg: #FFFFFF;
@@ -19,7 +33,10 @@ $accordion-button-focus-box-shadow: 0;
 $font-sizes: map-merge(
     $font-sizes, 
     (
-        7: 0.90rem
+        7: 0.90rem,
+        8: 0.80rem,
+        9: 0.70rem,
+        10: 0.60rem,
     )
 );
 
@@ -42,6 +59,7 @@ $utilities: map-merge(
     --bs-btn-hover-color: #FFFFFF;
     --bs-btn-active-color: #FFFFFF;
     --bs-btn-active-bg: #{$primary};
+    --bs-btn-disabled-color: #FFFFFF;
 }
 
 // Custom button class

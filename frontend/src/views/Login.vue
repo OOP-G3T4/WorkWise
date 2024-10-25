@@ -62,7 +62,7 @@ export default {
                     "navbarFormat": "admin",
                 },
                 "Cleaner" : {
-                    "route": "/emp-leaves", // Change this to the user calendar route (adambft)
+                    "route": "/emp-calendar",
                     "navbarFormat": "employee",
                 },
             },

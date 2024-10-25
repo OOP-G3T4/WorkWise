@@ -1,5 +1,6 @@
 package sg.com.officecleanings.workwise.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import sg.com.officecleanings.workwise.model.Property;
 import sg.com.officecleanings.workwise.service.PropertyService;
 import sg.com.officecleanings.workwise.service.ClientPropertyService;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "${cors.allowedOrigins}")
 @RequestMapping("/api/property")
 public class PropertyController {
 
