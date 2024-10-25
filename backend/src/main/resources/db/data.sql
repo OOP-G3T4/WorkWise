@@ -32,7 +32,7 @@ VALUES (1, 'Marky McFly', '4 Tampines Central 5, Singapore 529510, East', '91234
 
 -- Insert admin
 INSERT INTO admin (admin_id, name, email, phone_number, password)
-VALUES (1, 'Bossy McBossface', 'bossy.mcbossface@example.com', '96234567', '$2a$12$PBSUs2VxiM9/ShHyp7s6TOPNobyEgbGgzyyT8qmT2KieE6OthSTxq');
+VALUES (1, 'Bossy McBossface', 'bossyface@example.com', '96234567', '$2a$12$PBSUs2VxiM9/ShHyp7s6TOPNobyEgbGgzyyT8qmT2KieE6OthSTxq');
 
 -- Link admin to employees
 INSERT INTO admin_employee (admin_id, employee_id)

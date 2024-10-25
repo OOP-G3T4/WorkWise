@@ -76,10 +76,10 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam int adminId, @RequestParam String password) {
-        boolean isValid = adminService.verifyPassword(adminId, password);
-        if (isValid) {
-            return ResponseEntity.ok("Login successful");
+    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
+        Optional<Admin> admin = adminService.verifyPassword(email, password);
+        if (admin.isPresent()) {
+            return ResponseEntity.ok(admin.get().getAdminId());
         } else {
             return ResponseEntity.status(401).body("Invalid credentials");
         }

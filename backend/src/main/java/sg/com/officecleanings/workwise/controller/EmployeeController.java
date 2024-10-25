@@ -130,10 +130,10 @@ public class EmployeeController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam int employeeId, @RequestParam String password) {
-        boolean isValid = employeeService.verifyPassword(employeeId, password);
-        if (isValid) {
-            return ResponseEntity.ok("Login successful");
+    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
+        Optional<Employee> employee = employeeService.verifyPassword(email, password);
+        if (employee.isPresent()) {
+            return ResponseEntity.ok(employee.get().getEmployeeId());
         } else {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
