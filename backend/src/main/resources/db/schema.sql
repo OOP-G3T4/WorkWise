@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
     `short_bio` varchar(255)  NOT NULL ,
     `al_balance` int  NOT NULL ,
     `mc_balance` int  NOT NULL ,
+    `password` varchar(255) NOT NULL,
     PRIMARY KEY (`employee_id`)
 );
 
@@ -27,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
     `name` varchar(120)  NOT NULL ,
     `email` varchar(200)  NOT NULL ,
     `phone_number` varchar(20)  NOT NULL ,
+    `password` varchar(255) NOT NULL,
     PRIMARY KEY (`admin_id`)
 );
 
