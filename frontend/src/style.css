@@ -28,6 +28,11 @@
     filter: brightness(85%);
 }
 
+/* GMaps Autofill (Allow it to be seen on Modals) */
+.pac-container {
+    z-index: 1056 !important;
+}
+
 /* BREAKPOINT CUSTOMIZATION ================================================== [START] */
 
 /* Styling UP TO md (576px) */
