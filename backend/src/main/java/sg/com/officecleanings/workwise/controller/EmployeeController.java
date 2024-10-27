@@ -130,4 +130,14 @@ public class EmployeeController {
         return admin.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
+        Optional<Employee> employee = employeeService.verifyPassword(email, password);
+        if (employee.isPresent()) {
+            return ResponseEntity.ok(employee.get().getEmployeeId());
+        } else {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
+    }
 }

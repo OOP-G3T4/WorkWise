@@ -3,6 +3,7 @@ package sg.com.officecleanings.workwise.service;
 import sg.com.officecleanings.workwise.model.Admin;
 import sg.com.officecleanings.workwise.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,9 @@ public class AdminService {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     public List<Admin> getAllAdmins() {
         return adminRepository.findAll();
     }
@@ -23,11 +27,19 @@ public class AdminService {
     }
 
     public Admin saveAdmin(Admin admin) {
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         return adminRepository.save(admin);
     }
 
     public void deleteAdmin(int id) {
         adminRepository.deleteById(id);
     }
-}
 
+    public Optional<Admin> verifyPassword(String email, String rawPassword) {
+        Optional<Admin> admin = adminRepository.findByEmail(email);
+        if (admin.isPresent() && passwordEncoder.matches(rawPassword, admin.get().getPassword())) {
+            return admin;
+        }
+        return Optional.empty();
+    }
+}
