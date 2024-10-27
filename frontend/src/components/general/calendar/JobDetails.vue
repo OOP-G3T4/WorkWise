@@ -1,96 +1,206 @@
 <script setup>
-import { mapState } from 'vuex';
-import GmapInput from '../forms/GmapInput.vue';
+import { mapState } from "vuex";
+import GmapInput from "../forms/GmapInput.vue";
 </script>
 
 <template>
-    <!-- Parent Container -->   
-    <div @mouseover="showHoverContent(true)" @mouseleave="showHoverContent(false)" @click="openMainModal(true)"  :class="parentContainerClasses" :style="parentContainerStyle" class="rounded">
+    <!-- Parent Container -->
+    <div
+        @mouseover="showHoverContent(true)"
+        @mouseleave="showHoverContent(false)"
+        @click="openMainModal(true)"
+        :class="parentContainerClasses"
+        :style="parentContainerStyle"
+        class="rounded"
+    >
         <!-- Job Card -->
-        <div @click="openMainModal()" class="card" :class="jobCardClasses" >
+        <div @click="openMainModal()" class="card" :class="jobCardClasses">
             <!-- Client Name and Warning (optional) -->
-            <div class="fs-9 fs-md-7 card-header fw-semibold px-2 px-md-3 py-1 py-md-2 text-truncate">
-                <font-awesome-icon v-if="showJobStartedWarning" class="text-danger me-2" icon="fa-solid fa-circle-exclamation" />{{ jobDetails.clientDetails.clientName }}
+            <div
+                class="fs-9 fs-md-7 card-header fw-semibold px-2 px-md-3 py-1 py-md-2 text-truncate"
+            >
+                <font-awesome-icon
+                    v-if="showJobStartedWarning"
+                    class="text-danger me-2"
+                    icon="fa-solid fa-circle-exclamation"
+                />{{ jobDetails.clientDetails.clientName }}
             </div>
-    
+
             <!-- Job address and Num cleaners -->
             <div class="card-body overflow-auto px-2 px-md-3 py-1 py-md-2">
-                <p class="fs-9 fs-md-7 mb-1">{{ jobDetails.jobAddress.address }}</p>
-                <p class="fs-9 fs-md-7 mb-1"><font-awesome-icon class="me-2" :icon="overOneCleaner ? `fa-solid fa-users` : `fa-solid fa-user`" />{{ Object.keys(jobDetails.cleaners).length }} <span class="d-none d-md-inline-block">cleaner{{ overOneCleaner ? `s` : `` }}</span></p>
-                <p class="fs-9 fs-md-7 mb-0"><font-awesome-icon class="me-2 d-none d-md-inline-block" icon="fa-solid fa-clock" />{{ convertTimeToReadable(jobDetails.startTime) }} - {{ convertTimeToReadable(jobDetails.endTime) }}</p>
+                <p class="fs-9 fs-md-7 mb-1">
+                    {{ jobDetails.jobAddress.address }}
+                </p>
+                <p class="fs-9 fs-md-7 mb-1">
+                    <font-awesome-icon
+                        class="me-2"
+                        :icon="
+                            overOneCleaner
+                                ? `fa-solid fa-users`
+                                : `fa-solid fa-user`
+                        "
+                    />{{ Object.keys(jobDetails.cleaners).length }}
+                    <span class="d-none d-md-inline-block"
+                        >cleaner{{ overOneCleaner ? `s` : `` }}</span
+                    >
+                </p>
+                <p class="fs-9 fs-md-7 mb-0">
+                    <font-awesome-icon
+                        class="me-2 d-none d-md-inline-block"
+                        icon="fa-solid fa-clock"
+                    />{{ convertTimeToReadable(jobDetails.startTime) }} -
+                    {{ convertTimeToReadable(jobDetails.endTime) }}
+                </p>
             </div>
-    
+
             <!-- Job status -->
-            <div class="card-footer fs-10 fs-md-8 px-2 px-md-3 py-1 py-md-2 text-truncate">
-                <font-awesome-icon class="me-2" icon="fa-solid fa-circle" :style="{ color: statusColorMap[jobDetails.jobStatus] }" />{{ jobDetails.jobStatus }}
+            <div
+                class="card-footer fs-10 fs-md-8 px-2 px-md-3 py-1 py-md-2 text-truncate"
+            >
+                <font-awesome-icon
+                    class="me-2"
+                    icon="fa-solid fa-circle"
+                    :style="{ color: statusColorMap[jobDetails.jobStatus] }"
+                />{{ jobDetails.jobStatus }}
             </div>
         </div>
     </div>
 
     <!-- Main Modal -->
-    <div class="modal fade" :id="`job-modal-${jobDetails.appointmentId}`" tabindex="-1" :aria-labelledby="`job-modal-label-${jobDetails.appointmentId}`" aria-hidden="true">
+    <div
+        class="modal fade"
+        :id="`job-modal-${jobDetails.appointmentId}`"
+        tabindex="-1"
+        :aria-labelledby="`job-modal-label-${jobDetails.appointmentId}`"
+        aria-hidden="true"
+    >
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header justify-content-between">
-                    <h1 class="modal-title fs-5" :id="`job-modal-label-${jobDetails.appointmentId}`"><span class="text-secondary">Appointment ID:</span> {{ jobDetails.appointmentId }}</h1>
-                    
+                    <h1
+                        class="modal-title fs-5"
+                        :id="`job-modal-label-${jobDetails.appointmentId}`"
+                    >
+                        <span class="text-secondary">Appointment ID:</span>
+                        {{ jobDetails.appointmentId }}
+                    </h1>
+
                     <div class="d-flex align-items-center">
-                        <button v-if="userType == 'admin' && jobDetails.jobStatus != 'COMPLETED'" @click="toggleEditMode()" type="button" class="btn btn-outline-secondary border-0" :class="isEditMode ? 'active' : ''"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></button>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button
+                            v-if="
+                                userType == 'admin' &&
+                                jobDetails.jobStatus != 'COMPLETED'
+                            "
+                            @click="toggleEditMode()"
+                            type="button"
+                            class="btn btn-outline-secondary border-0"
+                            :class="isEditMode ? 'active' : ''"
+                        >
+                            <font-awesome-icon
+                                icon="fa-solid fa-pen-to-square"
+                            />
+                        </button>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
                     </div>
                 </div>
-                
+
                 <div class="modal-body">
                     <div class="container-fluid">
                         <!-- Job status -->
                         <div class="row">
                             <div class="col-12">
                                 <!-- Job Status -->
-                                <p><font-awesome-icon class="me-2" icon="fa-solid fa-circle" :style="{ color: statusColorMap[jobDetails.jobStatus] }" />{{ jobDetails.jobStatus }}</p>
+                                <p>
+                                    <font-awesome-icon
+                                        class="me-2"
+                                        icon="fa-solid fa-circle"
+                                        :style="{
+                                            color: statusColorMap[
+                                                jobDetails.jobStatus
+                                            ],
+                                        }"
+                                    />{{ jobDetails.jobStatus }}
+                                </p>
                             </div>
                         </div>
 
                         <!-- IF PROOF NOT UPLOADED ERROR -->
-                        <hr v-if="showJobStartedWarning" class="border-2 rounded border-secondary mt-0">
+                        <hr
+                            v-if="showJobStartedWarning"
+                            class="border-2 rounded border-secondary mt-0"
+                        />
 
                         <div v-if="showJobStartedWarning" class="row mb-3">
-                            <template v-if="userType == 'admin' ">
+                            <template v-if="userType == 'admin'">
                                 <div class="col-12">
-                                    <h6 class="text-danger fw-bold">ACTION REQUIRED</h6>
-                                    <p>Employee did not upload proof of arrival within {{ arrivalBufferMinutes }} min. Should this job continue?</p>
+                                    <h6 class="text-danger fw-bold">
+                                        ACTION REQUIRED
+                                    </h6>
+                                    <p>
+                                        Employee did not upload proof of arrival
+                                        within {{ arrivalBufferMinutes }} min.
+                                        Should this job continue?
+                                    </p>
                                 </div>
-    
+
                                 <div class="col-6">
-                                    <button class="btn btn-sm btn-secondary w-100">Continue</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary w-100"
+                                    >
+                                        Continue
+                                    </button>
                                 </div>
-                                
+
                                 <div class="col-6">
-                                    <button class="btn btn-sm btn-danger w-100">Cancel Job</button>
+                                    <button class="btn btn-sm btn-danger w-100">
+                                        Cancel Job
+                                    </button>
                                 </div>
                             </template>
 
-                            <template v-else-if="userType == 'employee' ">
+                            <template v-else-if="userType == 'employee'">
                                 <div class="col-12">
-                                    <h6 class="text-danger fw-bold">ACTION REQUIRED</h6>
-                                    <p class="m-0">Upload proof of arrival within {{ arrivalBufferMinutes }} min to continue this job</p>
+                                    <h6 class="text-danger fw-bold">
+                                        ACTION REQUIRED
+                                    </h6>
+                                    <p class="m-0">
+                                        Upload proof of arrival within
+                                        {{ arrivalBufferMinutes }} min to
+                                        continue this job
+                                    </p>
                                 </div>
                             </template>
                         </div>
 
-                        <hr class="border-2 rounded border-secondary mt-0">
+                        <hr class="border-2 rounded border-secondary mt-0" />
 
                         <!-- Client Name & Img -->
                         <div class="row">
                             <!-- Img -->
                             <div class="col-auto">
-                                <img src="https://placehold.co/200x200?text=Profile+Pic" alt="Client Image" class="client-img" />
+                                <img
+                                    src="https://placehold.co/200x200?text=Profile+Pic"
+                                    alt="Client Image"
+                                    class="client-img"
+                                />
                             </div>
 
                             <!-- Name -->
                             <div class="col d-flex align-items-center">
                                 <div>
-                                    <p class="text-secondary m-0">Client Name</p>
-                                    <h6 class="m-0">{{ jobDetails.clientDetails.clientName }}</h6>
+                                    <p class="text-secondary m-0">
+                                        Client Name
+                                    </p>
+                                    <h6 class="m-0">
+                                        {{
+                                            jobDetails.clientDetails.clientName
+                                        }}
+                                    </h6>
                                 </div>
                             </div>
                         </div>
@@ -100,14 +210,24 @@ import GmapInput from '../forms/GmapInput.vue';
                             <!-- Package -->
                             <div v-if="!isEditMode" class="col-auto">
                                 <p class="text-secondary m-0">Package</p>
-                                <h6 class="m-0">{{ jobDetails.packageType }}</h6>
+                                <h6 class="m-0">
+                                    {{ jobDetails.packageType }}
+                                </h6>
                             </div>
 
                             <!-- Package [Edit Mode] -->
                             <div v-else class="col-auto">
                                 <div class="form-floating">
-                                    <select class="form-select" v-model="jobEdit.packageType">
-                                        <option v-for="e_package in allPackages" :value="e_package">{{ e_package }}</option>
+                                    <select
+                                        class="form-select"
+                                        v-model="jobEdit.packageType"
+                                    >
+                                        <option
+                                            v-for="e_package in allPackages"
+                                            :value="e_package"
+                                        >
+                                            {{ e_package }}
+                                        </option>
                                     </select>
 
                                     <label for="floatingInput">Package</label>
@@ -117,14 +237,22 @@ import GmapInput from '../forms/GmapInput.vue';
                             <!-- Address -->
                             <div v-if="!isEditMode" class="col-auto">
                                 <p class="text-secondary m-0">Address</p>
-                                <h6 class="m-0">{{ jobDetails.jobAddress.address }}</h6>
+                                <h6 class="m-0">
+                                    {{ jobDetails.jobAddress.address }}
+                                </h6>
                             </div>
 
                             <!-- Address [Edit Mode] -->
                             <div v-else class="col-auto">
                                 <div class="form-floating">
-                                    <GmapInput :inputValue="jobEdit.jobAddress.address" @valChange="addressChange" />
-                                    {{ "For debugging (Should change with input):" + jobEdit.jobAddress.address }}
+                                    <GmapInput
+                                        :inputValue="jobEdit.jobAddress.address"
+                                        @valChange="addressChange"
+                                    />
+                                    {{
+                                        "For debugging (Should change with input):" +
+                                        jobEdit.jobAddress.address
+                                    }}
                                     <!-- <input type="text" class="form-control" v-model="jobEdit.jobAddress.address" /> -->
                                     <label for="floatingInput">Address</label>
                                 </div>
@@ -140,24 +268,72 @@ import GmapInput from '../forms/GmapInput.vue';
                             </div>
 
                             <!-- ERROR: IF END TIME IS BEFORE START TIME -->
-                            <div v-if="isEditMode && isJobEndBeforeStart(jobEdit.date, jobEdit.startTime, jobEdit.endTime)" class="col-12">
-                                <p class="text-danger"><font-awesome-icon icon="fa-solid fa-circle-exclamation" class="me-2" />End time cannot be before start time</p>
+                            <div
+                                v-if="
+                                    isEditMode &&
+                                    isJobEndBeforeStart(
+                                        jobEdit.date,
+                                        jobEdit.startTime,
+                                        jobEdit.endTime
+                                    )
+                                "
+                                class="col-12"
+                            >
+                                <p class="text-danger">
+                                    <font-awesome-icon
+                                        icon="fa-solid fa-circle-exclamation"
+                                        class="me-2"
+                                    />End time cannot be before start time
+                                </p>
                             </div>
 
                             <!-- ERROR: IF DATETIME IN THE PAST -->
-                            <div v-else-if="isEditMode && isJobStartBeforeToday(jobEdit.date, jobEdit.startTime)" class="col-12">
-                                <p class="text-danger"><font-awesome-icon icon="fa-solid fa-circle-exclamation" class="me-2" />Job period selected cannot be in the past</p>
+                            <div
+                                v-else-if="
+                                    isEditMode &&
+                                    isJobStartBeforeToday(
+                                        jobEdit.date,
+                                        jobEdit.startTime
+                                    )
+                                "
+                                class="col-12"
+                            >
+                                <p class="text-danger">
+                                    <font-awesome-icon
+                                        icon="fa-solid fa-circle-exclamation"
+                                        class="me-2"
+                                    />Job period selected cannot be in the past
+                                </p>
                             </div>
-                            
+
                             <!-- ERROR: TIMING OUT OF ALLOWED RANGE -->
-                            <div v-else-if="isEditMode && isJobTimeOutOfBounds(jobEdit.date, jobEdit.startTime, jobEdit.endTime)" class="col-12">
-                                <p class="text-danger"><font-awesome-icon icon="fa-solid fa-circle-exclamation" class="me-2" />Job must be between 8AM and 10PM</p>
+                            <div
+                                v-else-if="
+                                    isEditMode &&
+                                    isJobTimeOutOfBounds(
+                                        jobEdit.date,
+                                        jobEdit.startTime,
+                                        jobEdit.endTime
+                                    )
+                                "
+                                class="col-12"
+                            >
+                                <p class="text-danger">
+                                    <font-awesome-icon
+                                        icon="fa-solid fa-circle-exclamation"
+                                        class="me-2"
+                                    />Job must be between 8AM and 10PM
+                                </p>
                             </div>
 
                             <!-- Date [Edit Mode] -->
                             <div v-if="isEditMode" class="col-auto">
                                 <div class="form-floating">
-                                    <input type="date" class="form-control" v-model="jobEdit.date" />
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        v-model="jobEdit.date"
+                                    />
                                     <label for="floatingInput">Date</label>
                                 </div>
                             </div>
@@ -165,28 +341,70 @@ import GmapInput from '../forms/GmapInput.vue';
                             <!-- Day of week -->
                             <div class="col-auto">
                                 <p class="text-secondary m-0">Day</p>
-                                <h6 v-if="!isEditMode" class="m-0">{{ new Date(jobDetails.date).toLocaleDateString("en-US", { weekday: "short" }) }}</h6>
-                                <h6 v-else class="m-0">{{ new Date(jobEdit.date).toLocaleDateString("en-US", { weekday: "short" }) }}</h6>
+                                <h6 v-if="!isEditMode" class="m-0">
+                                    {{
+                                        new Date(
+                                            jobDetails.date
+                                        ).toLocaleDateString("en-US", {
+                                            weekday: "short",
+                                        })
+                                    }}
+                                </h6>
+                                <h6 v-else class="m-0">
+                                    {{
+                                        new Date(
+                                            jobEdit.date
+                                        ).toLocaleDateString("en-US", {
+                                            weekday: "short",
+                                        })
+                                    }}
+                                </h6>
                             </div>
 
                             <!-- Time -->
                             <div v-if="!isEditMode" class="col-auto">
                                 <p class="text-secondary m-0">Time</p>
-                                <h6 class="m-0">{{ convertTimeToReadable(jobDetails.startTime) }} - {{ convertTimeToReadable(jobDetails.endTime) }}</h6>
+                                <h6 class="m-0">
+                                    {{
+                                        convertTimeToReadable(
+                                            jobDetails.startTime
+                                        )
+                                    }}
+                                    -
+                                    {{
+                                        convertTimeToReadable(
+                                            jobDetails.endTime
+                                        )
+                                    }}
+                                </h6>
                             </div>
 
                             <!-- Time [Edit Mode - Start Time] -->
                             <div v-if="isEditMode" class="col-6">
                                 <div class="form-floating">
-                                    <input type="time" class="form-control" min="08:00" max="22:00" v-model="jobEdit.startTime" />
-                                    <label for="floatingInput">Start Time</label>
+                                    <input
+                                        type="time"
+                                        class="form-control"
+                                        min="08:00"
+                                        max="22:00"
+                                        v-model="jobEdit.startTime"
+                                    />
+                                    <label for="floatingInput"
+                                        >Start Time</label
+                                    >
                                 </div>
                             </div>
 
                             <!-- Time [Edit Mode - End Time] -->
                             <div v-if="isEditMode" class="col-6">
                                 <div class="form-floating">
-                                    <input type="time" class="form-control" min="08:00" max="22:00" v-model="jobEdit.endTime" />
+                                    <input
+                                        type="time"
+                                        class="form-control"
+                                        min="08:00"
+                                        max="22:00"
+                                        v-model="jobEdit.endTime"
+                                    />
                                     <label for="floatingInput">End Time</label>
                                 </div>
                             </div>
@@ -195,11 +413,26 @@ import GmapInput from '../forms/GmapInput.vue';
                         <!-- Assigned Cleaner(s) Names -->
                         <div v-if="!isEditMode" class="row gy-2 mt-3">
                             <div class="col-auto">
-                                <p class="text-secondary m-0">Cleaner{{ overOneCleaner ?  `s` : `` }}</p>
+                                <p class="text-secondary m-0">
+                                    Cleaner{{ overOneCleaner ? `s` : `` }}
+                                </p>
                                 <h6 class="m-0">
-                                    <template v-for="e_cleaner_id, index in jobDetails.cleaners">
+                                    <template
+                                        v-for="(
+                                            e_cleaner_id, index
+                                        ) in jobDetails.cleaners"
+                                    >
                                         {{ allEmployees[e_cleaner_id] }}
-                                        <span v-if="index < Object.keys(jobDetails.cleaners).length - 1" class="text-secondary">, </span>
+                                        <span
+                                            v-if="
+                                                index <
+                                                Object.keys(jobDetails.cleaners)
+                                                    .length -
+                                                    1
+                                            "
+                                            class="text-secondary"
+                                            >,
+                                        </span>
                                     </template>
                                 </h6>
                             </div>
@@ -209,27 +442,70 @@ import GmapInput from '../forms/GmapInput.vue';
                         <div v-else class="row gy-2 mt-3">
                             <div class="col-12">
                                 <div class="d-flex align-items-center mb-3">
-                                    <p class="text-secondary m-0 me-2">Cleaner(s)</p>
-                                    <button :disabled="tooManyEmployeesInJob()" @click="addNewCleaner()" class="btn btn-sm btn-secondary rounded-5 py-0 px-2"><font-awesome-icon class="fa-xs" icon="fa-solid fa-plus" /></button>
+                                    <p class="text-secondary m-0 me-2">
+                                        Cleaner(s)
+                                    </p>
+                                    <button
+                                        :disabled="tooManyEmployeesInJob()"
+                                        @click="addNewCleaner()"
+                                        class="btn btn-sm btn-secondary rounded-5 py-0 px-2"
+                                    >
+                                        <font-awesome-icon
+                                            class="fa-xs"
+                                            icon="fa-solid fa-plus"
+                                        />
+                                    </button>
                                 </div>
 
-                                <div class="input-group mb-2" v-for="(e_cleaner_id, idx) in jobEdit.cleaners" :key="idx">
+                                <div
+                                    class="input-group mb-2"
+                                    v-for="(
+                                        e_cleaner_id, idx
+                                    ) in jobEdit.cleaners"
+                                    :key="idx"
+                                >
                                     <div class="form-floating">
-                                        <select class="form-select" v-model="jobEdit.cleaners[idx]">
-                                            <option v-for="(e_employee, e_listed_id) in allEmployees" :value="e_listed_id" :disabled="jobEdit.cleaners.includes(e_listed_id)">
-                                                {{ e_employee }} (ID: {{ e_listed_id }})
+                                        <select
+                                            class="form-select"
+                                            v-model="jobEdit.cleaners[idx]"
+                                        >
+                                            <option
+                                                v-for="(
+                                                    e_employee, e_listed_id
+                                                ) in allEmployees"
+                                                :value="e_listed_id"
+                                                :disabled="
+                                                    jobEdit.cleaners.includes(
+                                                        e_listed_id
+                                                    )
+                                                "
+                                            >
+                                                {{ e_employee }} (ID:
+                                                {{ e_listed_id }})
                                             </option>
                                         </select>
-    
-                                        <label for="floatingInput">Cleaner {{ idx+1 }}</label>
+
+                                        <label for="floatingInput"
+                                            >Cleaner {{ idx + 1 }}</label
+                                        >
                                     </div>
 
-                                    <button v-if="jobEdit.cleaners.length > 1" @click="deleteCleaner(idx)" class="btn btn-secondary" type="button"><font-awesome-icon class="mx-2" icon="fa-solid fa-trash" /></button>
+                                    <button
+                                        v-if="jobEdit.cleaners.length > 1"
+                                        @click="deleteCleaner(idx)"
+                                        class="btn btn-secondary"
+                                        type="button"
+                                    >
+                                        <font-awesome-icon
+                                            class="mx-2"
+                                            icon="fa-solid fa-trash"
+                                        />
+                                    </button>
                                 </div>
                             </div>
                         </div>
 
-                        <hr class="border-2 rounded border-secondary">
+                        <hr class="border-2 rounded border-secondary" />
 
                         <!-- SECTION 2: Client Details -->
                         <div class="row">
@@ -243,13 +519,17 @@ import GmapInput from '../forms/GmapInput.vue';
                             <!-- Phone -->
                             <div class="col-auto">
                                 <p class="text-secondary m-0">Phone</p>
-                                <h6 class="m-0">{{ jobDetails.clientDetails.clientContact }}</h6>
+                                <h6 class="m-0">
+                                    {{ jobDetails.clientDetails.clientContact }}
+                                </h6>
                             </div>
 
                             <!-- Email -->
                             <div class="col-auto">
                                 <p class="text-secondary m-0">Email</p>
-                                <h6 class="m-0">{{ jobDetails.clientDetails.clientEmail }}</h6>
+                                <h6 class="m-0">
+                                    {{ jobDetails.clientDetails.clientEmail }}
+                                </h6>
                             </div>
                         </div>
 
@@ -258,27 +538,45 @@ import GmapInput from '../forms/GmapInput.vue';
                             <!-- Address -->
                             <div class="col-auto">
                                 <p class="text-secondary m-0">Address</p>
-                                <h6 class="m-0">{{ jobDetails.clientDetails.clientAddress }}</h6>
+                                <h6 class="m-0">
+                                    {{ jobDetails.clientDetails.clientAddress }}
+                                </h6>
                             </div>
 
                             <!-- Gender -->
                             <div class="col-auto">
                                 <p class="text-secondary m-0">Gender</p>
-                                <h6 class="m-0">{{ jobDetails.clientDetails.clientGender }}</h6>
+                                <h6 class="m-0">
+                                    {{ jobDetails.clientDetails.clientGender }}
+                                </h6>
                             </div>
 
                             <!-- Age -->
                             <div class="col-auto">
                                 <p class="text-secondary m-0">Age</p>
-                                <h6 class="m-0">{{ jobDetails.clientDetails.clientAge }}</h6>
+                                <h6 class="m-0">
+                                    {{ jobDetails.clientDetails.clientAge }}
+                                </h6>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="modal-footer" v-if="isEditMode">
-                    <button type="button" class="btn btn-secondary" @click="revertEdits()">Cancel</button>
-                    <button type="button" class="btn btn-primary" @click="saveChanges()">Save changes</button>
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        @click="revertEdits()"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="saveChanges()"
+                    >
+                        Save changes
+                    </button>
                 </div>
             </div>
         </div>
@@ -308,7 +606,7 @@ export default {
             type: Boolean,
             required: false,
             default: true,
-        }
+        },
     },
     data() {
         return {
@@ -321,13 +619,12 @@ export default {
             // EDITING VARIABLES ==============================
             jobEdit: null, // Will be automatically populated with jobDetails object on Mounted
 
-
             // SETTINGS BELOW ===================================
             // To change color of statuses
             statusColorMap: {
                 "IN PROGRESS": "#e3b322", // Not a current field update later (ADAMBFT)
-                "COMPLETED": "#0f6320",
-                "PENDING": "#858585",
+                COMPLETED: "#0f6320",
+                PENDING: "#858585",
             },
 
             // Buffer time allowed after job starts before warning is shown if arrivalProof is not uploaded
@@ -338,13 +635,13 @@ export default {
 
             // TO BE FETCHED FROM API LATER =====================
             allPackages: [],
-            
+
             // Employees (key = ID, value = Name)
             allEmployees: {},
         };
     },
     computed: {
-        ...mapState(["userType"]),  // Access userType from Vuex state
+        ...mapState(["userType"]), // Access userType from Vuex state
 
         // Returns True if there are more than 1 cleaners in the job
         overOneCleaner() {
@@ -358,7 +655,9 @@ export default {
                 return false;
             }
 
-            const jobStartDateTime = new Date(`${this.jobDetails.date}T${this.jobDetails.startTime}`);
+            const jobStartDateTime = new Date(
+                `${this.jobDetails.date}T${this.jobDetails.startTime}`
+            );
 
             if (this.currentDateTime < jobStartDateTime) {
                 return false;
@@ -370,27 +669,30 @@ export default {
 
         parentContainerStyle() {
             return {
-                backgroundColor: this.isCompressed ? this.statusColorMap[this.jobDetails.jobStatus] : "",
+                backgroundColor: this.isCompressed
+                    ? this.statusColorMap[this.jobDetails.jobStatus]
+                    : "",
                 height: `${this.heightInPx}px`,
             };
         },
 
         parentContainerClasses() {
             return {
-                'compressed-parent-container': this.isCompressed,
-                'border border-3 border-danger': this.isCompressed && this.showJobStartedWarning,
-            }
+                "compressed-parent-container": this.isCompressed,
+                "border border-3 border-danger":
+                    this.isCompressed && this.showJobStartedWarning,
+            };
         },
 
         jobCardClasses() {
             return {
-                'border border-3 border-danger': this.showJobStartedWarning,
-                'compressed-job-card': this.isCompressed,
-                'showPopoverRight': this.popoverRight && this.isCompressed,
-                'showPopoverLeft': !this.popoverRight && this.isCompressed,
-                'h-100': !this.isCompressed,
-                'd-none': this.isCompressed && !this.isHovering,
-            }
+                "border border-3 border-danger": this.showJobStartedWarning,
+                "compressed-job-card": this.isCompressed,
+                showPopoverRight: this.popoverRight && this.isCompressed,
+                showPopoverLeft: !this.popoverRight && this.isCompressed,
+                "h-100": !this.isCompressed,
+                "d-none": this.isCompressed && !this.isHovering,
+            };
         },
     },
     methods: {
@@ -436,15 +738,22 @@ export default {
             const jobStart = new Date(`${dateStr}T${startTimeStr}`);
             const jobEnd = new Date(`${dateStr}T${endTimeStr}`);
 
-            const earliestAllowed = new Date(`${dateStr}T${this.earliestAllowedJobTime}`);
-            const latestAllowed = new Date(`${dateStr}T${this.latestAllowedJobTime}`);
+            const earliestAllowed = new Date(
+                `${dateStr}T${this.earliestAllowedJobTime}`
+            );
+            const latestAllowed = new Date(
+                `${dateStr}T${this.latestAllowedJobTime}`
+            );
 
             return jobStart < earliestAllowed || jobEnd > latestAllowed;
         },
 
         tooManyEmployeesInJob() {
             // Current logic: If all employees are already in the job, disable the 'Add Cleaner' button
-            return Object.keys(this.jobEdit.cleaners).length >= Object.keys(this.allEmployees).length;
+            return (
+                Object.keys(this.jobEdit.cleaners).length >=
+                Object.keys(this.allEmployees).length
+            );
         },
 
         addNewCleaner() {
@@ -476,23 +785,38 @@ export default {
             // INSERT API CALL HERE <===========================
 
             // Check if any errors are present
-            if (this.isJobEndBeforeStart(this.jobEdit.date, this.jobEdit.startTime, this.jobEdit.endTime) ||
-                this.isJobStartBeforeToday(this.jobEdit.date, this.jobEdit.startTime) ||
-                this.isJobTimeOutOfBounds(this.jobEdit.date, this.jobEdit.startTime, this.jobEdit.endTime)) {
+            if (
+                this.isJobEndBeforeStart(
+                    this.jobEdit.date,
+                    this.jobEdit.startTime,
+                    this.jobEdit.endTime
+                ) ||
+                this.isJobStartBeforeToday(
+                    this.jobEdit.date,
+                    this.jobEdit.startTime
+                ) ||
+                this.isJobTimeOutOfBounds(
+                    this.jobEdit.date,
+                    this.jobEdit.startTime,
+                    this.jobEdit.endTime
+                )
+            ) {
                 return;
             }
         },
         addressChange(data) {
             // GMaps input emits the new address, this function updates the jobEdit object
             this.jobEdit.jobAddress.address = data.value;
-        }
+        },
     },
     mounted() {
         // Sets up main modal
         // Note to self: 'Next tick' is necessary to ensure that the modal is loaded in DOM before it is accessed
         this.$nextTick(() => {
             this.mainModal = new bootstrap.Modal(
-                document.getElementById(`job-modal-${this.jobDetails.appointmentId}`)
+                document.getElementById(
+                    `job-modal-${this.jobDetails.appointmentId}`
+                )
             );
         });
 
@@ -505,9 +829,9 @@ export default {
         }, 60000);
 
         // Pull actual employees from API
-        fetch('http://localhost:8081/api/employee')
-            .then(response => response.json())
-            .then(data => {
+        fetch("http://localhost:8081/api/employee")
+            .then((response) => response.json())
+            .then((data) => {
                 // Format data to match allEmployees object
                 var formattedEmployees = {};
 
@@ -517,12 +841,12 @@ export default {
                 }
 
                 this.allEmployees = formattedEmployees;
-            })
-        
+            });
+
         // Pull actual packages from API
-        fetch('http://localhost:8081/api/package')
-            .then(response => response.json())
-            .then(data => {
+        fetch("http://localhost:8081/api/package")
+            .then((response) => response.json())
+            .then((data) => {
                 var arr_pkgs = [];
 
                 for (var i = 0; i < data.length; i++) {
@@ -532,7 +856,7 @@ export default {
                 }
 
                 this.allPackages = arr_pkgs;
-            })
+            });
     },
 };
 </script>
