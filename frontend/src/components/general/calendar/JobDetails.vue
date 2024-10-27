@@ -1,5 +1,6 @@
 <script setup>
 import { mapState } from 'vuex';
+import GmapInput from '../forms/GmapInput.vue';
 </script>
 
 <template>
@@ -122,7 +123,9 @@ import { mapState } from 'vuex';
                             <!-- Address [Edit Mode] -->
                             <div v-else class="col-auto">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" v-model="jobEdit.jobAddress.address" />
+                                    <GmapInput :inputValue="jobEdit.jobAddress.address" @valChange="addressChange" />
+                                    {{ "For debugging (Should change with input):" + jobEdit.jobAddress.address }}
+                                    <!-- <input type="text" class="form-control" v-model="jobEdit.jobAddress.address" /> -->
                                     <label for="floatingInput">Address</label>
                                 </div>
                             </div>
@@ -478,6 +481,10 @@ export default {
                 this.isJobTimeOutOfBounds(this.jobEdit.date, this.jobEdit.startTime, this.jobEdit.endTime)) {
                 return;
             }
+        },
+        addressChange(data) {
+            // GMaps input emits the new address, this function updates the jobEdit object
+            this.jobEdit.jobAddress.address = data.value;
         }
     },
     mounted() {

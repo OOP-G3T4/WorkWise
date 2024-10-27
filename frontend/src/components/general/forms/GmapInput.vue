@@ -1,5 +1,5 @@
 <template>
-    <input v-model="value" />
+    <input type="text" class="form-control" v-model="value" />
 </template>
 
 <script>
@@ -25,7 +25,7 @@ export default {
     methods: {
         emitValue() {
             // Sends the value to the parent component
-            this.$emit('input', this.value);
+            this.$emit('valChange', {value : this.value});
         }
     },
 }
