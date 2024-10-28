@@ -54,27 +54,27 @@ INSERT INTO client_property (client_id, property_id)
 VALUES (1, 1),
        (2, 2),
        (3, 3),
-       (3, 4),
-       (2, 5),
-       (4, 6),
-       (5, 7),
-       (6, 8),
-       (7, 9),
-       (8, 10),
-       (9, 11),
-       (10, 12),
-       (11, 13),
-       (12, 14),
-       (13, 15),
-       (14, 16),
-       (15, 17),
-       (16, 18),
-       (17, 19),
-       (18, 20),
-       (19, 21),
-       (20, 22),
-       (4, 23),
-       (11, 24);
+       (4, 4),
+       (5, 5),
+       (6, 6),
+       (7, 7),
+       (8, 8),
+       (9, 9),
+       (10, 10),
+       (11, 11),
+       (12, 12),
+       (13, 13),
+       (14, 14),
+       (15, 15),
+       (16, 16),
+       (17, 17),
+       (18,18),
+       (19, 19),
+       (20, 20),
+       (1, 21),
+       (2, 22),
+       (3, 23),
+       (4, 24);
 
 -- Insert sample employees
 INSERT INTO employee (employee_id, name, home_address, phone_number, email, short_bio, al_balance, mc_balance, password)
@@ -123,27 +123,129 @@ VALUES ('W_3RM_HDB', 'WEEKLY', 276, 'THREE_ROOM', 'HDB', 23, 1, 3),
         ('BW_LANDED', 'BI_WEEKLY', 288, 'LANDED', 'LANDED', 18, 2, 4);
 
 -- Insert sample jobs
+-- Weekly Jobs (14 properties, each inserted 4 times for weekly frequency)
 INSERT INTO job (job_id, client_id, property_id, package_id, date, start_time, status, actual_duration)
-VALUES (1, 1, 1, 'W_3RM_HDB', '2024-10-11', '10:00:00', 'COMPLETED', 3),
-        (2, 2, 2, 'W_3RM_CONDO', '2024-10-28', '11:00:00', 'COMPLETED', 4),
-        (3, 2, 2, 'W_3RM_CONDO', '2024-10-15', '11:00:00', 'COMPLETED', 4),
-        (4, 3, 4, 'W_LANDED', '2024-11-11', '09:00:00', 'PENDING', 3),
-        (5, 3, 4, 'W_LANDED', '2024-11-18', '09:00:00', 'PENDING', 3),
-        (6, 3, 4, 'W_LANDED', '2024-11-25', '08:00:00', 'PENDING', 3),
-        (7, 3, 3, 'W_MAISONETTE_CONDO', '2024-11-28', '09:00:00', 'PENDING', 3),
-        (8, 2, 2, 'W_3RM_CONDO', '2024-11-15', '08:00:00', 'PENDING', 4),
-        (9, 1, 1, 'W_3RM_HDB', '2024-11-11', '09:00:00', 'PENDING', 3),
-        (10, 3, 3, 'W_MAISONETTE_CONDO', '2024-11-11', '12:00:00', 'PENDING', 3),
-        (11, 2, 2, 'W_3RM_CONDO', '2024-11-11', '14:30:00', 'PENDING', 4),
-        (12, 3, 4, 'W_LANDED', '2024-11-11', '20:00:00', 'PENDING', 3),
-        (13, 2, 5, 'W_4RM_HDB', '2024-11-11', '18:00:00', 'PENDING', 4),
-        (14, 2, 5, 'W_4RM_HDB', '2024-11-11', '08:00:00', 'PENDING', 4);
+VALUES
+    -- Week 1 (November 4)
+    (1, 1, 1, 'W_3RM_HDB', '2024-11-04', '09:00:00', 'PENDING', 3),
+    (2, 2, 2, 'W_4RM_HDB', '2024-11-04', '10:00:00', 'PENDING', 4),
+    (3, 3, 3, 'W_MAISONETTE_HDB', '2024-11-04', '09:00:00', 'PENDING', 3),
+    (4, 4, 4, 'W_5RM_CONDO', '2024-11-04', '12:00:00', 'PENDING', 4),
+    (5, 5, 5, 'W_2RM_CONDO', '2024-11-04', '13:00:00', 'PENDING', 3),
+    (6, 6, 6, 'W_3RM_HDB', '2024-11-04', '14:00:00', 'PENDING', 3),
+    (7, 7, 7, 'W_4RM_CONDO', '2024-11-04', '13:00:00', 'PENDING', 4),
+    (8, 8, 8, 'W_5RM_HDB', '2024-11-04', '14:00:00', 'PENDING', 4),
+    (9, 9, 9, 'W_LANDED', '2024-11-04', '17:00:00', 'PENDING', 4),
+    (10, 10, 10, 'W_2RM_HDB', '2024-11-04', '19:00:00', 'PENDING', 3),
+    (11, 11, 11, 'W_3RM_CONDO', '2024-11-04', '08:00:00', 'PENDING', 3),
+    (12, 12, 12, 'W_4RM_HDB', '2024-11-04', '09:30:00', 'PENDING', 4),
+    (13, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-04', '09:00:00', 'PENDING', 3),
+    (14, 14, 14, 'W_3RM_HDB', '2024-11-04', '13:00:00', 'PENDING', 3),
+
+    -- Week 2 (November 11)
+    (15, 1, 1, 'W_3RM_HDB', '2024-11-11', '09:00:00', 'PENDING', 3),
+    (16, 2, 2, 'W_4RM_HDB', '2024-11-11', '10:00:00', 'PENDING', 4),
+    (17, 3, 3, 'W_MAISONETTE_HDB', '2024-11-11', '09:00:00', 'PENDING', 3),
+    (18, 4, 4, 'W_5RM_CONDO', '2024-11-11', '12:00:00', 'PENDING', 4),
+    (19, 5, 5, 'W_2RM_CONDO', '2024-11-11', '13:00:00', 'PENDING', 3),
+    (20, 6, 6, 'W_3RM_HDB', '2024-11-11', '14:00:00', 'PENDING', 3),
+    (21, 7, 7, 'W_4RM_CONDO', '2024-11-11', '13:00:00', 'PENDING', 4),
+    (22, 8, 8, 'W_5RM_HDB', '2024-11-11', '14:00:00', 'PENDING', 4),
+    (23, 9, 9, 'W_LANDED', '2024-11-11', '17:00:00', 'PENDING', 4),
+    (24, 10, 10, 'W_2RM_HDB', '2024-11-11', '19:00:00', 'PENDING', 3),
+    (25, 11, 11, 'W_3RM_CONDO', '2024-11-11', '08:00:00', 'PENDING', 3),
+    (26, 12, 12, 'W_4RM_HDB', '2024-11-11', '09:30:00', 'PENDING', 4),
+    (27, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-11', '09:00:00', 'PENDING', 3),
+    (28, 14, 14, 'W_3RM_HDB', '2024-11-11', '13:00:00', 'PENDING', 3),
+
+    -- Week 3 (November 18)
+    (29, 1, 1, 'W_3RM_HDB', '2024-11-18', '09:00:00', 'PENDING', 3),
+    (30, 2, 2, 'W_4RM_HDB', '2024-11-18', '10:00:00', 'PENDING', 4),
+    (31, 3, 3, 'W_MAISONETTE_HDB', '2024-11-18', '09:00:00', 'PENDING', 3),
+    (32, 4, 4, 'W_5RM_CONDO', '2024-11-18', '12:00:00', 'PENDING', 4),
+    (33, 5, 5, 'W_2RM_CONDO', '2024-11-18', '13:00:00', 'PENDING', 3),
+    (34, 6, 6, 'W_3RM_HDB', '2024-11-18', '14:00:00', 'PENDING', 3),
+    (35, 7, 7, 'W_4RM_CONDO', '2024-11-18', '13:00:00', 'PENDING', 4),
+    (36, 8, 8, 'W_5RM_HDB', '2024-11-18', '14:00:00', 'PENDING', 4),
+    (37, 9, 9, 'W_LANDED', '2024-11-18', '17:00:00', 'PENDING', 4),
+    (38, 10, 10, 'W_2RM_HDB', '2024-11-18', '19:00:00', 'PENDING', 3),
+    (39, 11, 11, 'W_3RM_CONDO', '2024-11-18', '08:00:00', 'PENDING', 3),
+    (40, 12, 12, 'W_4RM_HDB', '2024-11-18', '09:30:00', 'PENDING', 4),
+    (41, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-18', '09:00:00', 'PENDING', 3),
+    (42, 14, 14, 'W_3RM_HDB', '2024-11-18', '13:00:00', 'PENDING', 3),
+
+    -- Week 4 (November 25)
+    (43, 1, 1, 'W_3RM_HDB', '2024-11-25', '09:00:00', 'PENDING', 3),
+    (44, 2, 2, 'W_4RM_HDB', '2024-11-25', '10:00:00', 'PENDING', 4),
+    (45, 3, 3, 'W_MAISONETTE_HDB', '2024-11-25', '09:00:00', 'PENDING', 3),
+    (46, 4, 4, 'W_5RM_CONDO', '2024-11-25', '12:00:00', 'PENDING', 4),
+    (47, 5, 5, 'W_2RM_CONDO', '2024-11-25', '13:00:00', 'PENDING', 3),
+    (48, 6, 6, 'W_3RM_HDB', '2024-11-25', '14:00:00', 'PENDING', 3),
+    (49, 7, 7, 'W_4RM_CONDO', '2024-11-25', '13:00:00', 'PENDING', 4),
+    (50, 8, 8, 'W_5RM_HDB', '2024-11-25', '14:00:00', 'PENDING', 4),
+    (51, 9, 9, 'W_LANDED', '2024-11-25', '17:00:00', 'PENDING', 4),
+    (52, 10, 10, 'W_2RM_HDB', '2024-11-25', '19:00:00', 'PENDING', 3),
+    (53, 11, 11, 'W_3RM_CONDO', '2024-11-25', '08:00:00', 'PENDING', 3),
+    (54, 12, 12, 'W_4RM_HDB', '2024-11-25', '09:30:00', 'PENDING', 4),
+    (55, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-25', '09:00:00', 'PENDING', 3),
+    (56, 14, 14, 'W_3RM_HDB', '2024-11-25', '13:00:00', 'PENDING', 3);
+
+-- Bi-Weekly Jobs (6 properties in Weeks 1 and 3)
+INSERT INTO job (job_id, client_id, property_id, package_id, date, start_time, status, actual_duration)
+VALUES
+    (57, 15, 15, 'BW_3RM_HDB', '2024-11-05', '09:00:00', 'PENDING', 3),
+    (58, 16, 16, 'BW_4RM_CONDO', '2024-11-05', '10:00:00', 'PENDING', 4),
+    (59, 17, 17, 'BW_5RM_HDB', '2024-11-05', '13:00:00', 'PENDING', 4),
+    (60, 18, 18, 'BW_MAISONETTE_CONDO', '2024-11-05', '13:00:00', 'PENDING', 3),
+    (61, 19, 19, 'BW_3RM_HDB', '2024-11-05', '17:00:00', 'PENDING', 3),
+    (62, 20, 20, 'BW_4RM_HDB', '2024-11-05', '19:00:00', 'PENDING', 4),
+
+    -- Repeat Bi-Weekly Jobs for Week 3
+    (63, 15, 15, 'BW_3RM_HDB', '2024-11-19', '09:00:00', 'PENDING', 3),
+    (64, 16, 16, 'BW_4RM_CONDO', '2024-11-19', '10:00:00', 'PENDING', 4),
+    (65, 17, 17, 'BW_5RM_HDB', '2024-11-19', '13:00:00', 'PENDING', 4),
+    (66, 18, 18, 'BW_MAISONETTE_CONDO', '2024-11-19', '13:00:00', 'PENDING', 3),
+    (67, 19, 19, 'BW_3RM_HDB', '2024-11-19', '17:00:00', 'PENDING', 3),
+    (68, 20, 20, 'BW_4RM_HDB', '2024-11-19', '19:00:00', 'PENDING', 4);
+
+-- Additional Bi-Weekly Jobs (4 properties in Weeks 2 and 4)
+INSERT INTO job (job_id, client_id, property_id, package_id, date, start_time, status, actual_duration)
+VALUES
+    (69, 1, 21, 'BW_3RM_CONDO', '2024-11-12', '09:00:00', 'PENDING', 3),
+    (70, 2, 22, 'BW_5RM_HDB', '2024-11-12', '10:00:00', 'PENDING', 4),
+    (71, 3, 23, 'BW_2RM_HDB', '2024-11-12', '13:00:00', 'PENDING', 3),
+    (72, 4, 24, 'BW_LANDED', '2024-11-12', '13:00:00', 'PENDING', 4),
+
+    -- Repeat Bi-Weekly Jobs for Week 4
+    (73, 1, 21, 'BW_3RM_CONDO', '2024-11-26', '09:00:00', 'PENDING', 3),
+    (74, 2, 22, 'BW_5RM_HDB', '2024-11-26', '10:00:00', 'PENDING', 4),
+    (75, 3, 23, 'BW_2RM_HDB', '2024-11-26', '13:00:00', 'PENDING', 3),
+    (76, 4, 24, 'BW_LANDED', '2024-11-26', '13:00:00', 'PENDING', 4);
+
+-- Insert completed sample jobs (4 properties in Weeks 2 and 4 of October)
+INSERT INTO job (job_id, client_id, property_id, package_id, date, start_time, status, actual_duration)
+VALUES
+    (77, 1, 21, 'BW_3RM_CONDO', '2024-10-15', '09:00:00', 'COMPLETED', 3),
+    (78, 2, 22, 'BW_5RM_HDB', '2024-10-15', '10:00:00', 'COMPLETED', 4),
+    (79, 3, 23, 'BW_2RM_HDB', '2024-10-15', '13:00:00', 'COMPLETED', 3),
+    (80, 4, 24, 'BW_LANDED', '2024-10-15', '13:00:00', 'COMPLETED', 4),
+
+    -- Repeat Bi-Weekly Jobs for Week 4
+    (81, 1, 21, 'BW_3RM_CONDO', '2024-10-29', '09:00:00', 'COMPLETED', 3),
+    (82, 2, 22, 'BW_5RM_HDB', '2024-10-29', '10:00:00', 'COMPLETED', 4),
+    (83, 3, 23, 'BW_2RM_HDB', '2024-10-29', '13:00:00', 'COMPLETED', 3),
+    (84, 4, 24, 'BW_LANDED', '2024-10-29', '13:00:00', 'COMPLETED', 4);
 
 -- Link jobs to employees
 INSERT INTO job_employee (job_id, employee_id, reasoning)
-VALUES (1, 1, NULL),
-        (2, 2, NULL),
-        (3, 1, NULL);
+VALUES (77, 1, 'Testing purpose only'),
+        (78, 2, 'Testing purpose only'),
+        (79, 3, 'Testing purpose only'),
+        (80, 4, 'Testing purpose only'),
+        (81, 1, 'Testing purpose only'),
+        (82, 2, 'Testing purpose only'),
+        (83, 3, 'Testing purpose only'),
+        (84, 4, 'Testing purpose only');
 
 -- Insert sample events into EmployeeEvents
 INSERT INTO employee_event (event_id, employee_id, event_type, event_date, job_id, duration, mc_used, al_used)
