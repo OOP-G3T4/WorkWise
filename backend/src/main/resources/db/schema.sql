@@ -145,7 +145,8 @@ CREATE TABLE IF NOT EXISTS `distance_matrix` (
 CREATE TABLE IF NOT EXISTS `subscription` (
     `subscription_id` INT NOT NULL AUTO_INCREMENT,            -- Primary Key
     `client_id` INT NOT NULL,                                  -- Foreign Key to client table
-    `package_id` VARCHAR(25) NOT NULL,                         -- Foreign Key to selected_package table
+    `package_id` VARCHAR(25) NOT NULL,
+    `package_type` ENUM('WEEKLY', 'BI_WEEKLY')  NOT NULL,    -- Type of package as ENUM for consistency
     `job_day` ENUM('MONDAY', 'TUESDAY', 'WEDNESDAY',           -- Day of the week as ENUM type for consistency
                    'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY')
     NOT NULL,

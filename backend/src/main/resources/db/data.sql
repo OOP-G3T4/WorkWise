@@ -254,3 +254,31 @@ VALUES (1, 1, 'JOB_COMPLETED', '2024-09-15', 1, 3, NULL, NULL),  -- Completed jo
         (3, 3, 'AL_TAKEN', '2024-09-20', NULL, NULL, NULL, 1),    -- Took 1 day AL on 20th Sep 2024
         (4, 4, 'OVERTIME', '2024-09-25', NULL, 2, NULL, NULL),    -- Worked 2 hours overtime on 25th Sep 2024
         (5, 2, 'AL_TAKEN', '2024-11-12', NULL, NULL, NULL, 2);    -- Took 2 day AL on 12th Nov 2024
+
+-- Insert sample subscription
+INSERT INTO `subscription` (`client_id`, `package_id`, `package_type`, `job_day`, `job_starttime`, `job_endtime`, `subscription_status`)
+VALUES
+    (1, 'W_3RM_HDB', 'WEEKLY', 'MONDAY', '09:00:00', '12:00:00', 'ACTIVE'),
+    (2, 'W_4RM_HDB', 'WEEKLY', 'MONDAY', '10:00:00', '13:00:00', 'ACTIVE'),
+    (3, 'BW_5RM_HDB', 'BI_WEEKLY', 'TUESDAY', '08:00:00', '11:00:00', 'ACTIVE'),
+    (4, 'W_5RM_CONDO', 'WEEKLY', 'TUESDAY', '11:00:00', '14:00:00', 'ACTIVE'),
+    (5, 'W_2RM_CONDO', 'WEEKLY', 'WEDNESDAY', '09:30:00', '12:30:00', 'ACTIVE'),
+    (6, 'BW_3RM_HDB', 'BI_WEEKLY', 'WEDNESDAY', '10:00:00', '13:00:00', 'ACTIVE'),
+    (7, 'W_4RM_CONDO', 'WEEKLY', 'THURSDAY', '11:00:00', '14:00:00', 'ACTIVE'),
+    (8, 'BW_5RM_HDB', 'BI_WEEKLY', 'THURSDAY', '12:00:00', '15:00:00', 'ACTIVE'),
+    (9, 'W_LANDED', 'WEEKLY', 'FRIDAY', '09:00:00', '13:00:00', 'ACTIVE'),
+    (10, 'W_2RM_HDB', 'WEEKLY', 'FRIDAY', '10:00:00', '13:00:00', 'ACTIVE'),
+    (11, 'BW_3RM_CONDO', 'BI_WEEKLY', 'SATURDAY', '08:00:00', '11:00:00', 'ACTIVE'),
+    (12, 'W_4RM_HDB', 'WEEKLY', 'SATURDAY', '09:00:00', '12:00:00', 'ACTIVE'),
+    (13, 'W_MAISONETTE_CONDO', 'WEEKLY', 'SUNDAY', '10:00:00', '13:00:00', 'ACTIVE'),
+    (14, 'BW_3RM_HDB', 'BI_WEEKLY', 'SUNDAY', '11:00:00', '14:00:00', 'ACTIVE'),
+    (15, 'BW_4RM_CONDO', 'BI_WEEKLY', 'MONDAY', '08:30:00', '11:30:00', 'ACTIVE'),
+    (16, 'W_5RM_HDB', 'WEEKLY', 'MONDAY', '12:00:00', '15:00:00', 'ACTIVE'),
+    (17, 'BW_MAISONETTE_CONDO', 'BI_WEEKLY', 'TUESDAY', '09:00:00', '12:00:00', 'ACTIVE'),
+    (18, 'W_2RM_CONDO', 'WEEKLY', 'TUESDAY', '10:00:00', '13:00:00', 'ACTIVE'),
+    (19, 'BW_LANDED', 'BI_WEEKLY', 'WEDNESDAY', '08:00:00', '11:00:00', 'ACTIVE'),
+    (20, 'W_4RM_HDB', 'WEEKLY', 'WEDNESDAY', '09:30:00', '12:30:00', 'ACTIVE'),
+    (21, 'BW_5RM_CONDO', 'BI_WEEKLY', 'THURSDAY', '10:00:00', '13:00:00', 'ACTIVE'),
+    (22, 'W_LANDED', 'WEEKLY', 'FRIDAY', '11:00:00', '15:00:00', 'ACTIVE'),
+    (23, 'BW_3RM_HDB', 'BI_WEEKLY', 'SATURDAY', '09:00:00', '12:00:00', 'ACTIVE'),
+    (24, 'W_4RM_HDB', 'WEEKLY', 'SUNDAY', '10:00:00', '13:00:00', 'ACTIVE');
