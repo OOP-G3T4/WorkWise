@@ -5,12 +5,13 @@ DROP TABLE IF EXISTS `admin_employee`;
 DROP TABLE IF EXISTS `client_property`;
 DROP TABLE IF EXISTS `job`;
 DROP TABLE IF EXISTS `property`;
-DROP TABLE IF EXISTS `client`;
 DROP TABLE IF EXISTS `admin`;
 DROP TABLE IF EXISTS `employee`;
 DROP TABLE IF EXISTS `selected_package`;
 DROP TABLE IF EXISTS `distance_matrix`;
 DROP TABLE IF EXISTS `subscription`;
+DROP TABLE IF EXISTS `client`;
+
 
 CREATE TABLE IF NOT EXISTS `employee` (
     `employee_id` int  NOT NULL AUTO_INCREMENT ,
@@ -55,6 +56,14 @@ CREATE TABLE IF NOT EXISTS `property` (
     `address` varchar(200)  NOT NULL ,
     `postal_code` varchar(6)  NOT NULL ,
     PRIMARY KEY (`property_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `distance_matrix` (
+    `distance_id` int  NOT NULL AUTO_INCREMENT,
+    `origin` varchar(200)  NOT NULL ,
+    `destination` varchar(200)  NOT NULL ,
+    `time_taken` int  NOT NULL ,
+    PRIMARY KEY (`distance_id`)
 );
 
 CREATE TABLE IF NOT EXISTS `client_property` (
@@ -134,14 +143,6 @@ CREATE TABLE IF NOT EXISTS `employee_statistic` (
     PRIMARY KEY (`stat_id`),
     FOREIGN KEY (`event_id`) REFERENCES `employee_event`(`event_id`) ON DELETE CASCADE,
     FOREIGN KEY (`employee_id`) REFERENCES `employee`(`employee_id`) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS `distance_matrix` (
-    `distance_id` int  NOT NULL AUTO_INCREMENT,
-    `origin` varchar(200)  NOT NULL ,
-    `destination` varchar(200)  NOT NULL ,
-    `time_taken` int  NOT NULL ,	
-    PRIMARY KEY (`distance_id`)
 );
 
 CREATE TABLE IF NOT EXISTS `subscription` (
