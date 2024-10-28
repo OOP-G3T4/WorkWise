@@ -9,6 +9,8 @@ DROP TABLE IF EXISTS `client`;
 DROP TABLE IF EXISTS `admin`;
 DROP TABLE IF EXISTS `employee`;
 DROP TABLE IF EXISTS `selected_package`;
+DROP TABLE IF EXISTS `distance_matrix`;
+DROP TABLE IF EXISTS `subscription`;
 
 CREATE TABLE IF NOT EXISTS `employee` (
     `employee_id` int  NOT NULL AUTO_INCREMENT ,
@@ -33,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 );
 
 CREATE TABLE IF NOT EXISTS `admin_employee` (
-    `employee_id` int  NOT NULL ,
+    `employee_id` int  NOT NULL,
     `admin_id` int  NOT NULL,
     PRIMARY KEY (`employee_id`, `admin_id`),
     FOREIGN KEY (`employee_id`) REFERENCES `employee`(`employee_id`) ON DELETE CASCADE,
@@ -140,19 +142,18 @@ CREATE TABLE IF NOT EXISTS `distance_matrix` (
     `destination` varchar(200)  NOT NULL ,
     `time_taken` int  NOT NULL ,	
     PRIMARY KEY (`distance_id`)
-)
+);
 
 CREATE TABLE IF NOT EXISTS `subscription` (
-    `subscription_id` INT NOT NULL AUTO_INCREMENT,            -- Primary Key
-    `client_id` INT NOT NULL,                                  -- Foreign Key to client table
+    `subscription_id` INT NOT NULL AUTO_INCREMENT,
+    `client_id` INT NOT NULL,
     `package_id` VARCHAR(25) NOT NULL,
-    `package_type` ENUM('WEEKLY', 'BI_WEEKLY')  NOT NULL,    -- Type of package as ENUM for consistency
-    `job_day` ENUM('MONDAY', 'TUESDAY', 'WEDNESDAY',           -- Day of the week as ENUM type for consistency
-                   'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY')
-    NOT NULL,
-    `job_starttime` TIME NOT NULL,                             -- Start time for the job
-    `job_endtime` TIME NOT NULL,                               -- End time for the job
-    `subscription_status` ENUM('ACTIVE', 'PAUSED', 'CANCELLED') NOT NULL, -- Status as ENUM for consistency
+    `package_type` ENUM('WEEKLY', 'BI_WEEKLY') NOT NULL,
+    `job_day` ENUM('MONDAY', 'TUESDAY', 'WEDNESDAY',
+                   'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY') NOT NULL,
+    `job_starttime` TIME NOT NULL,
+    `job_endtime` TIME NOT NULL,
+    `subscription_status` ENUM('ACTIVE', 'PAUSED', 'CANCELLED') NOT NULL,
     PRIMARY KEY (`subscription_id`),
     FOREIGN KEY (`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE,
     FOREIGN KEY (`package_id`) REFERENCES `selected_package`(`package_id`) ON DELETE CASCADE

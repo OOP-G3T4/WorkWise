@@ -30,7 +30,7 @@ VALUES (1, '123 Changi Road, East', '427466'),
        (5, '767 Pasir Ris Street 71', '510767'),
        (6, '132 Joo Seng Rd', '368358'),
        (7, '261 Waterloo St', '180261'),
-       (8, '20 Bendemeer Rd', '5339914'),
+       (8, '20 Bendemeer Rd', '339914'),
        (9, '624 Choa Chu Kang Street 62', '680624'),
        (10, '321 Yishun Central', '760321'),
        (11, '665C Punggol Dr.', '823665'),
@@ -126,105 +126,100 @@ VALUES ('W_3RM_HDB', 'WEEKLY', 276, 'THREE_ROOM', 'HDB', 23, 1, 3),
 -- Weekly Jobs (14 properties, each inserted 4 times for weekly frequency)
 INSERT INTO job (job_id, client_id, property_id, package_id, date, start_time, status, actual_duration)
 VALUES
-    -- Week 1 (November 4)
-    (1, 1, 1, 'W_3RM_HDB', '2024-11-04', '09:00:00', 'PENDING', 3),
-    (2, 2, 2, 'W_4RM_HDB', '2024-11-04', '10:00:00', 'PENDING', 4),
-    (3, 3, 3, 'W_MAISONETTE_HDB', '2024-11-04', '09:00:00', 'PENDING', 3),
-    (4, 4, 4, 'W_5RM_CONDO', '2024-11-04', '12:00:00', 'PENDING', 4),
-    (5, 5, 5, 'W_2RM_CONDO', '2024-11-04', '13:00:00', 'PENDING', 3),
-    (6, 6, 6, 'W_3RM_HDB', '2024-11-04', '14:00:00', 'PENDING', 3),
-    (7, 7, 7, 'W_4RM_CONDO', '2024-11-04', '13:00:00', 'PENDING', 4),
-    (8, 8, 8, 'W_5RM_HDB', '2024-11-04', '14:00:00', 'PENDING', 4),
-    (9, 9, 9, 'W_LANDED', '2024-11-04', '17:00:00', 'PENDING', 4),
-    (10, 10, 10, 'W_2RM_HDB', '2024-11-04', '19:00:00', 'PENDING', 3),
-    (11, 11, 11, 'W_3RM_CONDO', '2024-11-04', '08:00:00', 'PENDING', 3),
-    (12, 12, 12, 'W_4RM_HDB', '2024-11-04', '09:30:00', 'PENDING', 4),
-    (13, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-04', '09:00:00', 'PENDING', 3),
-    (14, 14, 14, 'W_3RM_HDB', '2024-11-04', '13:00:00', 'PENDING', 3),
+    -- Week 1 (November 4 - November 10)
+    (1, 1, 1, 'W_3RM_HDB', '2024-11-04', '09:00:00', 'PENDING', 3),  -- Monday morning
+    (2, 2, 2, 'W_4RM_HDB', '2024-11-04', '18:00:00', 'PENDING', 4),  -- Monday night
+    (3, 3, 3, 'W_MAISONETTE_HDB', '2024-11-04', '19:00:00', 'PENDING', 3),  -- Monday night
+    (4, 4, 4, 'W_5RM_CONDO', '2024-11-05', '18:00:00', 'PENDING', 4),  -- Tuesday night
+    (5, 5, 5, 'W_2RM_CONDO', '2024-11-06', '18:00:00', 'PENDING', 3),  -- Wednesday night
+    (6, 6, 6, 'W_3RM_HDB', '2024-11-06', '19:00:00', 'PENDING', 3),  -- Wednesday night
+    (7, 7, 7, 'W_4RM_CONDO', '2024-11-07', '09:00:00', 'PENDING', 4),  -- Thursday morning
+    (8, 8, 8, 'W_5RM_HDB', '2024-11-07', '13:00:00', 'PENDING', 4),  -- Thursday afternoon
+    (9, 9, 9, 'W_LANDED', '2024-11-08', '13:00:00', 'PENDING', 4),  -- Friday afternoon
+    (10, 10, 10, 'W_2RM_HDB', '2024-11-08', '18:00:00', 'PENDING', 3),  -- Friday night
+    (11, 11, 11, 'W_3RM_CONDO', '2024-11-09', '09:00:00', 'PENDING', 3),  -- Saturday morning
+    (12, 12, 12, 'W_4RM_HDB', '2024-11-09', '18:00:00', 'PENDING', 4),  -- Saturday night
+    (13, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-10', '09:00:00', 'PENDING', 3),  -- Sunday morning
+    (14, 14, 14, 'W_3RM_HDB', '2024-11-10', '13:00:00', 'PENDING', 3),  -- Sunday afternoon
 
-    -- Week 2 (November 11)
-    (15, 1, 1, 'W_3RM_HDB', '2024-11-11', '09:00:00', 'PENDING', 3),
-    (16, 2, 2, 'W_4RM_HDB', '2024-11-11', '10:00:00', 'PENDING', 4),
-    (17, 3, 3, 'W_MAISONETTE_HDB', '2024-11-11', '09:00:00', 'PENDING', 3),
-    (18, 4, 4, 'W_5RM_CONDO', '2024-11-11', '12:00:00', 'PENDING', 4),
-    (19, 5, 5, 'W_2RM_CONDO', '2024-11-11', '13:00:00', 'PENDING', 3),
-    (20, 6, 6, 'W_3RM_HDB', '2024-11-11', '14:00:00', 'PENDING', 3),
-    (21, 7, 7, 'W_4RM_CONDO', '2024-11-11', '13:00:00', 'PENDING', 4),
-    (22, 8, 8, 'W_5RM_HDB', '2024-11-11', '14:00:00', 'PENDING', 4),
-    (23, 9, 9, 'W_LANDED', '2024-11-11', '17:00:00', 'PENDING', 4),
-    (24, 10, 10, 'W_2RM_HDB', '2024-11-11', '19:00:00', 'PENDING', 3),
-    (25, 11, 11, 'W_3RM_CONDO', '2024-11-11', '08:00:00', 'PENDING', 3),
-    (26, 12, 12, 'W_4RM_HDB', '2024-11-11', '09:30:00', 'PENDING', 4),
-    (27, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-11', '09:00:00', 'PENDING', 3),
-    (28, 14, 14, 'W_3RM_HDB', '2024-11-11', '13:00:00', 'PENDING', 3),
+    -- Week 2 (November 11 - November 17)
+    (15, 1, 1, 'W_3RM_HDB', '2024-11-11', '09:00:00', 'PENDING', 3),  -- Monday morning
+    (16, 2, 2, 'W_4RM_HDB', '2024-11-11', '18:00:00', 'PENDING', 4),  -- Monday night
+    (17, 3, 3, 'W_MAISONETTE_HDB', '2024-11-11', '19:00:00', 'PENDING', 3),  -- Monday night
+    (18, 4, 4, 'W_5RM_CONDO', '2024-11-12', '18:00:00', 'PENDING', 4),  -- Tuesday night
+    (19, 5, 5, 'W_2RM_CONDO', '2024-11-13', '18:00:00', 'PENDING', 3),  -- Wednesday night
+    (20, 6, 6, 'W_3RM_HDB', '2024-11-13', '19:00:00', 'PENDING', 3),  -- Wednesday night
+    (21, 7, 7, 'W_4RM_CONDO', '2024-11-14', '09:00:00', 'PENDING', 4),  -- Thursday morning
+    (22, 8, 8, 'W_5RM_HDB', '2024-11-14', '13:00:00', 'PENDING', 4),  -- Thursday afternoon
+    (23, 9, 9, 'W_LANDED', '2024-11-15', '13:00:00', 'PENDING', 4),  -- Friday afternoon
+    (24, 10, 10, 'W_2RM_HDB', '2024-11-15', '18:00:00', 'PENDING', 3),  -- Friday night
+    (25, 11, 11, 'W_3RM_CONDO', '2024-11-16', '09:00:00', 'PENDING', 3),  -- Saturday morning
+    (26, 12, 12, 'W_4RM_HDB', '2024-11-16', '18:00:00', 'PENDING', 4),  -- Saturday night
+    (27, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-17', '09:00:00', 'PENDING', 3),  -- Sunday morning
+    (28, 14, 14, 'W_3RM_HDB', '2024-11-17', '13:00:00', 'PENDING', 3),  -- Sunday afternoon
 
-    -- Week 3 (November 18)
-    (29, 1, 1, 'W_3RM_HDB', '2024-11-18', '09:00:00', 'PENDING', 3),
-    (30, 2, 2, 'W_4RM_HDB', '2024-11-18', '10:00:00', 'PENDING', 4),
-    (31, 3, 3, 'W_MAISONETTE_HDB', '2024-11-18', '09:00:00', 'PENDING', 3),
-    (32, 4, 4, 'W_5RM_CONDO', '2024-11-18', '12:00:00', 'PENDING', 4),
-    (33, 5, 5, 'W_2RM_CONDO', '2024-11-18', '13:00:00', 'PENDING', 3),
-    (34, 6, 6, 'W_3RM_HDB', '2024-11-18', '14:00:00', 'PENDING', 3),
-    (35, 7, 7, 'W_4RM_CONDO', '2024-11-18', '13:00:00', 'PENDING', 4),
-    (36, 8, 8, 'W_5RM_HDB', '2024-11-18', '14:00:00', 'PENDING', 4),
-    (37, 9, 9, 'W_LANDED', '2024-11-18', '17:00:00', 'PENDING', 4),
-    (38, 10, 10, 'W_2RM_HDB', '2024-11-18', '19:00:00', 'PENDING', 3),
-    (39, 11, 11, 'W_3RM_CONDO', '2024-11-18', '08:00:00', 'PENDING', 3),
-    (40, 12, 12, 'W_4RM_HDB', '2024-11-18', '09:30:00', 'PENDING', 4),
-    (41, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-18', '09:00:00', 'PENDING', 3),
-    (42, 14, 14, 'W_3RM_HDB', '2024-11-18', '13:00:00', 'PENDING', 3),
+    -- Week 3 (November 18 - November 24)
+    (29, 1, 1, 'W_3RM_HDB', '2024-11-18', '09:00:00', 'PENDING', 3),  -- Monday morning
+    (30, 2, 2, 'W_4RM_HDB', '2024-11-18', '18:00:00', 'PENDING', 4),  -- Monday night
+    (31, 3, 3, 'W_MAISONETTE_HDB', '2024-11-18', '19:00:00', 'PENDING', 3),  -- Monday night
+    (32, 4, 4, 'W_5RM_CONDO', '2024-11-19', '18:00:00', 'PENDING', 4),  -- Tuesday night
+    (33, 5, 5, 'W_2RM_CONDO', '2024-11-20', '18:00:00', 'PENDING', 3),  -- Wednesday night
+    (34, 6, 6, 'W_3RM_HDB', '2024-11-20', '19:00:00', 'PENDING', 3),  -- Wednesday night
+    (35, 7, 7, 'W_4RM_CONDO', '2024-11-21', '09:00:00', 'PENDING', 4),  -- Thursday morning
+    (36, 8, 8, 'W_5RM_HDB', '2024-11-21', '13:00:00', 'PENDING', 4),  -- Thursday afternoon
+    (37, 9, 9, 'W_LANDED', '2024-11-22', '13:00:00', 'PENDING', 4),  -- Friday afternoon
+    (38, 10, 10, 'W_2RM_HDB', '2024-11-22', '18:00:00', 'PENDING', 3),  -- Friday night
+    (39, 11, 11, 'W_3RM_CONDO', '2024-11-23', '09:00:00', 'PENDING', 3),  -- Saturday morning
+    (40, 12, 12, 'W_4RM_HDB', '2024-11-23', '18:00:00', 'PENDING', 4),  -- Saturday night
+    (41, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-24', '09:00:00', 'PENDING', 3),  -- Sunday morning
+    (42, 14, 14, 'W_3RM_HDB', '2024-11-24', '13:00:00', 'PENDING', 3),  -- Sunday afternoon
 
-    -- Week 4 (November 25)
-    (43, 1, 1, 'W_3RM_HDB', '2024-11-25', '09:00:00', 'PENDING', 3),
-    (44, 2, 2, 'W_4RM_HDB', '2024-11-25', '10:00:00', 'PENDING', 4),
-    (45, 3, 3, 'W_MAISONETTE_HDB', '2024-11-25', '09:00:00', 'PENDING', 3),
-    (46, 4, 4, 'W_5RM_CONDO', '2024-11-25', '12:00:00', 'PENDING', 4),
-    (47, 5, 5, 'W_2RM_CONDO', '2024-11-25', '13:00:00', 'PENDING', 3),
-    (48, 6, 6, 'W_3RM_HDB', '2024-11-25', '14:00:00', 'PENDING', 3),
-    (49, 7, 7, 'W_4RM_CONDO', '2024-11-25', '13:00:00', 'PENDING', 4),
-    (50, 8, 8, 'W_5RM_HDB', '2024-11-25', '14:00:00', 'PENDING', 4),
-    (51, 9, 9, 'W_LANDED', '2024-11-25', '17:00:00', 'PENDING', 4),
-    (52, 10, 10, 'W_2RM_HDB', '2024-11-25', '19:00:00', 'PENDING', 3),
-    (53, 11, 11, 'W_3RM_CONDO', '2024-11-25', '08:00:00', 'PENDING', 3),
-    (54, 12, 12, 'W_4RM_HDB', '2024-11-25', '09:30:00', 'PENDING', 4),
-    (55, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-25', '09:00:00', 'PENDING', 3),
-    (56, 14, 14, 'W_3RM_HDB', '2024-11-25', '13:00:00', 'PENDING', 3);
+    -- Week 4 (November 25 - December 1)
+    (43, 1, 1, 'W_3RM_HDB', '2024-11-25', '09:00:00', 'PENDING', 3),  -- Monday morning
+    (44, 2, 2, 'W_4RM_HDB', '2024-11-25', '18:00:00', 'PENDING', 4),  -- Monday night
+    (45, 3, 3, 'W_MAISONETTE_HDB', '2024-11-25', '19:00:00', 'PENDING', 3),  -- Monday night
+    (46, 4, 4, 'W_5RM_CONDO', '2024-11-26', '18:00:00', 'PENDING', 4),  -- Tuesday night
+    (47, 5, 5, 'W_2RM_CONDO', '2024-11-27', '18:00:00', 'PENDING', 3),  -- Wednesday night
+    (48, 6, 6, 'W_3RM_HDB', '2024-11-27', '19:00:00', 'PENDING', 3),  -- Wednesday night
+    (49, 7, 7, 'W_4RM_CONDO', '2024-11-28', '09:00:00', 'PENDING', 4),  -- Thursday morning
+    (50, 8, 8, 'W_5RM_HDB', '2024-11-28', '13:00:00', 'PENDING', 4),  -- Thursday afternoon
+    (51, 9, 9, 'W_LANDED', '2024-11-29', '13:00:00', 'PENDING', 4),  -- Friday afternoon
+    (52, 10, 10, 'W_2RM_HDB', '2024-11-29', '18:00:00', 'PENDING', 3),  -- Friday night
+    (53, 11, 11, 'W_3RM_CONDO', '2024-11-30', '09:00:00', 'PENDING', 3),  -- Saturday morning
+    (54, 12, 12, 'W_4RM_HDB', '2024-11-30', '18:00:00', 'PENDING', 4),  -- Saturday night
+    (55, 13, 13, 'W_MAISONETTE_CONDO', '2024-12-01', '09:00:00', 'PENDING', 3),  -- Sunday morning
+    (56, 14, 14, 'W_3RM_HDB', '2024-12-01', '13:00:00', 'PENDING', 3),  -- Sunday afternoon
 
--- Bi-Weekly Jobs (6 properties in Weeks 1 and 3)
-INSERT INTO job (job_id, client_id, property_id, package_id, date, start_time, status, actual_duration)
-VALUES
+
+    -- Bi-Weekly Jobs (6 properties in Weeks 1 and 3)
     (57, 15, 15, 'BW_3RM_HDB', '2024-11-05', '09:00:00', 'PENDING', 3),
-    (58, 16, 16, 'BW_4RM_CONDO', '2024-11-05', '10:00:00', 'PENDING', 4),
-    (59, 17, 17, 'BW_5RM_HDB', '2024-11-05', '13:00:00', 'PENDING', 4),
-    (60, 18, 18, 'BW_MAISONETTE_CONDO', '2024-11-05', '13:00:00', 'PENDING', 3),
-    (61, 19, 19, 'BW_3RM_HDB', '2024-11-05', '17:00:00', 'PENDING', 3),
-    (62, 20, 20, 'BW_4RM_HDB', '2024-11-05', '19:00:00', 'PENDING', 4),
+    (58, 16, 16, 'BW_4RM_CONDO', '2024-11-05', '13:00:00', 'PENDING', 4),
+    (59, 17, 17, 'BW_5RM_HDB', '2024-11-05', '14:00:00', 'PENDING', 4),
+    (60, 18, 18, 'BW_MAISONETTE_CONDO', '2024-11-06', '09:00:00', 'PENDING', 3),
+    (61, 19, 19, 'BW_3RM_HDB', '2024-11-06', '13:00:00', 'PENDING', 3),
+    (62, 20, 20, 'BW_4RM_HDB', '2024-11-06', '14:00:00', 'PENDING', 4),
 
     -- Repeat Bi-Weekly Jobs for Week 3
     (63, 15, 15, 'BW_3RM_HDB', '2024-11-19', '09:00:00', 'PENDING', 3),
-    (64, 16, 16, 'BW_4RM_CONDO', '2024-11-19', '10:00:00', 'PENDING', 4),
-    (65, 17, 17, 'BW_5RM_HDB', '2024-11-19', '13:00:00', 'PENDING', 4),
-    (66, 18, 18, 'BW_MAISONETTE_CONDO', '2024-11-19', '13:00:00', 'PENDING', 3),
-    (67, 19, 19, 'BW_3RM_HDB', '2024-11-19', '17:00:00', 'PENDING', 3),
-    (68, 20, 20, 'BW_4RM_HDB', '2024-11-19', '19:00:00', 'PENDING', 4);
+    (64, 16, 16, 'BW_4RM_CONDO', '2024-11-19', '13:00:00', 'PENDING', 4),
+    (65, 17, 17, 'BW_5RM_HDB', '2024-11-19', '14:00:00', 'PENDING', 4),
+    (66, 18, 18, 'BW_MAISONETTE_CONDO', '2024-11-20', '09:00:00', 'PENDING', 3),
+    (67, 19, 19, 'BW_3RM_HDB', '2024-11-20', '13:00:00', 'PENDING', 3),
+    (68, 20, 20, 'BW_4RM_HDB', '2024-11-20', '14:00:00', 'PENDING', 4),
 
--- Additional Bi-Weekly Jobs (4 properties in Weeks 2 and 4)
-INSERT INTO job (job_id, client_id, property_id, package_id, date, start_time, status, actual_duration)
-VALUES
+    -- Additional Bi-Weekly Jobs (4 properties in Weeks 2 and 4)
     (69, 1, 21, 'BW_3RM_CONDO', '2024-11-12', '09:00:00', 'PENDING', 3),
-    (70, 2, 22, 'BW_5RM_HDB', '2024-11-12', '10:00:00', 'PENDING', 4),
-    (71, 3, 23, 'BW_2RM_HDB', '2024-11-12', '13:00:00', 'PENDING', 3),
-    (72, 4, 24, 'BW_LANDED', '2024-11-12', '13:00:00', 'PENDING', 4),
+    (70, 2, 22, 'BW_5RM_HDB', '2024-11-12', '13:00:00', 'PENDING', 4),
+    (71, 3, 23, 'BW_2RM_HDB', '2024-11-12', '14:00:00', 'PENDING', 3),
+    (72, 4, 24, 'BW_LANDED', '2024-11-13', '09:00:00', 'PENDING', 4),
 
     -- Repeat Bi-Weekly Jobs for Week 4
     (73, 1, 21, 'BW_3RM_CONDO', '2024-11-26', '09:00:00', 'PENDING', 3),
-    (74, 2, 22, 'BW_5RM_HDB', '2024-11-26', '10:00:00', 'PENDING', 4),
-    (75, 3, 23, 'BW_2RM_HDB', '2024-11-26', '13:00:00', 'PENDING', 3),
-    (76, 4, 24, 'BW_LANDED', '2024-11-26', '13:00:00', 'PENDING', 4);
+    (74, 2, 22, 'BW_5RM_HDB', '2024-11-26', '13:00:00', 'PENDING', 4),
+    (75, 3, 23, 'BW_2RM_HDB', '2024-11-26', '14:00:00', 'PENDING', 3),
+    (76, 4, 24, 'BW_LANDED', '2024-11-27', '09:00:00', 'PENDING', 4),
 
--- Insert completed sample jobs (4 properties in Weeks 2 and 4 of October)
-INSERT INTO job (job_id, client_id, property_id, package_id, date, start_time, status, actual_duration)
-VALUES
+    -- Insert completed sample jobs (4 properties in Weeks 2 and 4 of October)
     (77, 1, 21, 'BW_3RM_CONDO', '2024-10-15', '09:00:00', 'COMPLETED', 3),
     (78, 2, 22, 'BW_5RM_HDB', '2024-10-15', '10:00:00', 'COMPLETED', 4),
     (79, 3, 23, 'BW_2RM_HDB', '2024-10-15', '13:00:00', 'COMPLETED', 3),
@@ -259,26 +254,26 @@ VALUES (1, 1, 'JOB_COMPLETED', '2024-09-15', 1, 3, NULL, NULL),  -- Completed jo
 INSERT INTO `subscription` (`subscription_id`, `client_id`, `package_id`, `package_type`, `job_day`, `job_starttime`, `job_endtime`, `subscription_status`)
 VALUES
     (1,1, 'W_3RM_HDB', 'WEEKLY', 'MONDAY', '09:00:00', '12:00:00', 'ACTIVE'),
-    (2, 2, 'W_4RM_HDB', 'WEEKLY', 'MONDAY', '10:00:00', '13:00:00', 'ACTIVE'),
-    (3, 3, 'BW_5RM_HDB', 'BI_WEEKLY', 'TUESDAY', '08:00:00', '11:00:00', 'ACTIVE'),
-    (4, 4, 'W_5RM_CONDO', 'WEEKLY', 'TUESDAY', '11:00:00', '14:00:00', 'ACTIVE'),
-    (5, 5, 'W_2RM_CONDO', 'WEEKLY', 'WEDNESDAY', '09:30:00', '12:30:00', 'ACTIVE'),
-    (6, 6, 'BW_3RM_HDB', 'BI_WEEKLY', 'WEDNESDAY', '10:00:00', '13:00:00', 'ACTIVE'),
-    (7, 7, 'W_4RM_CONDO', 'WEEKLY', 'THURSDAY', '11:00:00', '14:00:00', 'ACTIVE'),
-    (8, 8, 'BW_5RM_HDB', 'BI_WEEKLY', 'THURSDAY', '12:00:00', '15:00:00', 'ACTIVE'),
-    (9, 9, 'W_LANDED', 'WEEKLY', 'FRIDAY', '09:00:00', '13:00:00', 'ACTIVE'),
-    (10, 10, 'W_2RM_HDB', 'WEEKLY', 'FRIDAY', '10:00:00', '13:00:00', 'ACTIVE'),
-    (11, 11, 'BW_3RM_CONDO', 'BI_WEEKLY', 'SATURDAY', '08:00:00', '11:00:00', 'ACTIVE'),
-    (12, 12, 'W_4RM_HDB', 'WEEKLY', 'SATURDAY', '09:00:00', '12:00:00', 'ACTIVE'),
-    (13, 13, 'W_MAISONETTE_CONDO', 'WEEKLY', 'SUNDAY', '10:00:00', '13:00:00', 'ACTIVE'),
-    (14, 14, 'BW_3RM_HDB', 'BI_WEEKLY', 'SUNDAY', '11:00:00', '14:00:00', 'ACTIVE'),
-    (15, 15, 'BW_4RM_CONDO', 'BI_WEEKLY', 'MONDAY', '08:30:00', '11:30:00', 'ACTIVE'),
-    (16, 16, 'W_5RM_HDB', 'WEEKLY', 'MONDAY', '12:00:00', '15:00:00', 'ACTIVE'),
-    (17, 17, 'BW_MAISONETTE_CONDO', 'BI_WEEKLY', 'TUESDAY', '09:00:00', '12:00:00', 'ACTIVE'),
-    (18, 18, 'W_2RM_CONDO', 'WEEKLY', 'TUESDAY', '10:00:00', '13:00:00', 'ACTIVE'),
-    (19, 19, 'BW_LANDED', 'BI_WEEKLY', 'WEDNESDAY', '08:00:00', '11:00:00', 'ACTIVE'),
-    (20, 20, 'W_4RM_HDB', 'WEEKLY', 'WEDNESDAY', '09:30:00', '12:30:00', 'ACTIVE'),
-    (21, 1, 'BW_5RM_CONDO', 'BI_WEEKLY', 'THURSDAY', '10:00:00', '13:00:00', 'ACTIVE'),
-    (22, 2, 'W_LANDED', 'WEEKLY', 'FRIDAY', '11:00:00', '15:00:00', 'ACTIVE'),
-    (23, 3, 'BW_3RM_HDB', 'BI_WEEKLY', 'SATURDAY', '09:00:00', '12:00:00', 'ACTIVE'),
-    (24, 4, 'W_4RM_HDB', 'WEEKLY', 'SUNDAY', '10:00:00', '13:00:00', 'ACTIVE');
+    (2, 2, 'W_4RM_HDB', 'WEEKLY', 'MONDAY', '18:00:00', '22:00:00', 'ACTIVE'),
+    (3, 3, 'W_MAISONETTE_HDB', 'WEEKLY', 'MONDAY', '19:00:00', '22:00:00', 'ACTIVE'),
+    (4, 4, 'W_5RM_CONDO', 'WEEKLY', 'TUESDAY', '18:00:00', '22:00:00', 'ACTIVE'),
+    (5, 5, 'W_2RM_CONDO', 'WEEKLY', 'WEDNESDAY', '18:00:00', '21:00:00', 'ACTIVE'),
+    (6, 6, 'W_3RM_HDB', 'WEEKLY', 'WEDNESDAY', '19:00:00', '22:00:00', 'ACTIVE'),
+    (7, 7, 'W_4RM_CONDO', 'WEEKLY', 'THURSDAY', '09:00:00', '13:00:00', 'ACTIVE'),
+    (8, 8, 'W_5RM_HDB', 'BI_WEEKLY', 'THURSDAY', '13:00:00', '17:00:00', 'ACTIVE'),
+    (9, 9, 'W_LANDED', 'WEEKLY', 'FRIDAY', '13:00:00', '17:00:00', 'ACTIVE'),
+    (10, 10, 'W_2RM_HDB', 'WEEKLY', 'FRIDAY', '18:00:00', '21:00:00', 'ACTIVE'),
+    (11, 11, 'W_3RM_CONDO', 'BI_WEEKLY', 'SATURDAY', '09:00:00', '12:00:00', 'ACTIVE'),
+    (12, 12, 'W_4RM_HDB', 'WEEKLY', 'SATURDAY', '18:00:00', '22:00:00', 'ACTIVE'),
+    (13, 13, 'W_MAISONETTE_CONDO', 'WEEKLY', 'SUNDAY', '09:00:00', '12:00:00', 'ACTIVE'),
+    (14, 14, 'W_3RM_HDB', 'WEEKLY', 'SUNDAY', '13:00:00', '16:00:00', 'ACTIVE'),
+    (15, 15, 'BW_3RM_HDB', 'BI_WEEKLY', 'TUESDAY', '09:00:00', '12:00:00', 'ACTIVE'),
+    (16, 16, 'BW_4RM_CONDO', 'BI_WEEKLY', 'TUESDAY', '13:00:00', '17:00:00', 'ACTIVE'),
+    (17, 17, 'BW_5RM_HDB', 'BI_WEEKLY', 'TUESDAY', '14:00:00', '18:00:00', 'ACTIVE'),
+    (18, 18, 'BW_MAISONETTE_CONDO', 'BI_WEEKLY', 'WEDNESDAY', '09:00:00', '12:00:00', 'ACTIVE'),
+    (19, 19, 'BW_3RM_HDB', 'BI_WEEKLY', 'WEDNESDAY', '13:00:00', '16:00:00', 'ACTIVE'),
+    (20, 20, 'BW_4RM_HDB', 'BI_WEEKLY', 'WEDNESDAY', '14:00:00', '18:00:00', 'ACTIVE'),
+    (21, 1, 'BW_3RM_CONDO', 'BI_WEEKLY', 'TUESDAY', '09:00:00', '12:00:00', 'ACTIVE'),
+    (22, 2, 'BW_5RM_HDB', 'BI_WEEKLY', 'TUESDAY', '13:00:00', '17:00:00', 'ACTIVE'),
+    (23, 3, 'BW_2RM_HDB', 'BI_WEEKLY', 'TUESDAY', '14:00:00', '17:00:00', 'ACTIVE'),
+    (24, 4, 'BW_LANDED', 'BI_WEEKLY', 'WEDNESDAY', '09:00:00', '13:00:00', 'ACTIVE');
