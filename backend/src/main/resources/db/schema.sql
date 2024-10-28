@@ -141,3 +141,18 @@ CREATE TABLE IF NOT EXISTS `distance_matrix` (
     `time_taken` int  NOT NULL ,	
     PRIMARY KEY (`distance_id`)
 )
+
+CREATE TABLE IF NOT EXISTS `subscription` (
+    `subscription_id` INT NOT NULL AUTO_INCREMENT,            -- Primary Key
+    `client_id` INT NOT NULL,                                  -- Foreign Key to client table
+    `package_id` VARCHAR(25) NOT NULL,                         -- Foreign Key to selected_package table
+    `job_day` ENUM('MONDAY', 'TUESDAY', 'WEDNESDAY',           -- Day of the week as ENUM type for consistency
+                   'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY')
+    NOT NULL,
+    `job_starttime` TIME NOT NULL,                             -- Start time for the job
+    `job_endtime` TIME NOT NULL,                               -- End time for the job
+    `subscription_status` ENUM('ACTIVE', 'PAUSED', 'CANCELLED') NOT NULL, -- Status as ENUM for consistency
+    PRIMARY KEY (`subscription_id`),
+    FOREIGN KEY (`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`package_id`) REFERENCES `selected_package`(`package_id`) ON DELETE CASCADE
+    ) ROW_FORMAT=DYNAMIC;
