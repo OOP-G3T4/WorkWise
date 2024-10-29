@@ -162,19 +162,6 @@ CREATE TABLE IF NOT EXISTS `employee_leaves` (
     FOREIGN KEY (`leave_id`) REFERENCES `leaves`(`leave_id`) ON DELETE CASCADE
 ) ROW_FORMAT=DYNAMIC;
 
-CREATE TABLE IF NOT EXISTS `subscription` (
-    `subscription_id` INT NOT NULL AUTO_INCREMENT,
-    `client_id` INT NOT NULL,
-    `package_id` VARCHAR(25) NOT NULL,
-    `job_day` VARCHAR(10) NOT NULL,
-    `job_starttime` TIME NOT NULL,
-    `job_endtime` TIME NOT NULL,
-    `subscription_status` ENUM('Active', 'Paused', 'Cancelled') NOT NULL DEFAULT 'Active',
-    PRIMARY KEY (`subscription_id`),
-    FOREIGN KEY (`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE,
-    FOREIGN KEY (`package_id`) REFERENCES `selected_package`(`package_id`) ON DELETE CASCADE
-) ROW_FORMAT=DYNAMIC;
-
 CREATE TABLE IF NOT EXISTS `distance_matrix` (
     `distance_id` int  NOT NULL AUTO_INCREMENT,
     `origin` varchar(200)  NOT NULL ,
