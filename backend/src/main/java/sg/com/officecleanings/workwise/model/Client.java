@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 // For LocalDate fields
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @Entity
 public class Client {
 
-    public enum gender {
+    public enum Gender {
         MALE, FEMALE, OTHER
     }
 
@@ -49,10 +50,14 @@ public class Client {
     public Client() {
     }
 
-    public Client(String name, String phoneNumber, String email) {
+    public Client(String name, String phoneNumber, String email, String clientAddress, Gender gender, int clientAge, LocalDate joinDate) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.clientAddress = clientAddress;
+        this.gender = gender;
+        this.clientAge = clientAge;
+        this.joinDate = joinDate;
     }
 
     public int getClientId() {

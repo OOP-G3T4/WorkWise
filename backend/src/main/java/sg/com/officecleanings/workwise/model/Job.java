@@ -47,7 +47,7 @@ public class Job {
     }
 
     public Job(Client client, Property property, SelectedPackage selectedPackage, Date date, Time startTime,
-            Status status, int actualDuration) {
+            Status status, int actualDuration, Boolean arrivalProofUploaded, Boolean completionProofUploaded) {
         this.client = client;
         this.property = property;
         this.selectedPackage = selectedPackage;
@@ -55,6 +55,8 @@ public class Job {
         this.startTime = startTime;
         this.status = status;
         this.actualDuration = actualDuration;
+        this.arrivalProofUploaded = arrivalProofUploaded;
+        this.completionProofUploaded = completionProofUploaded;
     }
 
     public int getJobId() {

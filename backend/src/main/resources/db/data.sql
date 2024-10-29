@@ -1,8 +1,8 @@
 -- Insert sample clients
-INSERT INTO client (client_id, name, email, phone_number)
-VALUES (1, 'Tommy Tallwalk', 'tommy.tallwalk@example.com', '82345678'),
-        (2, 'Sally Shortstack', 'sally.shortstack@example.com', '81234567'),
-        (3, 'Michael Jordan', 'michael.jordan@example.com', '82234567');
+INSERT INTO client (client_id, name, email, phone_number, client_address, gender, client_age, join_date)
+VALUES (1, 'Tommy Tallwalk', 'tommy.tallwalk@example.com', '82345678', '123 Changi Road, East', 'MALE', 35, '2024-01-15'),
+       (2, 'Sally Shortstack', 'sally.shortstack@example.com', '81234567', '456 Jurong West Street, West', 'FEMALE', 28, '2024-02-20'),
+       (3, 'Michael Jordan', 'michael.jordan@example.com', '82234567', '11 Mount Faber Rd, South', 'MALE', 40, '2024-03-10');
 
 -- Insert sample properties
 INSERT INTO property (property_id, address, postal_code)
@@ -52,21 +52,22 @@ VALUES ('W_3RM_HDB', 'WEEKLY', 276, 'THREE_ROOM', 'HDB', 23, 1, 3),
         ('W_LANDED', 'WEEKLY', 576, 'LANDED', 'LANDED', 20, 2, 3);
 
 -- Insert sample jobs
-INSERT INTO job (job_id, client_id, property_id, package_id, date, start_time, status, actual_duration)
-VALUES (1, 1, 1, 'W_3RM_HDB', '2024-10-11', '10:00:00', 'COMPLETED', 3),
-        (2, 2, 2, 'W_3RM_CONDO', '2024-10-28', '11:00:00', 'COMPLETED', 4),
-        (3, 2, 2, 'W_3RM_CONDO', '2024-10-15', '11:00:00', 'COMPLETED', 4),
-        (4, 3, 4, 'W_LANDED', '2024-11-11', '09:00:00', 'PENDING', 3),
-        (5, 3, 4, 'W_LANDED', '2024-11-18', '09:00:00', 'PENDING', 3),
-        (6, 3, 4, 'W_LANDED', '2024-11-25', '08:00:00', 'PENDING', 3),
-        (7, 3, 3, 'W_MAISONETTE_CONDO', '2024-11-28', '09:00:00', 'PENDING', 3),
-        (8, 2, 2, 'W_3RM_CONDO', '2024-11-15', '08:00:00', 'PENDING', 4),
-        (9, 1, 1, 'W_3RM_HDB', '2024-11-11', '09:00:00', 'PENDING', 3),
-        (10, 3, 3, 'W_MAISONETTE_CONDO', '2024-11-11', '12:00:00', 'PENDING', 3),
-        (11, 2, 2, 'W_3RM_CONDO', '2024-11-11', '14:30:00', 'PENDING', 4),
-        (12, 3, 4, 'W_LANDED', '2024-11-11', '20:00:00', 'PENDING', 3),
-        (13, 2, 5, 'W_4RM_HDB', '2024-11-11', '18:00:00', 'PENDING', 4),
-        (14, 2, 5, 'W_4RM_HDB', '2024-11-11', '08:00:00', 'PENDING', 4);
+-- Insert sample jobs
+INSERT INTO job (job_id, client_id, property_id, package_id, date, start_time, status, actual_duration, arrival_proof_uploaded, completion_proof_uploaded)
+VALUES (1, 1, 1, 'W_3RM_HDB', '2024-10-11', '10:00:00', 'COMPLETED', 3, TRUE, TRUE),
+       (2, 2, 2, 'W_3RM_CONDO', '2024-10-28', '11:00:00', 'COMPLETED', 4, TRUE, TRUE),
+       (3, 2, 2, 'W_3RM_CONDO', '2024-10-15', '11:00:00', 'COMPLETED', 4, TRUE, TRUE),
+       (4, 3, 4, 'W_LANDED', '2024-11-11', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+       (5, 3, 4, 'W_LANDED', '2024-11-18', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+       (6, 3, 4, 'W_LANDED', '2024-11-25', '08:00:00', 'PENDING', 3, FALSE, FALSE),
+       (7, 3, 3, 'W_MAISONETTE_CONDO', '2024-11-28', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+       (8, 2, 2, 'W_3RM_CONDO', '2024-11-15', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+       (9, 1, 1, 'W_3RM_HDB', '2024-11-11', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+       (10, 3, 3, 'W_MAISONETTE_CONDO', '2024-11-11', '12:00:00', 'PENDING', 3, FALSE, FALSE),
+       (11, 2, 2, 'W_3RM_CONDO', '2024-11-11', '14:30:00', 'PENDING', 4, FALSE, FALSE),
+       (12, 3, 4, 'W_LANDED', '2024-11-11', '20:00:00', 'PENDING', 3, FALSE, FALSE),
+       (13, 2, 5, 'W_4RM_HDB', '2024-11-11', '18:00:00', 'PENDING', 4, FALSE, FALSE),
+       (14, 2, 5, 'W_4RM_HDB', '2024-11-11', '08:00:00', 'PENDING', 4, FALSE, FALSE);
 
 -- Link jobs to employees
 INSERT INTO job_employee (job_id, employee_id, reasoning)
@@ -81,3 +82,11 @@ VALUES (1, 1, 'JOB_COMPLETED', '2024-09-15', 1, 3, NULL, NULL),  -- Completed jo
         (3, 3, 'AL_TAKEN', '2024-09-20', NULL, NULL, NULL, 1),    -- Took 1 day AL on 20th Sep 2024
         (4, 4, 'OVERTIME', '2024-09-25', NULL, 2, NULL, NULL),    -- Worked 2 hours overtime on 25th Sep 2024
         (5, 2, 'AL_TAKEN', '2024-11-12', NULL, NULL, NULL, 2);    -- Took 2 day AL on 12th Nov 2024
+
+-- Insert sample employee leaves
+INSERT INTO employee_leaves (employee_leave_id, employee_id, leave_type, application_date_time, start_date, end_date, status, comments, mc_proof_uploaded, mc_proof_img)
+VALUES (1, 1, 'MC', '2024-09-01 10:00:00', '2024-09-05', '2024-09-07', 'APPROVED', 'Medical leave for flu', TRUE, 'mc_proof_1.jpg'),
+       (2, 2, 'AL', '2024-09-10 09:00:00', '2024-09-15', '2024-09-20', 'APPROVED', 'Annual leave for vacation', FALSE, NULL),
+       (3, 3, 'MC', '2024-10-01 11:00:00', '2024-10-05', '2024-10-07', 'PENDING', 'Medical leave for surgery', TRUE, 'mc_proof_2.jpg'),
+       (4, 4, 'AL', '2024-10-15 08:00:00', '2024-10-20', '2024-10-25', 'REJECTED', 'Annual leave for personal reasons', FALSE, NULL),
+       (5, 5, 'MC', '2024-11-01 10:00:00', '2024-11-05', '2024-11-07', 'APPROVED', 'Medical leave for injury', TRUE, 'mc_proof_3.jpg');
