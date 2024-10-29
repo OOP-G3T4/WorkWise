@@ -1,11 +1,11 @@
 <template>
-    <input type="text" class="form-control" v-model="value" />
     <GMapAutocomplete
         placeholder=" " 
         type="text"
         :options="autoCompleteOptions"
         class="form-control"
         @place_changed="setPlace"
+        :value="value"
     >
     </GMapAutocomplete>
 </template>
@@ -41,7 +41,8 @@ export default {
             this.$emit("valChange", { value: this.value });
         },
         setPlace(place) {
-            console.log(place)
+            // Get address string
+            this.value = place.formatted_address
         },
     },
 };
