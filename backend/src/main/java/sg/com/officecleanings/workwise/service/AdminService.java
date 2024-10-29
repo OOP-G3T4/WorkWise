@@ -35,9 +35,11 @@ public class AdminService {
         adminRepository.deleteById(id);
     }
 
-    public boolean verifyPassword(int adminId, String rawPassword) {
-        Optional<Admin> admin = adminRepository.findById(adminId);
-        return admin.isPresent() && passwordEncoder.matches(rawPassword, admin.get().getPassword());
+    public Optional<Admin> verifyPassword(String email, String rawPassword) {
+        Optional<Admin> admin = adminRepository.findByEmail(email);
+        if (admin.isPresent() && passwordEncoder.matches(rawPassword, admin.get().getPassword())) {
+            return admin;
+        }
+        return Optional.empty();
     }
 }
-

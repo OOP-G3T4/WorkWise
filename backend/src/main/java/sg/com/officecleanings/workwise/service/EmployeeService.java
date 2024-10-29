@@ -57,8 +57,11 @@ public class EmployeeService {
         return employeeRepository.existsById(employeeId);
     }
 
-    public boolean verifyPassword(int employeeId, String rawPassword) {
-        Optional<Employee> employee = employeeRepository.findById(employeeId);
-        return employee.isPresent() && passwordEncoder.matches(rawPassword, employee.get().getPassword());
+    public Optional<Employee> verifyPassword(String email, String rawPassword) {
+        Optional<Employee> employee = employeeRepository.findByEmail(email);
+        if (employee.isPresent() && passwordEncoder.matches(rawPassword, employee.get().getPassword())) {
+            return employee;
+        }
+        return Optional.empty();
     }
 }

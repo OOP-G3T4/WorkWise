@@ -19,7 +19,6 @@ import {
     faFilter,
     faPlus,
     faCalendarWeek,
-    faMaximize,
     faUsers,
     faCircle,
     faCircleExclamation,
@@ -39,6 +38,11 @@ import {
     faCircleLeft,
     faArrowRightFromBracket,
     faCamera,
+    faCircleChevronLeft,
+    faCircleChevronRight,
+    faMagnifyingGlassPlus,
+    faMagnifyingGlassMinus,
+    faQuestion,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -52,7 +56,6 @@ library.add(
     faFilter,
     faPlus,
     faCalendarWeek,
-    faMaximize,
     faUsers,
     faCircle,
     faCircleExclamation,
@@ -72,6 +75,11 @@ library.add(
     faCircleLeft,
     faArrowRightFromBracket,
     faCamera,
+    faCircleChevronLeft,
+    faCircleChevronRight,
+    faMagnifyingGlassPlus,
+    faMagnifyingGlassMinus,
+    faQuestion,
 );
 
 const app = createApp(App);
