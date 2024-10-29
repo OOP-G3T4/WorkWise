@@ -45,6 +45,10 @@ CREATE TABLE IF NOT EXISTS `client` (
     `name` varchar(120)  NOT NULL ,
     `email` varchar(200)  NOT NULL ,
     `phone_number` varchar(20)  NOT NULL ,
+    `client_address` varchar(200)  NOT NULL ,
+    `gender` ENUM('MALE', 'FEMALE', 'OTHER') NOT NULL,
+    `client_age` int  NOT NULL ,
+    `join_date` date  NOT NULL ,
     PRIMARY KEY (`client_id`)
 );
 
@@ -84,6 +88,8 @@ CREATE TABLE IF NOT EXISTS `job` (
     `start_time` time  NOT NULL ,
     `status` ENUM('PENDING', 'SCHEDULED', 'CANCELLED', 'IN_PROGRESS', 'ACTION_REQUIRED', 'COMPLETED')  NOT NULL ,
     `actual_duration` int  NOT NULL ,
+    `arrival_proof_uploaded` BOOLEAN NOT NULL,
+    `completion_proof_uploaded` BOOLEAN NOT NULL,
     PRIMARY KEY (`job_id`),
     FOREIGN KEY (`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE,
     FOREIGN KEY (`property_id`) REFERENCES `property`(`property_id`) ON DELETE CASCADE,
@@ -133,6 +139,41 @@ CREATE TABLE IF NOT EXISTS `employee_statistic` (
     FOREIGN KEY (`event_id`) REFERENCES `employee_event`(`event_id`) ON DELETE CASCADE,
     FOREIGN KEY (`employee_id`) REFERENCES `employee`(`employee_id`) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS `leaves` (
+    `leave_id` INT NOT NULL AUTO_INCREMENT,
+    `leave_type` VARCHAR(2) NOT NULL CHECK (`leave_type` IN ('MC', 'AL')),
+    PRIMARY KEY (`leave_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `employee_leaves` (
+    `employee_leave_id` INT NOT NULL AUTO_INCREMENT,
+    `leave_id` INT NOT NULL,
+    `employee_id` INT NOT NULL,
+    `application_date_time` DATETIME NOT NULL,
+    `start_date` DATE NOT NULL,
+    `end_date` DATE NOT NULL,
+    `status` ENUM('Pending', 'Approved', 'Rejected') NOT NULL DEFAULT 'Pending',
+    `comments` VARCHAR(255),
+    `mc_proof_uploaded` BOOLEAN NOT NULL DEFAULT FALSE,
+    `mc_proof_img` VARCHAR(255),
+    PRIMARY KEY (`employee_leave_id`),
+    FOREIGN KEY (`employee_id`) REFERENCES `employee`(`employee_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`leave_id`) REFERENCES `leaves`(`leave_id`) ON DELETE CASCADE
+) ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE IF NOT EXISTS `subscription` (
+    `subscription_id` INT NOT NULL AUTO_INCREMENT,
+    `client_id` INT NOT NULL,
+    `package_id` VARCHAR(25) NOT NULL,
+    `job_day` VARCHAR(10) NOT NULL,
+    `job_starttime` TIME NOT NULL,
+    `job_endtime` TIME NOT NULL,
+    `subscription_status` ENUM('Active', 'Paused', 'Cancelled') NOT NULL DEFAULT 'Active',
+    PRIMARY KEY (`subscription_id`),
+    FOREIGN KEY (`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`package_id`) REFERENCES `selected_package`(`package_id`) ON DELETE CASCADE
+) ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE IF NOT EXISTS `distance_matrix` (
     `distance_id` int  NOT NULL AUTO_INCREMENT,

@@ -35,6 +35,10 @@ public class Job {
 
     private int actualDuration;
 
+    private Boolean arrivalProofUploaded = false;
+
+    private Boolean completionProofUploaded = false;
+
     @ManyToMany
     @JoinTable(name = "jobEmployee", joinColumns = @JoinColumn(name = "jobId"), inverseJoinColumns = @JoinColumn(name = "employeeId"))
     private Set<Employee> employees;
@@ -125,6 +129,22 @@ public class Job {
         this.employees = employees;
     }
 
+    public Boolean getArrivalProofUploaded() {
+        return arrivalProofUploaded;
+    }
+
+    public void setArrivalProofUploaded(Boolean arrivalProofUploaded) {
+        this.arrivalProofUploaded = arrivalProofUploaded;
+    }
+
+    public Boolean getCompletionProofUploaded() {
+        return completionProofUploaded;
+    }
+
+    public void setCompletionProofUploaded(Boolean completionProofUploaded) {
+        this.completionProofUploaded = completionProofUploaded;
+    }
+
     @Override
     public String toString() {
         return "Job{" +
@@ -137,6 +157,8 @@ public class Job {
                 ", status='" + status + '\'' +
                 ", actualDuration=" + actualDuration +
                 ", employees=" + employees +
+                ", arrivalProofUploaded=" + arrivalProofUploaded +
+                ", completionProofUploaded=" + completionProofUploaded +
                 '}';
     }
 }

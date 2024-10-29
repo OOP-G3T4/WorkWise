@@ -6,8 +6,15 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+// For LocalDate fields
+import java.time.LocalDate;
+
 @Entity
 public class Client {
+
+    public enum gender {
+        MALE, FEMALE, OTHER
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +29,22 @@ public class Client {
     @Email
     @NotNull
     @Size(max = 200)
+    @Pattern(regexp = "^[\\w!#$%&'*+/=?`{|}~^.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$",
+             message = "Invalid email format")
     private String email;
+
+    @NotNull
+    private String clientAddress;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @NotNull
+    private int clientAge;
+
+    @NotNull
+    private LocalDate joinDate;
 
     public Client() {
     }
@@ -65,6 +87,38 @@ public class Client {
         this.email = email;
     }
 
+    public String getClientAddress() {
+        return clientAddress;
+    }
+
+    public void setClientAddress(String clientAddress) {
+        this.clientAddress = clientAddress;
+    }
+
+    public Gender getGender() {
+        return this.gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public int getClientAge() {
+        return clientAge;
+    }
+
+    public void setClientAge(int clientAge) {
+        this.clientAge = clientAge;
+    }
+
+    public LocalDate getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(LocalDate joinDate) {
+        this.joinDate = joinDate;
+    }
+
     // Getters and Setters
 
     @Override
@@ -74,6 +128,10 @@ public class Client {
                 ", name='" + name + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
+                ", clientAddress='" + clientAddress + '\'' +
+                ", gender='" + gender + '\'' +
+                ", clientAge=" + clientAge +
+                ", joinDate=" + joinDate +
                 '}';
     }
 }
