@@ -3,12 +3,14 @@ DROP TABLE IF EXISTS `employee_event`;
 DROP TABLE IF EXISTS `job_employee`;
 DROP TABLE IF EXISTS `admin_employee`;
 DROP TABLE IF EXISTS `client_property`;
+DROP TABLE IF EXISTS `employee_leaves`; 
 DROP TABLE IF EXISTS `job`;
 DROP TABLE IF EXISTS `property`;
 DROP TABLE IF EXISTS `client`;
 DROP TABLE IF EXISTS `admin`;
 DROP TABLE IF EXISTS `employee`;
 DROP TABLE IF EXISTS `selected_package`;
+DROP TABLE IF EXISTS `distance_matrix`;
 
 CREATE TABLE IF NOT EXISTS `employee` (
     `employee_id` int  NOT NULL AUTO_INCREMENT ,
@@ -45,6 +47,10 @@ CREATE TABLE IF NOT EXISTS `client` (
     `name` varchar(120)  NOT NULL ,
     `email` varchar(200)  NOT NULL ,
     `phone_number` varchar(20)  NOT NULL ,
+    `client_address` varchar(200)  NOT NULL ,
+    `gender` ENUM('MALE', 'FEMALE', 'OTHER') NOT NULL,
+    `client_age` int  NOT NULL ,
+    `join_date` date  NOT NULL ,
     PRIMARY KEY (`client_id`)
 );
 
@@ -84,6 +90,8 @@ CREATE TABLE IF NOT EXISTS `job` (
     `start_time` time  NOT NULL ,
     `status` ENUM('PENDING', 'SCHEDULED', 'CANCELLED', 'IN_PROGRESS', 'ACTION_REQUIRED', 'COMPLETED')  NOT NULL ,
     `actual_duration` int  NOT NULL ,
+    `arrival_proof_uploaded` BOOLEAN NOT NULL,
+    `completion_proof_uploaded` BOOLEAN NOT NULL,
     PRIMARY KEY (`job_id`),
     FOREIGN KEY (`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE,
     FOREIGN KEY (`property_id`) REFERENCES `property`(`property_id`) ON DELETE CASCADE,
@@ -133,6 +141,21 @@ CREATE TABLE IF NOT EXISTS `employee_statistic` (
     FOREIGN KEY (`event_id`) REFERENCES `employee_event`(`event_id`) ON DELETE CASCADE,
     FOREIGN KEY (`employee_id`) REFERENCES `employee`(`employee_id`) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS `employee_leaves` (
+    `employee_leave_id` INT NOT NULL AUTO_INCREMENT,
+    `employee_id` INT NOT NULL,
+    `leave_type` ENUM('MC', 'AL') NOT NULL,
+    `application_date_time` DATETIME NOT NULL,
+    `start_date` DATE NOT NULL,
+    `end_date` DATE NOT NULL,
+    `status` ENUM('PENDING', 'APPROVED', 'REJECTED') NOT NULL DEFAULT 'PENDING',
+    `comments` VARCHAR(255),
+    `mc_proof_uploaded` BOOLEAN NOT NULL DEFAULT FALSE,
+    `mc_proof_img` BLOB,
+    PRIMARY KEY (`employee_leave_id`),
+    FOREIGN KEY (`employee_id`) REFERENCES `employee`(`employee_id`) ON DELETE CASCADE
+) ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE IF NOT EXISTS `distance_matrix` (
     `distance_id` int  NOT NULL AUTO_INCREMENT,
