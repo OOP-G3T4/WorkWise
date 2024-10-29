@@ -7,6 +7,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import store from "./store";
 import router from "./router";
+import VueGoogleMaps from "@fawmi/vue-google-maps";
 
 import {
     faUser,
@@ -79,14 +80,20 @@ library.add(
     faCircleChevronRight,
     faMagnifyingGlassPlus,
     faMagnifyingGlassMinus,
-    faQuestion,
+    faQuestion
 );
 
 const app = createApp(App);
 
 app.component("font-awesome-icon", FontAwesomeIcon);
 
-app.use(router);
-app.use(store);
-
-app.mount("#app");
+app.use(router)
+    .use(store)
+    .use(VueGoogleMaps, {
+        load: {
+            v: "quarterly",
+            key: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+            libraries: "places",
+        },
+    })
+    .mount("#app");
