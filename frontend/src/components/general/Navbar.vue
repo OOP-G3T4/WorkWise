@@ -233,7 +233,7 @@ export default {
 
             // If logging out, clear userRole from Vuex
             if (route === "/") {
-                this.$store.commit("clearUserType");
+                this.$store.dispatch("clearUserLogin");
             }
 
             this.$router.push(route);
