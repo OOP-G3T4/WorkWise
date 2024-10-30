@@ -243,17 +243,12 @@ import GmapInput from "../forms/GmapInput.vue";
                             </div>
 
                             <!-- Address [Edit Mode] -->
-                            <div v-else class="col-auto">
+                            <div v-else class="col-12">
                                 <div class="form-floating">
                                     <GmapInput
                                         :inputValue="jobEdit.jobAddress.address"
                                         @valChange="addressChange"
                                     />
-                                    {{
-                                        "For debugging (Should change with input):" +
-                                        jobEdit.jobAddress.address
-                                    }}
-                                    <!-- <input type="text" class="form-control" v-model="jobEdit.jobAddress.address" /> -->
                                     <label for="floatingInput">Address</label>
                                 </div>
                             </div>

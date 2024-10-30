@@ -5,7 +5,10 @@
         :options="autoCompleteOptions"
         class="form-control"
         @place_changed="setPlace"
+        @change="handleChange()"
+        @keyup="handleChange()"
         :value="value"
+        ref="autocomplete"
     >
     </GMapAutocomplete>
 </template>
@@ -43,6 +46,11 @@ export default {
         setPlace(place) {
             // Get address string
             this.value = place.formatted_address
+        },
+        handleChange() {
+            // Get address string
+            let address = this.$refs.autocomplete.$refs.input.value;
+            this.value = address;
         },
     },
 };

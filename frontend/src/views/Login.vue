@@ -10,10 +10,8 @@
                 </div>
 
                 <!-- Error Msg -->
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <p class="text-danger m-0">{{ errorMsg }}</p>
-                    </div>
+                <div v-if="errorMsg" class="alert alert-danger text-center p-2">
+                    <font-awesome-icon icon="fa-solid fa-circle-exclamation" class="me-2" />{{ errorMsg }}
                 </div>
 
                 <!-- User Type -->
@@ -61,7 +59,7 @@ export default {
                     "route": "/admin-calendar",
                     "navbarFormat": "admin",
                 },
-                "Cleaner" : {
+                "Employee" : {
                     "route": "/emp-calendar",
                     "navbarFormat": "employee",
                 },
