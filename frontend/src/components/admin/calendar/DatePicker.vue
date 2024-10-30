@@ -32,7 +32,7 @@
                 <button class="btn btn-resp btn-light d-md-none me-2" @click="toggleZoom()"><font-awesome-icon :icon="zoomedOut ? 'fa-solid fa-magnifying-glass-plus' : 'fa-solid fa-magnifying-glass-minus'" /></button>
 
                 <button class="btn btn-resp btn-light"><font-awesome-icon icon="fa-solid fa-filter" /></button>
-                <button class="btn btn-resp btn-light ms-2"><font-awesome-icon icon="fa-solid fa-plus" /><span class="ms-2 d-none d-md-inline-block">New Job</span></button>
+                <button class="btn btn-resp btn-light ms-2" type="button" data-bs-toggle="modal" data-bs-target="#adminAddNewJobModal"><font-awesome-icon icon="fa-solid fa-plus" /><span class="ms-2 d-none d-md-inline-block">New Job</span></button>
             </div>
         </div>
     </div>

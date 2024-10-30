@@ -3,6 +3,7 @@ import DatePicker from "../../components/admin/calendar/DatePicker.vue";
 import DailyCalendar from "../../components/admin/calendar/DailyCalendar.vue";
 import WeeklyCalendar from "../../components/admin/calendar/WeeklyCalendar.vue";
 import MonthlyCalendar from "../../components/admin/calendar/MonthlyCalendar.vue";
+import NewJobModal from "../../components/admin/calendar/NewJobModal.vue";
 </script>
 
 <template>
@@ -28,6 +29,9 @@ import MonthlyCalendar from "../../components/admin/calendar/MonthlyCalendar.vue
             </template>
         </div>
     </div>
+
+    <!-- New Job Modal -->
+    <NewJobModal />
 </template>
 
 <script>
