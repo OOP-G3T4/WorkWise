@@ -44,6 +44,7 @@ import {
     faMagnifyingGlassPlus,
     faMagnifyingGlassMinus,
     faQuestion,
+    faCalendarXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -80,7 +81,8 @@ library.add(
     faCircleChevronRight,
     faMagnifyingGlassPlus,
     faMagnifyingGlassMinus,
-    faQuestion
+    faQuestion,
+    faCalendarXmark,
 );
 
 const app = createApp(App);

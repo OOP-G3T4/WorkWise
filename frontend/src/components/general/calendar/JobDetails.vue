@@ -14,7 +14,7 @@ import GmapInput from "../forms/GmapInput.vue";
         class="rounded"
     >
         <!-- Job Card -->
-        <div @click="openMainModal()" class="card" :class="jobCardClasses">
+        <div @click="openMainModal(true)" class="card" :class="jobCardClasses">
             <!-- Client Name and Warning (optional) -->
             <div
                 class="fs-9 fs-md-7 card-header fw-semibold px-2 px-md-3 py-1 py-md-2 text-truncate"
@@ -67,45 +67,21 @@ import GmapInput from "../forms/GmapInput.vue";
     </div>
 
     <!-- Main Modal -->
-    <div
-        class="modal fade"
-        :id="`job-modal-${jobDetails.appointmentId}`"
-        tabindex="-1"
-        :aria-labelledby="`job-modal-label-${jobDetails.appointmentId}`"
-        aria-hidden="true"
-    >
+    <div class="modal fade" :id="`job-modal-${jobDetails.appointmentId}`" tabindex="-1" :aria-labelledby="`job-modal-label-${jobDetails.appointmentId}`" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header justify-content-between">
-                    <h1
-                        class="modal-title fs-5"
-                        :id="`job-modal-label-${jobDetails.appointmentId}`"
-                    >
+                    <h1 class="modal-title fs-5" :id="`job-modal-label-${jobDetails.appointmentId}`">
                         <span class="text-secondary">Appointment ID:</span>
                         {{ jobDetails.appointmentId }}
                     </h1>
 
                     <div class="d-flex align-items-center">
-                        <button
-                            v-if="
-                                userType == 'admin' &&
-                                jobDetails.jobStatus != 'COMPLETED'
-                            "
-                            @click="toggleEditMode()"
-                            type="button"
-                            class="btn btn-outline-secondary border-0"
-                            :class="isEditMode ? 'active' : ''"
-                        >
-                            <font-awesome-icon
-                                icon="fa-solid fa-pen-to-square"
-                            />
+                        <button v-if="userType == 'admin' && jobDetails.jobStatus != 'COMPLETED'" @click="toggleEditMode()" type="button" class="btn btn-outline-secondary border-0" :class="isEditMode ? 'active' : ''">
+                            <font-awesome-icon icon="fa-solid fa-pen-to-square" />
                         </button>
-                        <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                        ></button>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 </div>
 
@@ -116,9 +92,7 @@ import GmapInput from "../forms/GmapInput.vue";
                             <div class="col-12">
                                 <!-- Job Status -->
                                 <p>
-                                    <font-awesome-icon
-                                        class="me-2"
-                                        icon="fa-solid fa-circle"
+                                    <font-awesome-icon class="me-2" icon="fa-solid fa-circle"
                                         :style="{
                                             color: statusColorMap[
                                                 jobDetails.jobStatus
@@ -130,10 +104,7 @@ import GmapInput from "../forms/GmapInput.vue";
                         </div>
 
                         <!-- IF PROOF NOT UPLOADED ERROR -->
-                        <hr
-                            v-if="showJobStartedWarning"
-                            class="border-2 rounded border-secondary mt-0"
-                        />
+                        <hr v-if="showJobStartedWarning" class="border-2 rounded border-secondary mt-0" />
 
                         <div v-if="showJobStartedWarning" class="row mb-3">
                             <template v-if="userType == 'admin'">
@@ -149,9 +120,7 @@ import GmapInput from "../forms/GmapInput.vue";
                                 </div>
 
                                 <div class="col-6">
-                                    <button
-                                        class="btn btn-sm btn-secondary w-100"
-                                    >
+                                    <button class="btn btn-sm btn-secondary w-100">
                                         Continue
                                     </button>
                                 </div>
@@ -197,9 +166,7 @@ import GmapInput from "../forms/GmapInput.vue";
                                         Client Name
                                     </p>
                                     <h6 class="m-0">
-                                        {{
-                                            jobDetails.clientDetails.clientName
-                                        }}
+                                        {{ jobDetails.clientDetails.clientName }}
                                     </h6>
                                 </div>
                             </div>
@@ -557,21 +524,42 @@ import GmapInput from "../forms/GmapInput.vue";
                     </div>
                 </div>
 
-                <div class="modal-footer" v-if="isEditMode">
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        @click="revertEdits()"
-                    >
-                        Cancel
+                <div class="modal-footer d-flex justify-content-between" v-if="isEditMode">
+                    <button type="button" class="btn btn-light" @click="openDelModal(true)">
+                        <font-awesome-icon icon="fa-solid fa-calendar-xmark" />
                     </button>
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        @click="saveChanges()"
-                    >
-                        Save changes
-                    </button>
+
+                    <div>
+                        <button type="button" class="btn btn-light" @click="revertEdits()">
+                            Cancel
+                        </button>
+    
+                        <button type="button" class="btn btn-primary ms-3" @click="saveChanges()">
+                            Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <div class="modal fade" :id="`job-del-modal-${jobDetails.appointmentId}`" tabindex="-1" :aria-labelledby="`job-del-modal-label-${jobDetails.appointmentId}`" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" :id="`job-del-modal-label-${jobDetails.appointmentId}`"><font-awesome-icon icon="fa-solid fa-calendar-xmark" class="me-2" />Confirm Cancellation?</h1>
+                    <button type="button" class="btn-close" @click="openMainModal(true)"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Are you sure you want to cancel this job?</p>
+                    <p>Job cancellations cannot be undone.</p>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" @click="openMainModal(true)" >Cancel</button>
+                    <button type="button" class="btn btn-danger" @click="confirmCancelJob()">Confirm</button>
                 </div>
             </div>
         </div>
@@ -608,6 +596,7 @@ export default {
             // STATE VARIABLES ================================
             isHovering: false,
             mainModal: null, // Will be automatically populated with bootstrap.Modal on Mounted
+            delModal: null, // Will be automatically populated with bootstrap.Modal on Mounted
             currentDateTime: new Date(),
             isEditMode: false,
 
@@ -697,6 +686,8 @@ export default {
 
         openMainModal(toShow = true) {
             if (toShow) {
+                this.openDelModal(false);
+
                 this.mainModal.show();
             } else {
                 this.mainModal.hide();
@@ -803,6 +794,24 @@ export default {
             // GMaps input emits the new address, this function updates the jobEdit object
             this.jobEdit.jobAddress.address = data.value;
         },
+        openDelModal(toOpen = true) {
+            if (toOpen) {
+                this.openMainModal(false);
+
+                this.delModal.show();
+            } else {
+                this.delModal.hide();
+            }
+        },
+        confirmCancelJob() {
+            // Placeholder for API call to delete job
+            console.log("JOB DELETED PLACEHOLDER" + this.jobDetails.appointmentId);
+            // INSERT API CALL HERE <===========================
+
+
+            // Close modal
+            this.openDelModal(false);
+        }
     },
     mounted() {
         // Sets up main modal
@@ -811,6 +820,12 @@ export default {
             this.mainModal = new bootstrap.Modal(
                 document.getElementById(
                     `job-modal-${this.jobDetails.appointmentId}`
+                )
+            );
+
+            this.delModal = new bootstrap.Modal(
+                document.getElementById(
+                    `job-del-modal-${this.jobDetails.appointmentId}`
                 )
             );
         });
