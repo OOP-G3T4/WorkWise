@@ -3,13 +3,14 @@ import { createStore } from 'vuex';
 const store = createStore({
     state() {
         return {
-            // UserType
-            userType: localStorage.getItem('userType') || "", // Get from localStorage or default to ""
-            userId: localStorage.getItem('userId') || "", // Get from localStorage or default to ""
+            // Get from localStorage or default to ""
+            userType: localStorage.getItem('userType') || "",
+            userId: localStorage.getItem('userId') || "",
+            userName: localStorage.getItem('userName') || "",
         };
     },
     mutations: {
-        // UserType
+        // User Type
         setUserType(state, type) {
             state.userType = type;
             localStorage.setItem('userType', type); // Save
@@ -18,6 +19,8 @@ const store = createStore({
             state.userType = "";
             localStorage.removeItem('userType'); // Clear
         },
+
+        // User ID
         setUserId(state, id) {
             state.userId = id;
             localStorage.setItem('userId', id); // Save
@@ -26,15 +29,27 @@ const store = createStore({
             state.userId = "";
             localStorage.removeItem('userId'); // Clear
         },
+
+        // User Name
+        setUserName(state, name) {
+            state.userName = name;
+            localStorage.setItem('userName', name); // Save
+        },
+        clearUserName(state) {
+            state.userName = "";
+            localStorage.removeItem('userName'); // Clear
+        },
     },
     actions: {
-        setUserLogin({ commit }, { type, id }) {
+        setUserLogin({ commit }, { type, id, name }) {
             commit('setUserType', type);
             commit('setUserId', id);
+            commit('setUserName', name);
         },
         clearUserLogin({ commit }) {
             commit('clearUserType');
             commit('clearUserId');
+            commit('clearUserName');
         }
     },
     getters: {

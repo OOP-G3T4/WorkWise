@@ -94,12 +94,19 @@ export default {
                     }
 
                     // If no errors, log in user
+
                     const userId = await response.json();
                     
+                    // Get user name
+                    const nameResponse = await fetch(`http://localhost:8081/api/${this.userTypes[this.selectedUserType].navbarFormat}/${userId}`);
+                    const userNameTemp = await nameResponse.json();
+                    const userName = userNameTemp.name;
+
                     // Save user type and user id to Vuex
                     this.$store.dispatch("setUserLogin", {
                         type: this.userTypes[this.selectedUserType].navbarFormat,
                         id: userId,
+                        name: userName,
                     });
 
                     // Redirect to user's main page

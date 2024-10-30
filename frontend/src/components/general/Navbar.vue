@@ -149,12 +149,14 @@ export default {
         userRole: {
             type: String,
             required: true,
+        },
+        userName: {
+            type: String,
+            required: true,
         }
     },
     data() {
         return {
-            userName: "John Doe",
-
             // Offcanvas elem
             sideBarElem: null,
             topNavBarElem: null,
