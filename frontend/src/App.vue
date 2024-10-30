@@ -23,12 +23,6 @@ export default {
             return routesHideNavbar.includes(this.$route.path);
         },
     },
-    mounted() {
-        // Reroute to login if userRole not set yet on VUEX
-        if (!this.userType) {
-            this.$router.push("/");
-        }
-    },
 };
 </script>
 

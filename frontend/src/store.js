@@ -28,7 +28,6 @@ const store = createStore({
         },
     },
     actions: {
-        // UserType
         setUserLogin({ commit }, { type, id }) {
             commit('setUserType', type);
             commit('setUserId', id);
@@ -37,6 +36,14 @@ const store = createStore({
             commit('clearUserType');
             commit('clearUserId');
         }
+    },
+    getters: {
+        getUserType(state) {
+            return state.userType;
+        },
+        getUserId(state) {
+            return state.userId;
+        },
     },
 });
 
