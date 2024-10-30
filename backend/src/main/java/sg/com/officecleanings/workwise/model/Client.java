@@ -1,8 +1,10 @@
 package sg.com.officecleanings.workwise.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -25,8 +27,6 @@ public class Client {
     @Size(max = 120)
     private String name;
 
-    private String phoneNumber;
-
     @Email
     @NotNull
     @Size(max = 200)
@@ -46,6 +46,9 @@ public class Client {
 
     @NotNull
     private LocalDate joinDate;
+
+    @Size(max = 20)
+    private String phoneNumber;
 
     public Client() {
     }
