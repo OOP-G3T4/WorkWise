@@ -1,63 +1,65 @@
 -- Insert sample clients
-INSERT INTO client (client_id, name, email, phone_number)
-VALUES (1, 'Tommy Tallwalk', 'tommy.tallwalk@example.com', '82345678'),
-        (2, 'Sally Shortstack', 'sally.shortstack@example.com', '81234567'),
-        (3, 'Michael Jordan', 'michael.jordan@example.com', '82234567'),
-        (4, 'Stephen Curry', 'stephen.curry@example.com', '83234567'),
-        (5, 'Kobe Bryant', 'kobe.bryant@example.com', '84234567'),
-        (6, 'Luka Doncic', 'luka.doncic@example.com', '85234567'),
-        (7, 'Jason Tatum', 'jason.tatum@example.com', '86234567'),
-        (8, 'Lebron James', 'lebron.james@example.com', '87234567'),
-        (9, 'Giannis Antetokounmpo', 'giannis.antetokounmpo@example.com', '88234567'),
-        (10, 'Anthony Davis', 'anthony.davis@example.com', '89234567'),
-        (11, 'Kevin Durant', 'kevin.durant@example.com', '80234567'),
-        (12, 'James Harden', 'james.harden@example.com', '81123456'),
-        (13, 'Kyrie Irving', 'kyrie.irving@example.com', '82123456'),
-        (14, 'Damian Lillard', 'damian.lillard@example.com', '83123456'),
-        (15, 'Kawhi Leonard', 'kawhi.leonard@example.com', '84123456'),
-        (16, 'Paul George', 'paul.george@example.com', '85123456'),
-        (17, 'Russell Westbrook', 'russell.westbrook@example.com', '86123456'),
-        (18, 'Chris Paul', 'chris.paul@example.com', '87123456'),
-        (19, 'Devin Booker', 'devin.booker@example.com', '88123456'),
-        (20, 'Donovan Mitchell', 'donovan.mitchell@example.com', '89123456'),
-        (21, 'Anthony Edwards', 'anthony.edwards@example.com', '80123456'),
-        (22, 'LaMelo Ball', 'lamelo.ball@example.com', '81345678'),
-        (23, 'Larry Bird', 'larry.bird@example.com', '83345678'),
-        (24, 'Magic Johnson', 'magic.johnson@example.com', '84345678'),
-        (25, 'Paige Bueckers', 'paige.bueckers@example.com', '85345678'),
-        (26, 'Sabrina Ionescu', 'sabrina.ionescu@example.com', '86345678'),
-        (27, 'Breanna Stewart', 'brenna.stewart@example.com', '87345678'),
-        (28, 'Diana Taurasi', 'diana.taurasi@example.com', '88345678'),
-        (29, 'Sue Bird', 'sue.bird@example.com', '89345678'),
-        (30, 'Candace Parker', 'candace.parker@example.com', '80345678'),
-        (31, 'Maya Moore', 'maya.moore@example.com', '81456789'),
-        (32, 'Caitlin Clark', 'caitlin.clark@example.com', '83456789'),
-        (33, 'Nikola Jokic', 'nikola.jokic@example.com', '84456789'),
-        (34, 'Joel Embiid', 'joel.embiid@example.com', '85456789'),
-        (35, 'Klay Thompson', 'klay.thompson@example.com', '86456789'),
-        (36, 'Draymond Green', 'draymond.green@example.com', '87456789'),
-        (37, 'Buddy Hield', 'buddy.hield@example.com', '88456789'),
-        (38, 'DeAaron Fox', 'deaaron.fox@example.com', '89456789'),
-        (39, 'Victor Wembanyama', 'victor.wembanyama@example.com', '80456789'),
-        (40, 'Jalen Brunson', 'jalen.brunson@example.com', '81567890'),
-        (41, 'Jalen Brown', 'jalen.brown@example.com', '83567890'),
-        (42, 'Tony Parker', 'tony.parker@example.com', '84567890'),
-        (43, 'Manu Ginobili', 'manu.ginobili@example.com', '85567890'),
-        (44, 'Tim Duncan', 'tim.duncan@example.com', '86567890'),
-        (45, 'Andrew Wiggins', 'andrew.wiggins@example.com', '87567890'),
-        (46, 'Karl Anthony Towns', 'karl.anthony.towns@examples.com', '88567890'),
-        (47, 'Jrue Holiday', 'jrue.holiday@example.com', '89567890'),
-        (48, 'Zion Williamson', 'zion.williamson@example.com', '80567890'),
-        (49, 'Brandon Ingram', 'brandon.ingram@example.com', '81678901'),
-        (50, 'Lonzo Ball', 'lonzo.ball@example.com', '83678901');
+INSERT INTO client (client_id, name, email, phone_number, client_address, gender, client_age, join_date)
+VALUES
+    (1, 'Tommy Tallwalk', 'tommy.tallwalk@example.com', '82345678', '123 Changi Road, Singapore 427466', 'M', 35, '2024-10-01'),
+    (2, 'Sally Shortstack', 'sally.shortstack@example.com', '81234567', '456 Jurong West Street, Singapore 640456', 'F', 29, '2024-10-01'),
+    (3, 'Michael Jordan', 'michael.jordan@example.com', '82234567', '11 Mount Faber Rd, Singapore 099209', 'M', 55, '2024-10-01'),
+    (4, 'Stephen Curry', 'stephen.curry@example.com', '83234567', '900 Dunearn Rd, Singapore 589473', 'M', 35, '2024-10-01'),
+    (5, 'Kobe Bryant', 'kobe.bryant@example.com', '84234567', '767 Pasir Ris Street 71, Singapore 510767', 'M', 41, '2024-11-01'),
+    (6, 'Luka Doncic', 'luka.doncic@example.com', '85234567', '132 Joo Seng Rd, Singapore 368358', 'M', 25, '2024-11-01'),
+    (7, 'Jason Tatum', 'jason.tatum@example.com', '86234567', '261 Waterloo St, Singapore 180261', 'M', 27, '2024-11-01'),
+    (8, 'Lebron James', 'lebron.james@example.com', '87234567', '20 Bendemeer Rd, Singapore 339914', 'M', 39, '2024-11-01'),
+    (9, 'Giannis Antetokounmpo', 'giannis.antetokounmpo@example.com', '88234567', '624 Choa Chu Kang Street 62, Singapore 680624', 'M', 28, '2024-11-01'),
+    (10, 'Anthony Davis', 'anthony.davis@example.com', '89234567', '321 Yishun Central, Singapore 760321', 'M', 30, '2024-11-01'),
+    (11, 'Kevin Durant', 'kevin.durant@example.com', '80234567', '665C Punggol Dr., Singapore 823665', 'M', 34, '2024-11-01'),
+    (12, 'James Harden', 'james.harden@example.com', '81123456', '245 Tampines St. 21, Singapore 521245', 'M', 33, '2024-11-01'),
+    (13, 'Kyrie Irving', 'kyrie.irving@example.com', '82123456', '318 Clementi Ave 4, Singapore 120318', 'M', 30, '2024-11-01'),
+    (14, 'Damian Lillard', 'damian.lillard@example.com', '83123456', '363 Clementi Ave 2, Singapore 120363', 'M', 32, '2024-11-01'),
+    (15, 'Kawhi Leonard', 'kawhi.leonard@example.com', '84123456', '4B Bury Rd, Singapore 119825', 'M', 29, '2024-11-01'),
+    (16, 'Paul George', 'paul.george@example.com', '85123456', '113 Bukit Purmei Rd, Singapore 090113', 'M', 35, '2024-11-01'),
+    (17, 'Russell Westbrook', 'russell.westbrook@example.com', '86123456', '10E Bedok South Ave 2, Singapore 464010', 'M', 34, '2024-11-01'),
+    (18, 'Chris Paul', 'chris.paul@example.com', '87123456', '531 Pasir Ris Dr 1, Singapore 510531', 'M', 37, '2024-11-01'),
+    (19, 'Devin Booker', 'devin.booker@example.com', '88123456', '7 Lor How Sun, Singapore 536564', 'M', 27, '2024-11-01'),
+    (20, 'Donovan Mitchell', 'donovan.mitchell@example.com', '89123456', '505 Bishan St.11, Singapore 570505', 'M', 26, '2024-11-01'),
+    (21, 'Anthony Edwards', 'anthony.edwards@example.com', '80123456', '868 Dunearn Rd, Singapore 589470', 'M', 23, '2024-11-01'),
+    (22, 'LaMelo Ball', 'lamelo.ball@example.com', '81345678', '10 Stirling Rd, Singapore 148954', 'M', 22, '2024-11-01'),
+    (23, 'Larry Bird', 'larry.bird@example.com', '83345678', 'Veerasamy Rd, Block 637, Singapore 200637', 'M', 60, '2024-11-01'),
+    (24, 'Magic Johnson', 'magic.johnson@example.com', '84345678', '700B Ang Mo Kio Ave 6, Singapore 562700', 'M', 65, '2024-11-01'),
+    (25, 'Paige Bueckers', 'paige.bueckers@example.com', '85345678', '1211 Upper Boon Keng Rd, Singapore 387313', 'F', 22, '2024-11-01'),
+    (26, 'Sabrina Ionescu', 'sabrina.ionescu@example.com', '86345678', '49 Toa Payoh Rise, Singapore 298105', 'F', 25, '2024-11-01'),
+    (27, 'Breanna Stewart', 'brenna.stewart@example.com', '87345678', '581 Pasir Ris Street 53, Singapore 510581', 'F', 29, '2024-11-01'),
+    (28, 'Diana Taurasi', 'diana.taurasi@example.com', '88345678', '24 Bah Soon Pah Rd, Singapore 769968', 'F', 39, '2024-11-01'),
+    (29, 'Sue Bird', 'sue.bird@example.com', '89345678', '41 Sunbird Rd, Singapore 487158', 'F', 40, '2024-11-01'),
+    (30, 'Candace Parker', 'candace.parker@example.com', '80345678', '244 Simei Street 5, Singapore 520244', 'F', 35, '2024-11-01'),
+    (31, 'Maya Moore', 'maya.moore@example.com', '81456789', '226 Tampines St 23, Singapore 521226', 'F', 33, '2024-11-01'),
+    (32, 'Caitlin Clark', 'caitlin.clark@example.com', '83456789', '102B Punggol Fld, Singapore 822102', 'F', 21, '2024-11-01'),
+    (33, 'Nikola Jokic', 'nikola.jokic@example.com', '84456789', '299B Compassvale St, Singapore 542299', 'M', 28, '2024-11-01'),
+    (34, 'Joel Embiid', 'joel.embiid@example.com', '85456789', '31 Fernvale Rd, HIGH PARK RESIDENCES, Singapore 797417', 'M', 27, '2024-11-01'),
+    (35, 'Klay Thompson', 'klay.thompson@example.com', '86456789', '287D Jurong East Street 21, Singapore 604287', 'M', 30, '2024-11-01'),
+    (36, 'Draymond Green', 'draymond.green@example.com', '87456789', '211 Jurong East Street 21, Singapore 600211', 'M', 32, '2024-11-01'),
+    (37, 'Buddy Hield', 'buddy.hield@example.com', '88456789', '102 Bukit Batok West Ave 6, Singapore 650102', 'M', 30, '2024-11-01'),
+    (38, 'DeAaron Fox', 'deaaron.fox@example.com', '89456789', '626 Bukit Batok Central, Block 626, Singapore 650626', 'M', 26, '2024-11-01'),
+    (39, 'Victor Wembanyama', 'victor.wembanyama@example.com', '80456789', '376 Bukit Batok Street 31, #05-12, Singapore 650376', 'M', 20, '2024-11-01'),
+    (40, 'Jalen Brunson', 'jalen.brunson@example.com', '81567890', '162 Woodlands Street 13, Singapore 730162', 'M', 27, '2024-11-01'),
+    (41, 'Jalen Brown', 'jalen.brown@example.com', '83567890', '589 Woodlands Drive 16, Singapore 730589', 'M', 27, '2024-11-01'),
+    (42, 'Tony Parker', 'tony.parker@example.com', '84567890', '74 Jln Kelabu Asap, Singapore 278267', 'M', 45, '2024-11-01'),
+    (43, 'Manu Ginobili', 'manu.ginobili@example.com', '85567890', '53 Commonwealth Dr, Singapore 142053', 'M', 43, '2024-11-01'),
+    (44, 'Tim Duncan', 'tim.duncan@example.com', '86567890', '145 Mei Ling St, Block 145, Singapore 140145', 'M', 46, '2024-11-01'),
+    (45, 'Andrew Wiggins', 'andrew.wiggins@example.com', '87567890', '76A Redhill Rd, Singapore 151076', 'M', 28, '2024-11-01'),
+    (46, 'Karl Anthony Towns', 'karl.anthony.towns@examples.com', '88567890', '19 Jln Membina, Singapore 163019', 'M', 27, '2024-11-01'),
+    (47, 'Jrue Holiday', 'jrue.holiday@example.com', '89567890', '68a Neil Rd, Singapore 088836', 'M', 34, '2024-11-01'),
+    (48, 'Zion Williamson', 'zion.williamson@example.com', '80567890', 'Anson Rd, #80, Singapore 079907', 'M', 23, '2024-11-01'),
+    (49, 'Brandon Ingram', 'brandon.ingram@example.com', '81678901', '18 Marina Blvd, Singapore 018980', 'M', 26, '2024-11-01'),
+    (50, 'Lonzo Ball', 'lonzo.ball@example.com', '83678901', '38 Handy Rd, Singapore 229239', 'M', 25, '2024-11-01');
+
 
 
 -- Insert sample properties
 INSERT INTO property (property_id, address, postal_code)
-VALUES (1, '123 Changi Road, East', '427466'),
-       (2, '456 Jurong West Street, West', '640456'),
-       (3, '11 Mount Faber Rd, South', '099209'),
-       (4, '900 Dunearn Rd, Central', '589473'),
+VALUES (1, '123 Changi Road', '427466'),
+       (2, '456 Jurong West Street', '640456'),
+       (3, '11 Mount Faber Rd', '099209'),
+       (4, '900 Dunearn Rd', '589473'),
        (5, '767 Pasir Ris Street 71', '510767'),
        (6, '132 Joo Seng Rd', '368358'),
        (7, '261 Waterloo St', '180261'),
@@ -218,212 +220,213 @@ VALUES ('W_3RM_HDB', 'WEEKLY', 276, 'THREE_ROOM', 'HDB', 23, 1, 3),
 
 -- Insert sample jobs
 -- Weekly Jobs (14 properties, each inserted 4 times for weekly frequency)
-INSERT INTO job (job_id, client_id, property_id, package_id, date, start_time, status, actual_duration)
+INSERT INTO job (job_id, client_id, property_id, package_id, date, start_time, status, actual_duration, arrival_proof_uploaded, completion_proof_uploaded)
 VALUES
     -- Week 1 (November 4 - November 10)
-    (1, 1, 1, 'W_3RM_HDB', '2024-11-04', '09:00:00', 'PENDING', 3),  -- Monday morning
-    (2, 2, 2, 'W_4RM_HDB', '2024-11-04', '18:00:00', 'PENDING', 4),  -- Monday night
-    (3, 3, 3, 'W_MAISONETTE_HDB', '2024-11-04', '19:00:00', 'PENDING', 3),  -- Monday night
-    (4, 4, 4, 'W_5RM_CONDO', '2024-11-05', '18:00:00', 'PENDING', 4),  -- Tuesday night
-    (5, 5, 5, 'W_2RM_CONDO', '2024-11-06', '18:00:00', 'PENDING', 3),  -- Wednesday night
-    (6, 6, 6, 'W_3RM_HDB', '2024-11-06', '19:00:00', 'PENDING', 3),  -- Wednesday night
-    (7, 7, 7, 'W_4RM_CONDO', '2024-11-07', '09:00:00', 'PENDING', 4),  -- Thursday morning
-    (8, 8, 8, 'W_5RM_HDB', '2024-11-07', '13:00:00', 'PENDING', 4),  -- Thursday afternoon
-    (9, 9, 9, 'W_LANDED', '2024-11-08', '13:00:00', 'PENDING', 4),  -- Friday afternoon
-    (10, 10, 10, 'W_3RM_HDB', '2024-11-08', '18:00:00', 'PENDING', 3),  -- Friday night
-    (11, 11, 11, 'W_3RM_CONDO', '2024-11-09', '09:00:00', 'PENDING', 3),  -- Saturday morning
-    (12, 12, 12, 'W_4RM_HDB', '2024-11-09', '18:00:00', 'PENDING', 4),  -- Saturday night
-    (13, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-10', '09:00:00', 'PENDING', 3),  -- Sunday morning
-    (14, 14, 14, 'W_3RM_HDB', '2024-11-10', '13:00:00', 'PENDING', 3),  -- Sunday afternoon
-    (85, 21, 21, 'W_2RM_CONDO', '2024-11-04', '08:00:00', 'PENDING', 3),  -- Monday
-    (86, 22, 22, 'W_3RM_HDB', '2024-11-05', '13:00:00', 'PENDING', 3),    -- Tuesday
-    (87, 23, 23, 'W_5RM_HDB', '2024-11-06', '08:00:00', 'PENDING', 4),    -- Wednesday
-    (88, 24, 24, 'W_4RM_HDB', '2024-11-07', '08:00:00', 'PENDING', 4),    -- Thursday
-    (89, 25, 25, 'W_LANDED', '2024-11-08', '18:00:00', 'PENDING', 4),     -- Friday
-    (90, 26, 26, 'W_MAISONETTE_CONDO', '2024-11-09', '13:00:00', 'PENDING', 3.5),  -- Saturday
-    (91, 27, 27, 'W_5RM_CONDO', '2024-11-10', '09:00:00', 'PENDING', 3),  -- Sunday
-    (92, 28, 28, 'W_3RM_CONDO', '2024-11-05', '08:00:00', 'PENDING', 4),  -- Tuesday
-    (93, 29, 29, 'W_4RM_CONDO', '2024-11-07', '13:00:00', 'PENDING', 4),  -- Thursday
-    (94, 30, 30, 'W_5RM_HDB', '2024-11-08', '08:00:00', 'PENDING', 4),    -- Friday
-    (95, 31, 31, 'W_3RM_CONDO', '2024-11-10', '07:30:00', 'PENDING', 4),  -- Sunday
-    (96, 32, 32, 'W_MAISONETTE_HDB', '2024-11-04', '18:00:00', 'PENDING', 3), -- Monday
-    (97, 33, 33, 'W_LANDED', '2024-11-06', '08:00:00', 'PENDING', 4),     -- Wednesday
-    (98, 34, 34, 'W_5RM_CONDO', '2024-11-07', '09:00:00', 'PENDING', 3),  -- Thursday
-    (99, 35, 35, 'W_3RM_HDB', '2024-11-09', '08:00:00', 'PENDING', 4),    -- Saturday
-    (100, 36, 36, 'W_4RM_HDB', '2024-11-05', '08:00:00', 'PENDING', 4),   -- Tuesday
-    (101, 37, 37, 'W_MAISONETTE_HDB', '2024-11-04', '14:00:00', 'PENDING', 3), -- Monday
-    (102, 38, 38, 'W_5RM_HDB', '2024-11-08', '08:00:00', 'PENDING', 4),   -- Friday
-    (103, 39, 39, 'W_2RM_CONDO', '2024-11-07', '08:00:00', 'PENDING', 3), -- Thursday
-    (104, 40, 40, 'W_4RM_HDB', '2024-11-06', '18:00:00', 'PENDING', 4),   -- Wednesday
+    (1, 1, 1, 'W_3RM_HDB', '2024-11-04', '09:00:00', 'PENDING', 3, FALSE, FALSE),  -- Monday morning
+    (2, 2, 2, 'W_4RM_HDB', '2024-11-04', '18:00:00', 'PENDING', 4, FALSE, FALSE),  -- Monday night
+    (3, 3, 3, 'W_MAISONETTE_HDB', '2024-11-04', '19:00:00', 'PENDING', 3, FALSE, FALSE),  -- Monday night
+    (4, 4, 4, 'W_5RM_CONDO', '2024-11-05', '18:00:00', 'PENDING', 4, FALSE, FALSE),  -- Tuesday night
+    (5, 5, 5, 'W_2RM_CONDO', '2024-11-06', '18:00:00', 'PENDING', 3, FALSE, FALSE),  -- Wednesday night
+    (6, 6, 6, 'W_3RM_HDB', '2024-11-06', '19:00:00', 'PENDING', 3, FALSE, FALSE),  -- Wednesday night
+    (7, 7, 7, 'W_4RM_CONDO', '2024-11-07', '09:00:00', 'PENDING', 4, FALSE, FALSE),  -- Thursday morning
+    (8, 8, 8, 'W_5RM_HDB', '2024-11-07', '13:00:00', 'PENDING', 4, FALSE, FALSE),  -- Thursday afternoon
+    (9, 9, 9, 'W_LANDED', '2024-11-08', '13:00:00', 'PENDING', 4, FALSE, FALSE),  -- Friday afternoon
+    (10, 10, 10, 'W_3RM_HDB', '2024-11-08', '18:00:00', 'PENDING', 3, FALSE, FALSE),  -- Friday night
+    (11, 11, 11, 'W_3RM_CONDO', '2024-11-09', '09:00:00', 'PENDING', 3, FALSE, FALSE),  -- Saturday morning
+    (12, 12, 12, 'W_4RM_HDB', '2024-11-09', '18:00:00', 'PENDING', 4, FALSE, FALSE),  -- Saturday night
+    (13, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-10', '09:00:00', 'PENDING', 3, FALSE, FALSE),  -- Sunday morning
+    (14, 14, 14, 'W_3RM_HDB', '2024-11-10', '13:00:00', 'PENDING', 3, FALSE, FALSE),  -- Sunday afternoon
+    (85, 21, 21, 'W_2RM_CONDO', '2024-11-04', '08:00:00', 'PENDING', 3, FALSE, FALSE),  -- Monday
+    (86, 22, 22, 'W_3RM_HDB', '2024-11-05', '13:00:00', 'PENDING', 3, FALSE, FALSE),    -- Tuesday
+    (87, 23, 23, 'W_5RM_HDB', '2024-11-06', '08:00:00', 'PENDING', 4, FALSE, FALSE),    -- Wednesday
+    (88, 24, 24, 'W_4RM_HDB', '2024-11-07', '08:00:00', 'PENDING', 4, FALSE, FALSE),    -- Thursday
+    (89, 25, 25, 'W_LANDED', '2024-11-08', '18:00:00', 'PENDING', 4, FALSE, FALSE),     -- Friday
+    (90, 26, 26, 'W_MAISONETTE_CONDO', '2024-11-09', '13:00:00', 'PENDING', 3.5, FALSE, FALSE),  -- Saturday
+    (91, 27, 27, 'W_5RM_CONDO', '2024-11-10', '09:00:00', 'PENDING', 3, FALSE, FALSE),  -- Sunday
+    (92, 28, 28, 'W_3RM_CONDO', '2024-11-05', '08:00:00', 'PENDING', 4, FALSE, FALSE),  -- Tuesday
+    (93, 29, 29, 'W_4RM_CONDO', '2024-11-07', '13:00:00', 'PENDING', 4, FALSE, FALSE),  -- Thursday
+    (94, 30, 30, 'W_5RM_HDB', '2024-11-08', '08:00:00', 'PENDING', 4, FALSE, FALSE),    -- Friday
+    (95, 31, 31, 'W_3RM_CONDO', '2024-11-10', '07:30:00', 'PENDING', 4, FALSE, FALSE),  -- Sunday
+    (96, 32, 32, 'W_MAISONETTE_HDB', '2024-11-04', '18:00:00', 'PENDING', 3, FALSE, FALSE), -- Monday
+    (97, 33, 33, 'W_LANDED', '2024-11-06', '08:00:00', 'PENDING', 4, FALSE, FALSE),     -- Wednesday
+    (98, 34, 34, 'W_5RM_CONDO', '2024-11-07', '09:00:00', 'PENDING', 3, FALSE, FALSE),  -- Thursday
+    (99, 35, 35, 'W_3RM_HDB', '2024-11-09', '08:00:00', 'PENDING', 4, FALSE, FALSE),    -- Saturday
+    (100, 36, 36, 'W_4RM_HDB', '2024-11-05', '08:00:00', 'PENDING', 4, FALSE, FALSE),   -- Tuesday
+    (101, 37, 37, 'W_MAISONETTE_HDB', '2024-11-04', '14:00:00', 'PENDING', 3, FALSE, FALSE), -- Monday
+    (102, 38, 38, 'W_5RM_HDB', '2024-11-08', '08:00:00', 'PENDING', 4, FALSE, FALSE),   -- Friday
+    (103, 39, 39, 'W_2RM_CONDO', '2024-11-07', '08:00:00', 'PENDING', 3, FALSE, FALSE), -- Thursday
+    (104, 40, 40, 'W_4RM_HDB', '2024-11-06', '18:00:00', 'PENDING', 4, FALSE, FALSE),   -- Wednesday
 
     -- Week 2 (November 11 - November 17)
-    (15, 1, 1, 'W_3RM_HDB', '2024-11-11', '09:00:00', 'PENDING', 3),  -- Monday morning
-    (16, 2, 2, 'W_4RM_HDB', '2024-11-11', '18:00:00', 'PENDING', 4),  -- Monday night
-    (17, 3, 3, 'W_MAISONETTE_HDB', '2024-11-11', '19:00:00', 'PENDING', 3),  -- Monday night
-    (18, 4, 4, 'W_5RM_CONDO', '2024-11-12', '18:00:00', 'PENDING', 4),  -- Tuesday night
-    (19, 5, 5, 'W_2RM_CONDO', '2024-11-13', '18:00:00', 'PENDING', 3),  -- Wednesday night
-    (20, 6, 6, 'W_3RM_HDB', '2024-11-13', '19:00:00', 'PENDING', 3),  -- Wednesday night
-    (21, 7, 7, 'W_4RM_CONDO', '2024-11-14', '09:00:00', 'PENDING', 4),  -- Thursday morning
-    (22, 8, 8, 'W_5RM_HDB', '2024-11-14', '13:00:00', 'PENDING', 4),  -- Thursday afternoon
-    (23, 9, 9, 'W_LANDED', '2024-11-15', '13:00:00', 'PENDING', 4),  -- Friday afternoon
-    (24, 10, 10, 'W_3RM_HDB', '2024-11-15', '18:00:00', 'PENDING', 3),  -- Friday night
-    (25, 11, 11, 'W_3RM_CONDO', '2024-11-16', '09:00:00', 'PENDING', 3),  -- Saturday morning
-    (26, 12, 12, 'W_4RM_HDB', '2024-11-16', '18:00:00', 'PENDING', 4),  -- Saturday night
-    (27, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-17', '09:00:00', 'PENDING', 3),  -- Sunday morning
-    (28, 14, 14, 'W_3RM_HDB', '2024-11-17', '13:00:00', 'PENDING', 3),  -- Sunday afternoon
-    (105, 21, 21, 'W_2RM_CONDO', '2024-11-11', '08:00:00', 'PENDING', 3),
-    (106, 22, 22, 'W_3RM_HDB', '2024-11-12', '13:00:00', 'PENDING', 3),
-    (107, 23, 23, 'W_5RM_HDB', '2024-11-13', '08:00:00', 'PENDING', 4),
-    (108, 24, 24, 'W_4RM_HDB', '2024-11-14', '08:00:00', 'PENDING', 4),
-    (109, 25, 25, 'W_LANDED', '2024-11-15', '18:00:00', 'PENDING', 4),
-    (110, 26, 26, 'W_MAISONETTE_CONDO', '2024-11-16', '13:00:00', 'PENDING', 3.5),
-    (111, 27, 27, 'W_5RM_CONDO', '2024-11-17', '09:00:00', 'PENDING', 3),
-    (112, 28, 28, 'W_3RM_CONDO', '2024-11-12', '08:00:00', 'PENDING', 4),
-    (113, 29, 29, 'W_4RM_CONDO', '2024-11-14', '13:00:00', 'PENDING', 4),
-    (114, 30, 30, 'W_5RM_HDB', '2024-11-15', '08:00:00', 'PENDING', 4),
-    (115, 31, 31, 'W_3RM_CONDO', '2024-11-17', '07:30:00', 'PENDING', 4),
-    (116, 32, 32, 'W_MAISONETTE_HDB', '2024-11-11', '18:00:00', 'PENDING', 3),
-    (117, 33, 33, 'W_LANDED', '2024-11-13', '08:00:00', 'PENDING', 4),
-    (118, 34, 34, 'W_5RM_CONDO', '2024-11-14', '09:00:00', 'PENDING', 3),
-    (119, 35, 35, 'W_3RM_HDB', '2024-11-16', '08:00:00', 'PENDING', 4),
-    (120, 36, 36, 'W_4RM_HDB', '2024-11-12', '08:00:00', 'PENDING', 4),
-    (121, 37, 37, 'W_MAISONETTE_HDB', '2024-11-11', '14:00:00', 'PENDING', 3),
-    (122, 38, 38, 'W_5RM_HDB', '2024-11-15', '08:00:00', 'PENDING', 4),
-    (123, 39, 39, 'W_2RM_CONDO', '2024-11-14', '08:00:00', 'PENDING', 3),
-    (124, 40, 40, 'W_4RM_HDB', '2024-11-13', '18:00:00', 'PENDING', 4),
+    (15, 1, 1, 'W_3RM_HDB', '2024-11-11', '09:00:00', 'PENDING', 3, FALSE, FALSE),  -- Monday morning
+    (16, 2, 2, 'W_4RM_HDB', '2024-11-11', '18:00:00', 'PENDING', 4, FALSE, FALSE),  -- Monday night
+    (17, 3, 3, 'W_MAISONETTE_HDB', '2024-11-11', '19:00:00', 'PENDING', 3, FALSE, FALSE),  -- Monday night
+    (18, 4, 4, 'W_5RM_CONDO', '2024-11-12', '18:00:00', 'PENDING', 4, FALSE, FALSE),  -- Tuesday night
+    (19, 5, 5, 'W_2RM_CONDO', '2024-11-13', '18:00:00', 'PENDING', 3, FALSE, FALSE),  -- Wednesday night
+    (20, 6, 6, 'W_3RM_HDB', '2024-11-13', '19:00:00', 'PENDING', 3, FALSE, FALSE),  -- Wednesday night
+    (21, 7, 7, 'W_4RM_CONDO', '2024-11-14', '09:00:00', 'PENDING', 4, FALSE, FALSE),  -- Thursday morning
+    (22, 8, 8, 'W_5RM_HDB', '2024-11-14', '13:00:00', 'PENDING', 4, FALSE, FALSE),  -- Thursday afternoon
+    (23, 9, 9, 'W_LANDED', '2024-11-15', '13:00:00', 'PENDING', 4, FALSE, FALSE),  -- Friday afternoon
+    (24, 10, 10, 'W_3RM_HDB', '2024-11-15', '18:00:00', 'PENDING', 3, FALSE, FALSE),  -- Friday night
+    (25, 11, 11, 'W_3RM_CONDO', '2024-11-16', '09:00:00', 'PENDING', 3, FALSE, FALSE),  -- Saturday morning
+    (26, 12, 12, 'W_4RM_HDB', '2024-11-16', '18:00:00', 'PENDING', 4, FALSE, FALSE),  -- Saturday night
+    (27, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-17', '09:00:00', 'PENDING', 3, FALSE, FALSE),  -- Sunday morning
+    (28, 14, 14, 'W_3RM_HDB', '2024-11-17', '13:00:00', 'PENDING', 3, FALSE, FALSE),  -- Sunday afternoon
+    (105, 21, 21, 'W_2RM_CONDO', '2024-11-11', '08:00:00', 'PENDING', 3, FALSE, FALSE),
+    (106, 22, 22, 'W_3RM_HDB', '2024-11-12', '13:00:00', 'PENDING', 3, FALSE, FALSE),
+    (107, 23, 23, 'W_5RM_HDB', '2024-11-13', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (108, 24, 24, 'W_4RM_HDB', '2024-11-14', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (109, 25, 25, 'W_LANDED', '2024-11-15', '18:00:00', 'PENDING', 4, FALSE, FALSE),
+    (110, 26, 26, 'W_MAISONETTE_CONDO', '2024-11-16', '13:00:00', 'PENDING', 3.5, FALSE, FALSE),
+    (111, 27, 27, 'W_5RM_CONDO', '2024-11-17', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+    (112, 28, 28, 'W_3RM_CONDO', '2024-11-12', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (113, 29, 29, 'W_4RM_CONDO', '2024-11-14', '13:00:00', 'PENDING', 4, FALSE, FALSE),
+    (114, 30, 30, 'W_5RM_HDB', '2024-11-15', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (115, 31, 31, 'W_3RM_CONDO', '2024-11-17', '07:30:00', 'PENDING', 4, FALSE, FALSE),
+    (116, 32, 32, 'W_MAISONETTE_HDB', '2024-11-11', '18:00:00', 'PENDING', 3, FALSE, FALSE),
+    (117, 33, 33, 'W_LANDED', '2024-11-13', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (118, 34, 34, 'W_5RM_CONDO', '2024-11-14', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+    (119, 35, 35, 'W_3RM_HDB', '2024-11-16', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (120, 36, 36, 'W_4RM_HDB', '2024-11-12', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (121, 37, 37, 'W_MAISONETTE_HDB', '2024-11-11', '14:00:00', 'PENDING', 3, FALSE, FALSE),
+    (122, 38, 38, 'W_5RM_HDB', '2024-11-15', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (123, 39, 39, 'W_2RM_CONDO', '2024-11-14', '08:00:00', 'PENDING', 3, FALSE, FALSE),
+    (124, 40, 40, 'W_4RM_HDB', '2024-11-13', '18:00:00', 'PENDING', 4, FALSE, FALSE),
 
     -- Week 3 (November 18 - November 24)
-    (29, 1, 1, 'W_3RM_HDB', '2024-11-18', '09:00:00', 'PENDING', 3),  -- Monday morning
-    (30, 2, 2, 'W_4RM_HDB', '2024-11-18', '18:00:00', 'PENDING', 4),  -- Monday night
-    (31, 3, 3, 'W_MAISONETTE_HDB', '2024-11-18', '19:00:00', 'PENDING', 3),  -- Monday night
-    (32, 4, 4, 'W_5RM_CONDO', '2024-11-19', '18:00:00', 'PENDING', 4),  -- Tuesday night
-    (33, 5, 5, 'W_2RM_CONDO', '2024-11-20', '18:00:00', 'PENDING', 3),  -- Wednesday night
-    (34, 6, 6, 'W_3RM_HDB', '2024-11-20', '19:00:00', 'PENDING', 3),  -- Wednesday night
-    (35, 7, 7, 'W_4RM_CONDO', '2024-11-21', '09:00:00', 'PENDING', 4),  -- Thursday morning
-    (36, 8, 8, 'W_5RM_HDB', '2024-11-21', '13:00:00', 'PENDING', 4),  -- Thursday afternoon
-    (37, 9, 9, 'W_LANDED', '2024-11-22', '13:00:00', 'PENDING', 4),  -- Friday afternoon
-    (38, 10, 10, 'W_3RM_HDB', '2024-11-22', '18:00:00', 'PENDING', 3),  -- Friday night
-    (39, 11, 11, 'W_3RM_CONDO', '2024-11-23', '09:00:00', 'PENDING', 3),  -- Saturday morning
-    (40, 12, 12, 'W_4RM_HDB', '2024-11-23', '18:00:00', 'PENDING', 4),  -- Saturday night
-    (41, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-24', '09:00:00', 'PENDING', 3),  -- Sunday morning
-    (42, 14, 14, 'W_3RM_HDB', '2024-11-24', '13:00:00', 'PENDING', 3),  -- Sunday afternoon
-    (125, 21, 21, 'W_2RM_CONDO', '2024-11-18', '08:00:00', 'PENDING', 3),
-    (126, 22, 22, 'W_3RM_HDB', '2024-11-19', '13:00:00', 'PENDING', 3),
-    (127, 23, 23, 'W_5RM_HDB', '2024-11-20', '08:00:00', 'PENDING', 4),
-    (128, 24, 24, 'W_4RM_HDB', '2024-11-21', '08:00:00', 'PENDING', 4),
-    (129, 25, 25, 'W_LANDED', '2024-11-22', '18:00:00', 'PENDING', 4),
-    (130, 26, 26, 'W_MAISONETTE_CONDO', '2024-11-23', '13:00:00', 'PENDING', 3.5),
-    (131, 27, 27, 'W_5RM_CONDO', '2024-11-24', '09:00:00', 'PENDING', 3),
-    (132, 28, 28, 'W_3RM_CONDO', '2024-11-19', '08:00:00', 'PENDING', 4),
-    (133, 29, 29, 'W_4RM_CONDO', '2024-11-21', '13:00:00', 'PENDING', 4),
-    (134, 30, 30, 'W_5RM_HDB', '2024-11-22', '08:00:00', 'PENDING', 4),
-    (135, 31, 31, 'W_3RM_CONDO', '2024-11-24', '07:30:00', 'PENDING', 4),
-    (136, 32, 32, 'W_MAISONETTE_HDB', '2024-11-18', '18:00:00', 'PENDING', 3),
-    (137, 33, 33, 'W_LANDED', '2024-11-20', '08:00:00', 'PENDING', 4),
-    (138, 34, 34, 'W_5RM_CONDO', '2024-11-21', '09:00:00', 'PENDING', 3),
-    (139, 35, 35, 'W_3RM_HDB', '2024-11-23', '08:00:00', 'PENDING', 4),
-    (140, 36, 36, 'W_4RM_HDB', '2024-11-19', '08:00:00', 'PENDING', 4),
-    (141, 37, 37, 'W_MAISONETTE_HDB', '2024-11-18', '14:00:00', 'PENDING', 3),
-    (142, 38, 38, 'W_5RM_HDB', '2024-11-22', '08:00:00', 'PENDING', 4),
-    (143, 39, 39, 'W_2RM_CONDO', '2024-11-21', '08:00:00', 'PENDING', 3),
-    (144, 40, 40, 'W_4RM_HDB', '2024-11-20', '18:00:00', 'PENDING', 4),
+    (29, 1, 1, 'W_3RM_HDB', '2024-11-18', '09:00:00', 'PENDING', 3, FALSE, FALSE),  -- Monday morning
+    (30, 2, 2, 'W_4RM_HDB', '2024-11-18', '18:00:00', 'PENDING', 4, FALSE, FALSE),  -- Monday night
+    (31, 3, 3, 'W_MAISONETTE_HDB', '2024-11-18', '19:00:00', 'PENDING', 3, FALSE, FALSE),  -- Monday night
+    (32, 4, 4, 'W_5RM_CONDO', '2024-11-19', '18:00:00', 'PENDING', 4, FALSE, FALSE),  -- Tuesday night
+    (33, 5, 5, 'W_2RM_CONDO', '2024-11-20', '18:00:00', 'PENDING', 3, FALSE, FALSE),  -- Wednesday night
+    (34, 6, 6, 'W_3RM_HDB', '2024-11-20', '19:00:00', 'PENDING', 3, FALSE, FALSE),  -- Wednesday night
+    (35, 7, 7, 'W_4RM_CONDO', '2024-11-21', '09:00:00', 'PENDING', 4, FALSE, FALSE),  -- Thursday morning
+    (36, 8, 8, 'W_5RM_HDB', '2024-11-21', '13:00:00', 'PENDING', 4, FALSE, FALSE),  -- Thursday afternoon
+    (37, 9, 9, 'W_LANDED', '2024-11-22', '13:00:00', 'PENDING', 4, FALSE, FALSE),  -- Friday afternoon
+    (38, 10, 10, 'W_3RM_HDB', '2024-11-22', '18:00:00', 'PENDING', 3, FALSE, FALSE),  -- Friday night
+    (39, 11, 11, 'W_3RM_CONDO', '2024-11-23', '09:00:00', 'PENDING', 3, FALSE, FALSE),  -- Saturday morning
+    (40, 12, 12, 'W_4RM_HDB', '2024-11-23', '18:00:00', 'PENDING', 4, FALSE, FALSE),  -- Saturday night
+    (41, 13, 13, 'W_MAISONETTE_CONDO', '2024-11-24', '09:00:00', 'PENDING', 3, FALSE, FALSE),  -- Sunday morning
+    (42, 14, 14, 'W_3RM_HDB', '2024-11-24', '13:00:00', 'PENDING', 3, FALSE, FALSE),  -- Sunday afternoon
+    (125, 21, 21, 'W_2RM_CONDO', '2024-11-18', '08:00:00', 'PENDING', 3, FALSE, FALSE),
+    (126, 22, 22, 'W_3RM_HDB', '2024-11-19', '13:00:00', 'PENDING', 3, FALSE, FALSE),
+    (127, 23, 23, 'W_5RM_HDB', '2024-11-20', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (128, 24, 24, 'W_4RM_HDB', '2024-11-21', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (129, 25, 25, 'W_LANDED', '2024-11-22', '18:00:00', 'PENDING', 4, FALSE, FALSE),
+    (130, 26, 26, 'W_MAISONETTE_CONDO', '2024-11-23', '13:00:00', 'PENDING', 3.5, FALSE, FALSE),
+    (131, 27, 27, 'W_5RM_CONDO', '2024-11-24', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+    (132, 28, 28, 'W_3RM_CONDO', '2024-11-19', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (133, 29, 29, 'W_4RM_CONDO', '2024-11-21', '13:00:00', 'PENDING', 4, FALSE, FALSE),
+    (134, 30, 30, 'W_5RM_HDB', '2024-11-22', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (135, 31, 31, 'W_3RM_CONDO', '2024-11-24', '07:30:00', 'PENDING', 4, FALSE, FALSE),
+    (136, 32, 32, 'W_MAISONETTE_HDB', '2024-11-18', '18:00:00', 'PENDING', 3, FALSE, FALSE),
+    (137, 33, 33, 'W_LANDED', '2024-11-20', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (138, 34, 34, 'W_5RM_CONDO', '2024-11-21', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+    (139, 35, 35, 'W_3RM_HDB', '2024-11-23', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (140, 36, 36, 'W_4RM_HDB', '2024-11-19', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (141, 37, 37, 'W_MAISONETTE_HDB', '2024-11-18', '14:00:00', 'PENDING', 3, FALSE, FALSE),
+    (142, 38, 38, 'W_5RM_HDB', '2024-11-22', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (143, 39, 39, 'W_2RM_CONDO', '2024-11-21', '08:00:00', 'PENDING', 3, FALSE, FALSE),
+    (144, 40, 40, 'W_4RM_HDB', '2024-11-20', '18:00:00', 'PENDING', 4, FALSE, FALSE),
 
 
     -- Week 4 (November 25 - December 1)
-    (43, 1, 1, 'W_3RM_HDB', '2024-11-25', '09:00:00', 'PENDING', 3),  -- Monday morning
-    (44, 2, 2, 'W_4RM_HDB', '2024-11-25', '18:00:00', 'PENDING', 4),  -- Monday night
-    (45, 3, 3, 'W_MAISONETTE_HDB', '2024-11-25', '19:00:00', 'PENDING', 3),  -- Monday night
-    (46, 4, 4, 'W_5RM_CONDO', '2024-11-26', '18:00:00', 'PENDING', 4),  -- Tuesday night
-    (47, 5, 5, 'W_2RM_CONDO', '2024-11-27', '18:00:00', 'PENDING', 3),  -- Wednesday night
-    (48, 6, 6, 'W_3RM_HDB', '2024-11-27', '19:00:00', 'PENDING', 3),  -- Wednesday night
-    (49, 7, 7, 'W_4RM_CONDO', '2024-11-28', '09:00:00', 'PENDING', 4),  -- Thursday morning
-    (50, 8, 8, 'W_5RM_HDB', '2024-11-28', '13:00:00', 'PENDING', 4),  -- Thursday afternoon
-    (51, 9, 9, 'W_LANDED', '2024-11-29', '13:00:00', 'PENDING', 4),  -- Friday afternoon
-    (52, 10, 10, 'W_3RM_HDB', '2024-11-29', '18:00:00', 'PENDING', 3),  -- Friday night
-    (53, 11, 11, 'W_3RM_CONDO', '2024-11-30', '09:00:00', 'PENDING', 3),  -- Saturday morning
-    (54, 12, 12, 'W_4RM_HDB', '2024-11-30', '18:00:00', 'PENDING', 4),  -- Saturday night
-    (55, 13, 13, 'W_MAISONETTE_CONDO', '2024-12-01', '09:00:00', 'PENDING', 3),  -- Sunday morning
-    (56, 14, 14, 'W_3RM_HDB', '2024-12-01', '13:00:00', 'PENDING', 3),  -- Sunday afternoon
-    (145, 21, 21, 'W_2RM_CONDO', '2024-11-25', '08:00:00', 'PENDING', 3),
-    (146, 22, 22, 'W_3RM_HDB', '2024-11-26', '13:00:00', 'PENDING', 3),
-    (147, 23, 23, 'W_5RM_HDB', '2024-11-27', '08:00:00', 'PENDING', 4),
-    (148, 24, 24, 'W_4RM_HDB', '2024-11-28', '08:00:00', 'PENDING', 4),
-    (149, 25, 25, 'W_LANDED', '2024-11-29', '18:00:00', 'PENDING', 4),
-    (150, 26, 26, 'W_MAISONETTE_CONDO', '2024-11-30', '13:00:00', 'PENDING', 3.5),
-    (151, 27, 27, 'W_5RM_CONDO', '2024-12-01', '09:00:00', 'PENDING', 3),
-    (152, 28, 28, 'W_3RM_CONDO', '2024-11-26', '08:00:00', 'PENDING', 4),
-    (153, 29, 29, 'W_4RM_CONDO', '2024-11-28', '13:00:00', 'PENDING', 4),
-    (154, 30, 30, 'W_5RM_HDB', '2024-11-29', '08:00:00', 'PENDING', 4),
-    (155, 31, 31, 'W_3RM_CONDO', '2024-12-01', '07:30:00', 'PENDING', 4),
-    (156, 32, 32, 'W_MAISONETTE_HDB', '2024-11-25', '18:00:00', 'PENDING', 3),
-    (157, 33, 33, 'W_LANDED', '2024-11-27', '08:00:00', 'PENDING', 4),
-    (158, 34, 34, 'W_5RM_CONDO', '2024-11-28', '09:00:00', 'PENDING', 3),
-    (159, 35, 35, 'W_3RM_HDB', '2024-11-30', '08:00:00', 'PENDING', 4),
-    (160, 36, 36, 'W_4RM_HDB', '2024-11-26', '08:00:00', 'PENDING', 4),
-    (161, 37, 37, 'W_MAISONETTE_HDB', '2024-11-25', '14:00:00', 'PENDING', 3),
-    (162, 38, 38, 'W_5RM_HDB', '2024-11-29', '08:00:00', 'PENDING', 4),
-    (163, 39, 39, 'W_2RM_CONDO', '2024-11-28', '08:00:00', 'PENDING', 3),
-    (164, 40, 40, 'W_4RM_HDB', '2024-11-27', '18:00:00', 'PENDING', 4),
+    (43, 1, 1, 'W_3RM_HDB', '2024-11-25', '09:00:00', 'PENDING', 3, FALSE, FALSE),  -- Monday morning
+    (44, 2, 2, 'W_4RM_HDB', '2024-11-25', '18:00:00', 'PENDING', 4, FALSE, FALSE),  -- Monday night
+    (45, 3, 3, 'W_MAISONETTE_HDB', '2024-11-25', '19:00:00', 'PENDING', 3, FALSE, FALSE),  -- Monday night
+    (46, 4, 4, 'W_5RM_CONDO', '2024-11-26', '18:00:00', 'PENDING', 4, FALSE, FALSE),  -- Tuesday night
+    (47, 5, 5, 'W_2RM_CONDO', '2024-11-27', '18:00:00', 'PENDING', 3, FALSE, FALSE),  -- Wednesday night
+    (48, 6, 6, 'W_3RM_HDB', '2024-11-27', '19:00:00', 'PENDING', 3, FALSE, FALSE),  -- Wednesday night
+    (49, 7, 7, 'W_4RM_CONDO', '2024-11-28', '09:00:00', 'PENDING', 4, FALSE, FALSE),  -- Thursday morning
+    (50, 8, 8, 'W_5RM_HDB', '2024-11-28', '13:00:00', 'PENDING', 4, FALSE, FALSE),  -- Thursday afternoon
+    (51, 9, 9, 'W_LANDED', '2024-11-29', '13:00:00', 'PENDING', 4, FALSE, FALSE),  -- Friday afternoon
+    (52, 10, 10, 'W_3RM_HDB', '2024-11-29', '18:00:00', 'PENDING', 3, FALSE, FALSE),  -- Friday night
+    (53, 11, 11, 'W_3RM_CONDO', '2024-11-30', '09:00:00', 'PENDING', 3, FALSE, FALSE),  -- Saturday morning
+    (54, 12, 12, 'W_4RM_HDB', '2024-11-30', '18:00:00', 'PENDING', 4, FALSE, FALSE),  -- Saturday night
+    (55, 13, 13, 'W_MAISONETTE_CONDO', '2024-12-01', '09:00:00', 'PENDING', 3, FALSE, FALSE),  -- Sunday morning
+    (56, 14, 14, 'W_3RM_HDB', '2024-12-01', '13:00:00', 'PENDING', 3, FALSE, FALSE),  -- Sunday afternoon
+    (145, 21, 21, 'W_2RM_CONDO', '2024-11-25', '08:00:00', 'PENDING', 3, FALSE, FALSE),
+    (146, 22, 22, 'W_3RM_HDB', '2024-11-26', '13:00:00', 'PENDING', 3, FALSE, FALSE),
+    (147, 23, 23, 'W_5RM_HDB', '2024-11-27', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (148, 24, 24, 'W_4RM_HDB', '2024-11-28', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (149, 25, 25, 'W_LANDED', '2024-11-29', '18:00:00', 'PENDING', 4, FALSE, FALSE),
+    (150, 26, 26, 'W_MAISONETTE_CONDO', '2024-11-30', '13:00:00', 'PENDING', 3.5, FALSE, FALSE),
+    (151, 27, 27, 'W_5RM_CONDO', '2024-12-01', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+    (152, 28, 28, 'W_3RM_CONDO', '2024-11-26', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (153, 29, 29, 'W_4RM_CONDO', '2024-11-28', '13:00:00', 'PENDING', 4, FALSE, FALSE),
+    (154, 30, 30, 'W_5RM_HDB', '2024-11-29', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (155, 31, 31, 'W_3RM_CONDO', '2024-12-01', '07:30:00', 'PENDING', 4, FALSE, FALSE),
+    (156, 32, 32, 'W_MAISONETTE_HDB', '2024-11-25', '18:00:00', 'PENDING', 3, FALSE, FALSE),
+    (157, 33, 33, 'W_LANDED', '2024-11-27', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (158, 34, 34, 'W_5RM_CONDO', '2024-11-28', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+    (159, 35, 35, 'W_3RM_HDB', '2024-11-30', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (160, 36, 36, 'W_4RM_HDB', '2024-11-26', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (161, 37, 37, 'W_MAISONETTE_HDB', '2024-11-25', '14:00:00', 'PENDING', 3, FALSE, FALSE),
+    (162, 38, 38, 'W_5RM_HDB', '2024-11-29', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (163, 39, 39, 'W_2RM_CONDO', '2024-11-28', '08:00:00', 'PENDING', 3, FALSE, FALSE),
+    (164, 40, 40, 'W_4RM_HDB', '2024-11-27', '18:00:00', 'PENDING', 4, FALSE, FALSE),
 
     -- Bi-Weekly Jobs (6 properties in Weeks 1 and 3)
-    (57, 15, 15, 'BW_3RM_HDB', '2024-11-05', '09:00:00', 'PENDING', 3),
-    (58, 16, 16, 'BW_4RM_CONDO', '2024-11-05', '13:00:00', 'PENDING', 4),
-    (59, 17, 17, 'BW_5RM_HDB', '2024-11-05', '14:00:00', 'PENDING', 4),
-    (60, 18, 18, 'BW_MAISONETTE_CONDO', '2024-11-06', '09:00:00', 'PENDING', 3),
-    (61, 19, 19, 'BW_3RM_HDB', '2024-11-06', '13:00:00', 'PENDING', 3),
-    (62, 20, 20, 'BW_4RM_HDB', '2024-11-06', '14:00:00', 'PENDING', 4),
-    (165, 41, 41, 'BW_2RM_CONDO', '2024-11-04', '08:00:00', 'PENDING', 3),
-    (166, 42, 42, 'BW_3RM_HDB', '2024-11-05', '14:00:00', 'PENDING', 3),
-    (167, 43, 43, 'BW_5RM_HDB', '2024-11-06', '13:00:00', 'PENDING', 4),
-    (168, 44, 44, 'BW_4RM_HDB', '2024-11-07', '08:00:00', 'PENDING', 4),
-    (169, 45, 45, 'BW_LANDED', '2024-11-08', '13:00:00', 'PENDING', 4),
-    (170, 46, 46, 'BW_MAISONETTE_CONDO', '2024-11-09', '09:00:00', 'PENDING', 3),
+    (57, 15, 15, 'BW_3RM_HDB', '2024-11-05', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+    (58, 16, 16, 'BW_4RM_CONDO', '2024-11-05', '13:00:00', 'PENDING', 4, FALSE, FALSE),
+    (59, 17, 17, 'BW_5RM_HDB', '2024-11-05', '14:00:00', 'PENDING', 4, FALSE, FALSE),
+    (60, 18, 18, 'BW_MAISONETTE_CONDO', '2024-11-06', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+    (61, 19, 19, 'BW_3RM_HDB', '2024-11-06', '13:00:00', 'PENDING', 3, FALSE, FALSE),
+    (62, 20, 20, 'BW_4RM_HDB', '2024-11-06', '14:00:00', 'PENDING', 4, FALSE, FALSE),
+    (165, 41, 41, 'BW_2RM_CONDO', '2024-11-04', '08:00:00', 'PENDING', 3, FALSE, FALSE),
+    (166, 42, 42, 'BW_3RM_HDB', '2024-11-05', '14:00:00', 'PENDING', 3, FALSE, FALSE),
+    (167, 43, 43, 'BW_5RM_HDB', '2024-11-06', '13:00:00', 'PENDING', 4, FALSE, FALSE),
+    (168, 44, 44, 'BW_4RM_HDB', '2024-11-07', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (169, 45, 45, 'BW_LANDED', '2024-11-08', '13:00:00', 'PENDING', 4, FALSE, FALSE),
+    (170, 46, 46, 'BW_MAISONETTE_CONDO', '2024-11-09', '09:00:00', 'PENDING', 3, FALSE, FALSE),
 
     -- Repeat Bi-Weekly Jobs for Week 3
-    (63, 15, 15, 'BW_3RM_HDB', '2024-11-19', '09:00:00', 'PENDING', 3),
-    (64, 16, 16, 'BW_4RM_CONDO', '2024-11-19', '13:00:00', 'PENDING', 4),
-    (65, 17, 17, 'BW_5RM_HDB', '2024-11-19', '14:00:00', 'PENDING', 4),
-    (66, 18, 18, 'BW_MAISONETTE_CONDO', '2024-11-20', '09:00:00', 'PENDING', 3),
-    (67, 19, 19, 'BW_3RM_HDB', '2024-11-20', '13:00:00', 'PENDING', 3),
-    (68, 20, 20, 'BW_4RM_HDB', '2024-11-20', '14:00:00', 'PENDING', 4),
-    (171, 41, 41, 'BW_2RM_CONDO', '2024-11-18', '08:00:00', 'PENDING', 3),
-    (172, 42, 42, 'BW_3RM_HDB', '2024-11-19', '14:00:00', 'PENDING', 3),
-    (173, 43, 43, 'BW_5RM_HDB', '2024-11-20', '13:00:00', 'PENDING', 4),
-    (174, 44, 44, 'BW_4RM_HDB', '2024-11-21', '08:00:00', 'PENDING', 4),
-    (175, 45, 45, 'BW_LANDED', '2024-11-22', '13:00:00', 'PENDING', 4),
-    (176, 46, 46, 'BW_MAISONETTE_CONDO', '2024-11-23', '09:00:00', 'PENDING', 3),
+    (63, 15, 15, 'BW_3RM_HDB', '2024-11-19', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+    (64, 16, 16, 'BW_4RM_CONDO', '2024-11-19', '13:00:00', 'PENDING', 4, FALSE, FALSE),
+    (65, 17, 17, 'BW_5RM_HDB', '2024-11-19', '14:00:00', 'PENDING', 4, FALSE, FALSE),
+    (66, 18, 18, 'BW_MAISONETTE_CONDO', '2024-11-20', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+    (67, 19, 19, 'BW_3RM_HDB', '2024-11-20', '13:00:00', 'PENDING', 3, FALSE, FALSE),
+    (68, 20, 20, 'BW_4RM_HDB', '2024-11-20', '14:00:00', 'PENDING', 4, FALSE, FALSE),
+    (171, 41, 41, 'BW_2RM_CONDO', '2024-11-18', '08:00:00', 'PENDING', 3, FALSE, FALSE),
+    (172, 42, 42, 'BW_3RM_HDB', '2024-11-19', '14:00:00', 'PENDING', 3, FALSE, FALSE),
+    (173, 43, 43, 'BW_5RM_HDB', '2024-11-20', '13:00:00', 'PENDING', 4, FALSE, FALSE),
+    (174, 44, 44, 'BW_4RM_HDB', '2024-11-21', '08:00:00', 'PENDING', 4, FALSE, FALSE),
+    (175, 45, 45, 'BW_LANDED', '2024-11-22', '13:00:00', 'PENDING', 4, FALSE, FALSE),
+    (176, 46, 46, 'BW_MAISONETTE_CONDO', '2024-11-23', '09:00:00', 'PENDING', 3, FALSE, FALSE),
 
     -- Additional Bi-Weekly Jobs (4 properties in Weeks 2 and 4)
-    (69, 1, 51, 'BW_3RM_CONDO', '2024-11-12', '09:00:00', 'PENDING', 3),
-    (70, 2, 52, 'BW_5RM_HDB', '2024-11-12', '13:00:00', 'PENDING', 4),
-    (71, 3, 53, 'BW_2RM_CONDO', '2024-11-12', '14:00:00', 'PENDING', 3),
-    (72, 4, 54, 'BW_LANDED', '2024-11-13', '09:00:00', 'PENDING', 4),
-    (177, 47, 47, 'BW_5RM_CONDO', '2024-11-12', '08:00:00', 'PENDING', 3),
-    (178, 48, 48, 'BW_4RM_CONDO', '2024-11-14', '13:00:00', 'PENDING', 4),
-    (179, 49, 49, 'BW_3RM_CONDO', '2024-11-15', '09:00:00', 'PENDING', 4),
-    (180, 50, 50, 'BW_MAISONETTE_HDB', '2024-11-16', '08:00:00', 'PENDING', 3),
+    (69, 1, 51, 'BW_3RM_CONDO', '2024-11-12', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+    (70, 2, 52, 'BW_5RM_HDB', '2024-11-12', '13:00:00', 'PENDING', 4, FALSE, FALSE),
+    (71, 3, 53, 'BW_2RM_CONDO', '2024-11-12', '14:00:00', 'PENDING', 3, FALSE, FALSE),
+    (72, 4, 54, 'BW_LANDED', '2024-11-13', '09:00:00', 'PENDING', 4, FALSE, FALSE),
+    (177, 47, 47, 'BW_5RM_CONDO', '2024-11-12', '08:00:00', 'PENDING', 3, FALSE, FALSE),
+    (178, 48, 48, 'BW_4RM_CONDO', '2024-11-14', '13:00:00', 'PENDING', 4, FALSE, FALSE),
+    (179, 49, 49, 'BW_3RM_CONDO', '2024-11-15', '09:00:00', 'PENDING', 4, FALSE, FALSE),
+    (180, 50, 50, 'BW_MAISONETTE_HDB', '2024-11-16', '08:00:00', 'PENDING', 3, FALSE, FALSE),
 
     -- Repeat Bi-Weekly Jobs for Week 4
-    (73, 1, 51, 'BW_3RM_CONDO', '2024-11-26', '09:00:00', 'PENDING', 3),
-    (74, 2, 52, 'BW_5RM_HDB', '2024-11-26', '13:00:00', 'PENDING', 4),
-    (75, 3, 53, 'BW_2RM_CONDO', '2024-11-26', '14:00:00', 'PENDING', 3),
-    (76, 4, 54, 'BW_LANDED', '2024-11-27', '09:00:00', 'PENDING', 4),
-    (181, 47, 47, 'BW_5RM_CONDO', '2024-11-26', '08:00:00', 'PENDING', 3),
-    (182, 48, 48, 'BW_4RM_CONDO', '2024-11-28', '13:00:00', 'PENDING', 4),
-    (183, 49, 49, 'BW_3RM_CONDO', '2024-11-29', '09:00:00', 'PENDING', 4),
-    (184, 50, 50, 'BW_MAISONETTE_HDB', '2024-11-30', '08:00:00', 'PENDING', 3),
+    (73, 1, 51, 'BW_3RM_CONDO', '2024-11-26', '09:00:00', 'PENDING', 3, FALSE, FALSE),
+    (74, 2, 52, 'BW_5RM_HDB', '2024-11-26', '13:00:00', 'PENDING', 4, FALSE, FALSE),
+    (75, 3, 53, 'BW_2RM_CONDO', '2024-11-26', '14:00:00', 'PENDING', 3, FALSE, FALSE),
+    (76, 4, 54, 'BW_LANDED', '2024-11-27', '09:00:00', 'PENDING', 4, FALSE, FALSE),
+    (181, 47, 47, 'BW_5RM_CONDO', '2024-11-26', '08:00:00', 'PENDING', 3, FALSE, FALSE),
+    (182, 48, 48, 'BW_4RM_CONDO', '2024-11-28', '13:00:00', 'PENDING', 4, FALSE, FALSE),
+    (183, 49, 49, 'BW_3RM_CONDO', '2024-11-29', '09:00:00', 'PENDING', 4, FALSE, FALSE),
+    (184, 50, 50, 'BW_MAISONETTE_HDB', '2024-11-30', '08:00:00', 'PENDING', 3, FALSE, FALSE),
 
     -- Insert completed sample jobs (4 properties in Weeks 2 and 4 of October)
-    (77, 1, 51, 'BW_3RM_CONDO', '2024-10-15', '09:00:00', 'COMPLETED', 3),
-    (78, 2, 52, 'BW_5RM_HDB', '2024-10-15', '10:00:00', 'COMPLETED', 4),
-    (79, 3, 53, 'BW_2RM_CONDO', '2024-10-15', '13:00:00', 'COMPLETED', 3),
-    (80, 4, 54, 'BW_LANDED', '2024-10-15', '13:00:00', 'COMPLETED', 4),
+    (77, 1, 51, 'BW_3RM_CONDO', '2024-10-15', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+    (78, 2, 52, 'BW_5RM_HDB', '2024-10-15', '10:00:00', 'COMPLETED', 4, TRUE, TRUE),
+    (79, 3, 53, 'BW_2RM_CONDO', '2024-10-15', '13:00:00', 'COMPLETED', 3, TRUE, TRUE),
+    (80, 4, 54, 'BW_LANDED', '2024-10-15', '13:00:00', 'COMPLETED', 4, TRUE, TRUE),
 
     -- Repeat Bi-Weekly Jobs for Week 4
-    (81, 1, 51, 'BW_3RM_CONDO', '2024-10-29', '09:00:00', 'COMPLETED', 3),
-    (82, 2, 52, 'BW_5RM_HDB', '2024-10-29', '10:00:00', 'COMPLETED', 4),
-    (83, 3, 53, 'BW_2RM_CONDO', '2024-10-29', '13:00:00', 'COMPLETED', 3),
-    (84, 4, 54, 'BW_LANDED', '2024-10-29', '13:00:00', 'COMPLETED', 4);
+    (81, 1, 51, 'BW_3RM_CONDO', '2024-10-29', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+    (82, 2, 52, 'BW_5RM_HDB', '2024-10-29', '10:00:00', 'COMPLETED', 4, TRUE, TRUE),
+    (83, 3, 53, 'BW_2RM_CONDO', '2024-10-29', '13:00:00', 'COMPLETED', 3, TRUE, TRUE),
+    (84, 4, 54, 'BW_LANDED', '2024-10-29', '13:00:00', 'COMPLETED', 4, TRUE, TRUE);
+
 
 -- Link jobs to employees
 INSERT INTO job_employee (job_id, employee_id, reasoning)
