@@ -444,6 +444,14 @@ VALUES (1, 1, 'JOB_COMPLETED', '2024-09-15', 1, 3, NULL, NULL),  -- Completed jo
         (4, 4, 'OVERTIME', '2024-09-25', NULL, 2, NULL, NULL),    -- Worked 2 hours overtime on 25th Sep 2024
         (5, 2, 'AL_TAKEN', '2024-11-12', NULL, NULL, NULL, 2);    -- Took 2 day AL on 12th Nov 2024
 
+-- Insert sample employee leaves
+INSERT INTO employee_leaves (employee_leave_id, employee_id, leave_type, application_date_time, start_date, end_date, status, comments, mc_proof_uploaded, mc_proof_img)
+VALUES (1, 1, 'MC', '2024-09-01 10:00:00', '2024-09-05', '2024-09-07', 'APPROVED', 'Medical leave for flu', TRUE, 'mc_proof_1.jpg'),
+       (2, 2, 'AL', '2024-09-10 09:00:00', '2024-09-15', '2024-09-20', 'APPROVED', 'Annual leave for vacation', FALSE, NULL),
+       (3, 3, 'MC', '2024-10-01 11:00:00', '2024-10-05', '2024-10-07', 'PENDING', 'Medical leave for surgery', TRUE, 'mc_proof_2.jpg'),
+       (4, 4, 'AL', '2024-10-15 08:00:00', '2024-10-20', '2024-10-25', 'REJECTED', 'Annual leave for personal reasons', FALSE, NULL),
+       (5, 5, 'MC', '2024-11-01 10:00:00', '2024-11-05', '2024-11-07', 'APPROVED', 'Medical leave for injury', TRUE, 'mc_proof_3.jpg');
+
 -- Insert sample subscription
 INSERT INTO `subscription` (`subscription_id`, `client_id`, `property_id`, `package_id`, `package_type`, `job_day`, `job_starttime`, `job_endtime`, `subscription_status`)
 VALUES
