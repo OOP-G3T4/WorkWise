@@ -37,6 +37,10 @@ public class Job {
 
     private int actualDuration;
 
+    private Boolean arrivalProofUploaded = false;
+
+    private Boolean completionProofUploaded = false;
+
     @ManyToMany
     @JoinTable(name = "jobEmployee", joinColumns = @JoinColumn(name = "jobId"), inverseJoinColumns = @JoinColumn(name = "employeeId"))
     private Set<Employee> employees;
@@ -45,7 +49,7 @@ public class Job {
     }
 
     public Job(Client client, Property property, SelectedPackage selectedPackage, Date date, Time startTime,
-            Status status, int actualDuration) {
+            Status status, int actualDuration, Boolean arrivalProofUploaded, Boolean completionProofUploaded) {
         this.client = client;
         this.property = property;
         this.selectedPackage = selectedPackage;
@@ -53,6 +57,8 @@ public class Job {
         this.startTime = startTime;
         this.status = status;
         this.actualDuration = actualDuration;
+        this.arrivalProofUploaded = arrivalProofUploaded;
+        this.completionProofUploaded = completionProofUploaded;
     }
 
     public int getJobId() {
@@ -127,6 +133,22 @@ public class Job {
         this.employees = employees;
     }
 
+    public Boolean getArrivalProofUploaded() {
+        return arrivalProofUploaded;
+    }
+
+    public void setArrivalProofUploaded(Boolean arrivalProofUploaded) {
+        this.arrivalProofUploaded = arrivalProofUploaded;
+    }
+
+    public Boolean getCompletionProofUploaded() {
+        return completionProofUploaded;
+    }
+
+    public void setCompletionProofUploaded(Boolean completionProofUploaded) {
+        this.completionProofUploaded = completionProofUploaded;
+    }
+
     @Override
     public String toString() {
         return "Job{" +
@@ -139,6 +161,8 @@ public class Job {
                 ", status='" + status + '\'' +
                 ", actualDuration=" + actualDuration +
                 ", employees=" + employees +
+                ", arrivalProofUploaded=" + arrivalProofUploaded +
+                ", completionProofUploaded=" + completionProofUploaded +
                 '}';
     }
 }
