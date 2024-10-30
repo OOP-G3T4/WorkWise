@@ -148,6 +148,7 @@ CREATE TABLE IF NOT EXISTS `employee_statistic` (
 CREATE TABLE IF NOT EXISTS `subscription` (
     `subscription_id` INT NOT NULL AUTO_INCREMENT,
     `client_id` INT NOT NULL,
+    `property_id` INT NOT NULL,
     `package_id` VARCHAR(25) NOT NULL,
     `package_type` ENUM('WEEKLY', 'BI_WEEKLY') NOT NULL,
     `job_day` ENUM('MONDAY', 'TUESDAY', 'WEDNESDAY',
@@ -157,5 +158,6 @@ CREATE TABLE IF NOT EXISTS `subscription` (
     `subscription_status` ENUM('ACTIVE', 'PAUSED', 'CANCELLED') NOT NULL,
     PRIMARY KEY (`subscription_id`),
     FOREIGN KEY (`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`property_id`) REFERENCES `property`(`property_id`) ON DELETE CASCADE,
     FOREIGN KEY (`package_id`) REFERENCES `selected_package`(`package_id`) ON DELETE CASCADE
     ) ROW_FORMAT=DYNAMIC;
