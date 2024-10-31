@@ -147,9 +147,12 @@ export default {
     methods: {
         shiftDates(isForward) {
             const direction = isForward ? 1 : -1;
-            const newDate = new Date(this.currentDate);
+            let newDate = new Date(this.currentDate);
 
             if (this.selectedRange == 'Monthly') {
+                // Shit date to 1st of month to prevent overflows
+                newDate.setDate(1)
+
                 // Shift by 1 month
                 newDate.setMonth(newDate.getMonth() + direction);
             } else {

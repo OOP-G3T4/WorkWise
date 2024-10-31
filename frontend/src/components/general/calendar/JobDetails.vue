@@ -1,6 +1,7 @@
 <script setup>
 import { mapState } from "vuex";
 import GmapInput from "../forms/GmapInput.vue";
+import DropdownSearch from "../forms/DropdownSearch.vue";
 </script>
 
 <template>
@@ -104,47 +105,49 @@ import GmapInput from "../forms/GmapInput.vue";
                         </div>
 
                         <!-- IF PROOF NOT UPLOADED ERROR -->
-                        <hr v-if="showJobStartedWarning" class="border-2 rounded border-secondary mt-0" />
-
-                        <div v-if="showJobStartedWarning" class="row mb-3">
-                            <template v-if="userType == 'admin'">
-                                <div class="col-12">
-                                    <h6 class="text-danger fw-bold">
-                                        ACTION REQUIRED
-                                    </h6>
-                                    <p>
-                                        Employee did not upload proof of arrival
-                                        within {{ arrivalBufferMinutes }} min.
-                                        Should this job continue?
-                                    </p>
-                                </div>
-
-                                <div class="col-6">
-                                    <button class="btn btn-sm btn-secondary w-100">
-                                        Continue
-                                    </button>
-                                </div>
-
-                                <div class="col-6">
-                                    <button class="btn btn-sm btn-danger w-100">
-                                        Cancel Job
-                                    </button>
-                                </div>
-                            </template>
-
-                            <template v-else-if="userType == 'employee'">
-                                <div class="col-12">
-                                    <h6 class="text-danger fw-bold">
-                                        ACTION REQUIRED
-                                    </h6>
-                                    <p class="m-0">
-                                        Upload proof of arrival within
-                                        {{ arrivalBufferMinutes }} min to
-                                        continue this job
-                                    </p>
-                                </div>
-                            </template>
-                        </div>
+                        <template v-if="showJobStartedWarning">
+                            <hr class="border-2 rounded border-secondary mt-0" />
+    
+                            <div class="row mb-3">
+                                <template v-if="userType == 'admin'">
+                                    <div class="col-12">
+                                        <h6 class="text-danger fw-bold">
+                                            ACTION REQUIRED
+                                        </h6>
+                                        <p>
+                                            Employee did not upload proof of arrival
+                                            within {{ arrivalBufferMinutes }} min.
+                                            Should this job continue?
+                                        </p>
+                                    </div>
+    
+                                    <div class="col-6">
+                                        <button class="btn btn-sm btn-secondary w-100">
+                                            Continue
+                                        </button>
+                                    </div>
+    
+                                    <div class="col-6">
+                                        <button class="btn btn-sm btn-danger w-100">
+                                            Cancel Job
+                                        </button>
+                                    </div>
+                                </template>
+    
+                                <template v-else-if="userType == 'employee'">
+                                    <div class="col-12">
+                                        <h6 class="text-danger fw-bold">
+                                            ACTION REQUIRED
+                                        </h6>
+                                        <p class="m-0">
+                                            Upload proof of arrival within
+                                            {{ arrivalBufferMinutes }} min to
+                                            continue this job
+                                        </p>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
 
                         <hr class="border-2 rounded border-secondary mt-0" />
 
@@ -183,22 +186,8 @@ import GmapInput from "../forms/GmapInput.vue";
                             </div>
 
                             <!-- Package [Edit Mode] -->
-                            <div v-else class="col-auto">
-                                <div class="form-floating">
-                                    <select
-                                        class="form-select"
-                                        v-model="jobEdit.packageType"
-                                    >
-                                        <option
-                                            v-for="e_package in allPackages"
-                                            :value="e_package"
-                                        >
-                                            {{ e_package }}
-                                        </option>
-                                    </select>
-
-                                    <label for="floatingInput">Package</label>
-                                </div>
+                            <div v-else class="col-12">
+                                <DropdownSearch :items="allPackages" :inputValue="jobEdit.packageType" fieldName="Package" :jobId="jobDetails.appointmentId" @valChange="packageChange" />
                             </div>
 
                             <!-- Address -->
@@ -211,13 +200,7 @@ import GmapInput from "../forms/GmapInput.vue";
 
                             <!-- Address [Edit Mode] -->
                             <div v-else class="col-12">
-                                <div class="form-floating">
-                                    <GmapInput
-                                        :inputValue="jobEdit.jobAddress.address"
-                                        @valChange="addressChange"
-                                    />
-                                    <label for="floatingInput">Address</label>
-                                </div>
+                                <GmapInput :inputValue="jobEdit.jobAddress.address" fieldName="Address" @valChange="addressChange" />
                             </div>
                         </div>
 
@@ -618,7 +601,7 @@ export default {
             latestAllowedJobTime: "22:00",
 
             // TO BE FETCHED FROM API LATER =====================
-            allPackages: [],
+            allPackages: {},
 
             // Employees (key = ID, value = Name)
             allEmployees: {},
@@ -794,6 +777,10 @@ export default {
             // GMaps input emits the new address, this function updates the jobEdit object
             this.jobEdit.jobAddress.address = data.value;
         },
+        packageChange(data) {
+            // DropdownSearch emits the new package, this function updates the jobEdit object
+            this.jobEdit.packageType = data;
+        },
         openDelModal(toOpen = true) {
             if (toOpen) {
                 this.openMainModal(false);
@@ -857,12 +844,12 @@ export default {
         fetch("http://localhost:8081/api/package")
             .then((response) => response.json())
             .then((data) => {
-                var arr_pkgs = [];
+                var arr_pkgs = {};
 
                 for (var i = 0; i < data.length; i++) {
                     const pkg_id = data[i].packageId;
 
-                    arr_pkgs.push(pkg_id);
+                    arr_pkgs[pkg_id] = pkg_id;
                 }
 
                 this.allPackages = arr_pkgs;
