@@ -6,7 +6,9 @@
             </div>
 
             <div class="col-auto p-0 d-flex">
-                <button class="btn btn-resp btn-light me-2"><font-awesome-icon icon="fa-solid fa-plus" /><span class="ms-2 d-none d-sm-inline">New</span></button>
+                <button type="button" class="btn btn-resp btn-light me-2" data-bs-toggle="modal" data-bs-target="#empAddLeaveModal">
+                    <font-awesome-icon icon="fa-solid fa-plus" /><span class="ms-2 d-none d-sm-inline">New</span>
+                </button>
             </div>
         </div>
     </div>

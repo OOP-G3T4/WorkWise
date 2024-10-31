@@ -10,10 +10,8 @@
                 </div>
 
                 <!-- Error Msg -->
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <p class="text-danger m-0">{{ errorMsg }}</p>
-                    </div>
+                <div v-if="errorMsg" class="alert alert-danger text-center p-2">
+                    <font-awesome-icon icon="fa-solid fa-circle-exclamation" class="me-2" />{{ errorMsg }}
                 </div>
 
                 <!-- User Type -->
@@ -61,7 +59,7 @@ export default {
                     "route": "/admin-calendar",
                     "navbarFormat": "admin",
                 },
-                "Cleaner" : {
+                "Employee" : {
                     "route": "/emp-calendar",
                     "navbarFormat": "employee",
                 },
@@ -71,17 +69,53 @@ export default {
             userEmail: "",
             userPassword: "",
             errorMsg: "",
+            userId: "",
         };
     },
     methods: {
         clickUserType(e_user_type) {
             this.selectedUserType = e_user_type;
         },
-        handleLoginClick() {
+        async handleLoginClick() {
             if (!this.findLoginErrors()) {
-                // If successful login
-                this.$store.dispatch("updateUserType", this.userTypes[this.selectedUserType].navbarFormat);
-                this.$router.push(this.userTypes[this.selectedUserType].route);
+                // Send API call for login [GET - Pass username and id through URL parameters]
+                let api_url = `http://localhost:8081/api/${this.userTypes[this.selectedUserType].navbarFormat}/login?email=${this.userEmail}&password=${this.userPassword}`;
+
+                try {
+                    const response = await fetch(api_url, {
+                        method: "POST",
+                    });
+
+                    if (!response.ok) {
+                        // Handle errors
+                        let errorMsg = await response.text();
+                        this.errorMsg = errorMsg;
+                        return;
+                    }
+
+                    // If no errors, log in user
+
+                    const userId = await response.json();
+                    
+                    // Get user name
+                    const nameResponse = await fetch(`http://localhost:8081/api/${this.userTypes[this.selectedUserType].navbarFormat}/${userId}`);
+                    const userNameTemp = await nameResponse.json();
+                    const userName = userNameTemp.name;
+
+                    // Save user type and user id to Vuex
+                    this.$store.dispatch("setUserLogin", {
+                        type: this.userTypes[this.selectedUserType].navbarFormat,
+                        id: userId,
+                        name: userName,
+                    });
+
+                    // Redirect to user's main page
+                    this.$router.push(this.userTypes[this.selectedUserType].route);
+                } catch (error) {
+                    this.errorMsg = error;
+                }
+
+                return;
             }
         },
         findLoginErrors() {
@@ -96,7 +130,7 @@ export default {
             // If no errors
             this.errorMsg = "";
             return false;
-        }
+        },
     },
     computed: {
         navbarFormatMap() {

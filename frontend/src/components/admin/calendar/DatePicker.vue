@@ -32,7 +32,7 @@
                 <button class="btn btn-resp btn-light d-md-none me-2" @click="toggleZoom()"><font-awesome-icon :icon="zoomedOut ? 'fa-solid fa-magnifying-glass-plus' : 'fa-solid fa-magnifying-glass-minus'" /></button>
 
                 <button class="btn btn-resp btn-light"><font-awesome-icon icon="fa-solid fa-filter" /></button>
-                <button class="btn btn-resp btn-light ms-2"><font-awesome-icon icon="fa-solid fa-plus" /><span class="ms-2 d-none d-md-inline-block">New Job</span></button>
+                <button class="btn btn-resp btn-light ms-2" type="button" data-bs-toggle="modal" data-bs-target="#adminAddNewJobModal"><font-awesome-icon icon="fa-solid fa-plus" /><span class="ms-2 d-none d-md-inline-block">New Job</span></button>
             </div>
         </div>
     </div>
@@ -147,9 +147,12 @@ export default {
     methods: {
         shiftDates(isForward) {
             const direction = isForward ? 1 : -1;
-            const newDate = new Date(this.currentDate);
+            let newDate = new Date(this.currentDate);
 
             if (this.selectedRange == 'Monthly') {
+                // Shit date to 1st of month to prevent overflows
+                newDate.setDate(1)
+
                 // Shift by 1 month
                 newDate.setMonth(newDate.getMonth() + direction);
             } else {

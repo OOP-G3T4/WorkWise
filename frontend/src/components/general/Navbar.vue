@@ -149,12 +149,14 @@ export default {
         userRole: {
             type: String,
             required: true,
+        },
+        userName: {
+            type: String,
+            required: true,
         }
     },
     data() {
         return {
-            userName: "John Doe",
-
             // Offcanvas elem
             sideBarElem: null,
             topNavBarElem: null,
@@ -233,7 +235,7 @@ export default {
 
             // If logging out, clear userRole from Vuex
             if (route === "/") {
-                this.$store.commit("clearUserType");
+                this.$store.dispatch("clearUserLogin");
             }
 
             this.$router.push(route);

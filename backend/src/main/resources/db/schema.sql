@@ -5,12 +5,14 @@ DROP TABLE IF EXISTS `admin_employee`;
 DROP TABLE IF EXISTS `client_property`;
 DROP TABLE IF EXISTS `employee_leave`; 
 DROP TABLE IF EXISTS `job`;
+DROP TABLE IF EXISTS `subscription`;
 DROP TABLE IF EXISTS `property`;
-DROP TABLE IF EXISTS `client`;
 DROP TABLE IF EXISTS `admin`;
 DROP TABLE IF EXISTS `employee`;
 DROP TABLE IF EXISTS `selected_package`;
 DROP TABLE IF EXISTS `distance_matrix`;
+DROP TABLE IF EXISTS `client`;
+
 
 CREATE TABLE IF NOT EXISTS `employee` (
     `employee_id` int  NOT NULL AUTO_INCREMENT ,
@@ -35,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 );
 
 CREATE TABLE IF NOT EXISTS `admin_employee` (
-    `employee_id` int  NOT NULL ,
+    `employee_id` int  NOT NULL,
     `admin_id` int  NOT NULL,
     PRIMARY KEY (`employee_id`, `admin_id`),
     FOREIGN KEY (`employee_id`) REFERENCES `employee`(`employee_id`) ON DELETE CASCADE,
@@ -59,6 +61,14 @@ CREATE TABLE IF NOT EXISTS `property` (
     `address` varchar(200)  NOT NULL ,
     `postal_code` varchar(6)  NOT NULL ,
     PRIMARY KEY (`property_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `distance_matrix` (
+    `distance_id` int  NOT NULL AUTO_INCREMENT,
+    `origin` varchar(200)  NOT NULL ,
+    `destination` varchar(200)  NOT NULL ,
+    `time_taken` int  NOT NULL ,
+    PRIMARY KEY (`distance_id`)
 );
 
 CREATE TABLE IF NOT EXISTS `client_property` (
@@ -163,4 +173,21 @@ CREATE TABLE IF NOT EXISTS `distance_matrix` (
     `destination` varchar(200)  NOT NULL ,
     `time_taken` int  NOT NULL ,	
     PRIMARY KEY (`distance_id`)
-)
+);
+
+CREATE TABLE IF NOT EXISTS `subscription` (
+    `subscription_id` INT NOT NULL AUTO_INCREMENT,
+    `client_id` INT NOT NULL,
+    `property_id` INT NOT NULL,
+    `package_id` VARCHAR(25) NOT NULL,
+    `package_type` ENUM('WEEKLY', 'BI_WEEKLY') NOT NULL,
+    `job_day` ENUM('MONDAY', 'TUESDAY', 'WEDNESDAY',
+                   'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY') NOT NULL,
+    `job_starttime` TIME NOT NULL,
+    `job_endtime` TIME NOT NULL,
+    `subscription_status` ENUM('ACTIVE', 'PAUSED', 'CANCELLED') NOT NULL,
+    PRIMARY KEY (`subscription_id`),
+    FOREIGN KEY (`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`property_id`) REFERENCES `property`(`property_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`package_id`) REFERENCES `selected_package`(`package_id`) ON DELETE CASCADE
+    ) ROW_FORMAT=DYNAMIC;

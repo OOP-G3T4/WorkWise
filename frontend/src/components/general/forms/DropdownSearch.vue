@@ -1,10 +1,42 @@
+<script setup>
+import * as bootstrap from 'bootstrap'
+</script>
+
 <template>
-    <!-- NOTE: HAVE NOT FIGURED THIS OUT YET, TO DO LATER (ADAMBFT) -->
-    <select class="form-select" v-model="value">
-        <option v-for="(e_value, e_key) in items" :value="e_key">
-            {{ e_value }}
-        </option>
-    </select>
+    <div class="dropdown">
+        <!-- Show Input in Input Text Field -->
+        <div class="input-group mb-3" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+            <button class="btn btn-light">
+                <font-awesome-icon icon="fa-solid fa-caret-down" />
+            </button>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" :id="`show-selected-${fieldName}-${jobId}`" placeholder="Username" :value="items[selectedId]" readonly>
+                <label :for="`show-selected-${fieldName}-${jobId}`">{{ fieldName }}</label>
+            </div>
+        </div>
+
+        <!-- Dropdown Menu -->
+        <form class="dropdown-menu p-3 w-100">
+            <!-- Search Field -->
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text">
+                    <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+                </span>
+
+                <input type="text" class="form-control" v-model="searchField" placeholder="search">
+            </div>
+
+            <!-- List of Items -->
+            <div class="list-group">
+                <template v-for="(value, id) in filteredItems">
+                    <button type="button" class="list-group-item list-group-item-action" :class="listBtnClass(id)" @click="selectThis(id)">
+                        {{ `${showId ? `[${id}]` : ``} ${value}` }}
+                    </button>
+                </template>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script>
@@ -12,33 +44,79 @@ export default {
     props: {
         items: {
             type: Object,
-            required: false, // Change to true later
-            default: {
-                1: 'Employee 1',
-                2: 'Employee 2',
-                3: 'Employee 3',
-                4: 'Employee 4',
-                5: 'Employee 5',
-            }
-        }
+            required: true,
+        },
+        inputValue: {
+            type: String,
+            required: false,
+            default: "",
+        },
+        fieldName: {
+            type: String,
+            required: true,
+        },
+        jobId: {
+            type: Number,
+            required: true,
+        },
+        showId: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
     },
     data() {
         return {
-            value: this.inputValue,
+            selectedId: this.inputValue,
+            filteredItems: this.items,
+            searchField: "",
+            dropdown: null,
         }
     },
     watch: {
-        value() {
+        selectedId() {
             // Listens for changes in this.value
             this.emitValue();
-        }
+        },
+        searchField() {
+            // Filters the filteredItems based on the searchField
+            this.filteredItems = Object.fromEntries(
+                Object.entries(this.items).filter(([key, value]) => {
+                    return value.toLowerCase().includes(this.searchField.toLowerCase()) || key.toLowerCase().includes(this.searchField.toLowerCase());
+                })
+            );
+        },
     },
     methods: {
         emitValue() {
             // Sends the value to the parent component
-            console.log("VALUE: ", this.value);
-            this.$emit('input', this.value);
-        }
+            this.$emit('valChange', this.selectedId);
+        },
+        selectThis(key) {
+            // Selects the item and closes the dropdown
+            this.selectedId = key;
+
+            // Close the dropdown
+            this.dropdown.hide();
+        },
+        listBtnClass(id) {
+            // Returns the class for the list button
+            return {
+                'active': id == this.selectedId,
+            }
+        },
+    },
+    mounted() {
+        // Initializes the dropdown
+        this.dropdown = new bootstrap.Dropdown(this.$el);
     },
 }
 </script>
+
+
+<style scoped>
+.list-group {
+    max-height: 200px;
+    overflow-y: auto;
+}
+</style>

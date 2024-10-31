@@ -1,6 +1,7 @@
 <script setup>
 import { onBeforeUnmount } from 'vue';
 import JobDetails from '../../general/calendar/JobDetails.vue';
+import { mapState } from "vuex";
 </script>
 
 <template>
@@ -105,6 +106,7 @@ export default {
         }
     },
     computed: {
+        ...mapState(["userId"]),  // Access userId from Vuex state
         heightPerIntervalAxis() {
             return (this.yHeightPx - this.topPaddingPx) / (this.timeAxisMax - this.timeAxisMin);
         },
@@ -293,6 +295,70 @@ export default {
             }
         },
         pullJobData() {
+            // Pulls jobs data for this employee from the API
+            fetch(`http://localhost:8081/api/job/employee/${this.userId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok:', response.statusText);
+                    }
+                    
+                    return response.json().then(data => {
+                        // Handle blank response [ADAMBFT: Await backend implementation to return 200 with empty array]
+                        if (!data) {
+                            this.jobDetailsArr = [];
+                            return;
+                        } else {
+                            // Initialize jobDetails object
+                            let jobDetailsArr = [];
+
+                            for (var i = 0; i < data.length; i++) {
+                                // Handle each job object
+                                var job = data[i];
+
+                                // Get employee IDs and end time
+                                const employeeIds = job.employees.map(employee => String(employee.employeeId));
+                                const endTime = this.getEndTime(job.startTime, job.selectedPackage.hours);
+
+                                // Format job details
+                                var formattedJob = {
+                                    appointmentId: job.jobId,
+                                    packageType: job.selectedPackage.packageId,
+                                    jobAddress: {
+                                        id: job.property.propertyId,
+                                        address: job.property.address,
+                                        postalCode: job.property.postalCode,
+                                    },
+                                    date: job.date,
+                                    startTime: job.startTime,
+                                    endTime: endTime,
+                                    cleaners: employeeIds,
+                                    arrivalProofUploaded: true, // Not included yet in DB, replace later (ADAMBFT)
+                                    completionProofUpload: true, // Not included yet in DB, replace later (ADAMBFT)
+                                    jobStatus: job.status,
+                                    clientDetails: {
+                                        clientId: job.client.clientId,
+                                        clientName: job.client.name,
+                                        clientContact: job.client.phoneNumber,
+                                        clientEmail: job.client.email,
+                                        clientAddress: "MAILING ADDRESS PLACEHOLDER", // Not included yet in DB, replace later (ADAMBFT)
+                                        clientGender: "M", // Not included yet in DB, replace later (ADAMBFT)
+                                        clientAge: "42", // Not included yet in DB, replace later (ADAMBFT)
+                                    },
+                                }
+
+                                jobDetailsArr.push(formattedJob);
+                            }
+
+                            // Set jobDetailsArr
+                            this.jobDetailsArr = jobDetailsArr;
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation in pullJobData():', error);
+                });
+        },
+        pullRandomJobs() {
             // Build random jobs from numDays days back and forwards [FOR TESTING]
             const sDate = this.startDate;
             const numDays = 100;

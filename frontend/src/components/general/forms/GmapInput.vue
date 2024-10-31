@@ -1,13 +1,19 @@
 <template>
-    <GMapAutocomplete
-        placeholder=" " 
-        type="text"
-        :options="autoCompleteOptions"
-        class="form-control"
-        @place_changed="setPlace"
-        :value="value"
-    >
-    </GMapAutocomplete>
+    <div class="form-floating">
+        <GMapAutocomplete
+            placeholder=" " 
+            type="text"
+            :options="autoCompleteOptions"
+            class="form-control"
+            @place_changed="setPlace"
+            @change="handleChange()"
+            @keyup="handleChange()"
+            :value="value"
+            ref="autocomplete"
+        >
+        </GMapAutocomplete>
+        <label for="floatingInput">{{ fieldName }}</label>
+    </div>
 </template>
 
 <script>
@@ -17,6 +23,10 @@ export default {
             type: String,
             required: false,
             default: "",
+        },
+        fieldName: {
+            type: String,
+            required: true,
         },
     },
     data() {
@@ -43,6 +53,11 @@ export default {
         setPlace(place) {
             // Get address string
             this.value = place.formatted_address
+        },
+        handleChange() {
+            // Get address string
+            let address = this.$refs.autocomplete.$refs.input.value;
+            this.value = address;
         },
     },
 };

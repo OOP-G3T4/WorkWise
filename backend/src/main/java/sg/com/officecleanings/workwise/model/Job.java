@@ -1,6 +1,8 @@
 package sg.com.officecleanings.workwise.model;
 
 import jakarta.persistence.*;
+import org.hibernate.validator.constraints.Length;
+
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Set;
