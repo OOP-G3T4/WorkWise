@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS `employee_event`;
 DROP TABLE IF EXISTS `job_employee`;
 DROP TABLE IF EXISTS `admin_employee`;
 DROP TABLE IF EXISTS `client_property`;
-DROP TABLE IF EXISTS `employee_leaves`; 
+DROP TABLE IF EXISTS `employee_leave`; 
 DROP TABLE IF EXISTS `job`;
 DROP TABLE IF EXISTS `subscription`;
 DROP TABLE IF EXISTS `property`;
@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `employee_statistic` (
     FOREIGN KEY (`employee_id`) REFERENCES `employee`(`employee_id`) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS `employee_leaves` (
+CREATE TABLE IF NOT EXISTS `employee_leave` (
     `employee_leave_id` INT NOT NULL AUTO_INCREMENT,
     `employee_id` INT NOT NULL,
     `leave_type` ENUM('MC', 'AL') NOT NULL,
@@ -161,8 +161,8 @@ CREATE TABLE IF NOT EXISTS `employee_leaves` (
     `end_date` DATE NOT NULL,
     `status` ENUM('PENDING', 'APPROVED', 'REJECTED') NOT NULL DEFAULT 'PENDING',
     `comments` VARCHAR(255),
-    `mc_proof_uploaded` BOOLEAN NOT NULL DEFAULT FALSE,
-    `mc_proof_img` BLOB,
+    `mc_proof_uploaded` BOOLEAN,
+    `mc_proof_img` LONGBLOB,
     PRIMARY KEY (`employee_leave_id`),
     FOREIGN KEY (`employee_id`) REFERENCES `employee`(`employee_id`) ON DELETE CASCADE
 ) ROW_FORMAT=DYNAMIC;

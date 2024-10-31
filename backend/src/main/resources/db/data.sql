@@ -448,7 +448,7 @@ VALUES (1, 1, 'JOB_COMPLETED', '2024-09-15', 1, 3, NULL, NULL),  -- Completed jo
         (5, 2, 'AL_TAKEN', '2024-11-12', NULL, NULL, NULL, 2);    -- Took 2 day AL on 12th Nov 2024
 
 -- Insert sample employee leaves
-INSERT INTO employee_leaves (employee_leave_id, employee_id, leave_type, application_date_time, start_date, end_date, status, comments, mc_proof_uploaded, mc_proof_img)
+INSERT INTO employee_leave (employee_leave_id, employee_id, leave_type, application_date_time, start_date, end_date, status, comments, mc_proof_uploaded, mc_proof_img)
 VALUES (1, 1, 'MC', '2024-09-01 10:00:00', '2024-09-05', '2024-09-07', 'APPROVED', 'Medical leave for flu', TRUE, 'mc_proof_1.jpg'),
        (2, 2, 'AL', '2024-09-10 09:00:00', '2024-09-15', '2024-09-20', 'APPROVED', 'Annual leave for vacation', FALSE, NULL),
        (3, 3, 'MC', '2024-10-01 11:00:00', '2024-10-05', '2024-10-07', 'PENDING', 'Medical leave for surgery', TRUE, 'mc_proof_2.jpg'),
