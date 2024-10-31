@@ -187,7 +187,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
 
                             <!-- Package [Edit Mode] -->
                             <div v-else class="col-12">
-                                <DropdownSearch :items="allPackages" :inputValue="jobEdit.packageType" fieldName="Package" :jobId="jobDetails.appointmentId" @valChange="packageChange" />
+                                <DropdownSearch :items="allPackages" :inputValue="jobEdit.packageType" fieldName="Package" :uniqueComponentId="jobDetails.appointmentId" @valChange="packageChange" />
                             </div>
 
                             <!-- Address -->

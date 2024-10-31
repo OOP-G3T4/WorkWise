@@ -11,13 +11,13 @@ import * as bootstrap from 'bootstrap'
             </button>
 
             <div class="form-floating">
-                <input type="text" class="form-control" :id="`show-selected-${fieldName}-${jobId}`" placeholder="Username" :value="items[selectedId]" readonly>
-                <label :for="`show-selected-${fieldName}-${jobId}`">{{ fieldName }}</label>
+                <input type="text" class="form-control" :id="`show-selected-${fieldName}-${uniqueComponentId}`" placeholder="Username" :value="items[selectedId]" readonly>
+                <label :for="`show-selected-${fieldName}-${uniqueComponentId}`">{{ fieldName }}</label>
             </div>
         </div>
 
         <!-- Dropdown Menu -->
-        <form class="dropdown-menu p-3 w-100">
+        <form class="dropdown-menu p-3 w-100" :id="`dropdown-search-${fieldName}-${uniqueComponentId}`">
             <!-- Search Field -->
             <div class="input-group input-group-sm mb-3">
                 <span class="input-group-text">
@@ -55,8 +55,8 @@ export default {
             type: String,
             required: true,
         },
-        jobId: {
-            type: Number,
+        uniqueComponentId: {
+            type: String,
             required: true,
         },
         showId: {
@@ -86,6 +86,10 @@ export default {
                 })
             );
         },
+        items() {
+            // Updates the filteredItems when items changes
+            this.filteredItems = this.items;
+        },
     },
     methods: {
         emitValue() {
@@ -108,7 +112,8 @@ export default {
     },
     mounted() {
         // Initializes the dropdown
-        this.dropdown = new bootstrap.Dropdown(this.$el);
+        let dropdownElement = document.getElementById(`dropdown-search-${this.fieldName}-${this.uniqueComponentId}`);
+        this.dropdown = new bootstrap.Dropdown(dropdownElement);
     },
 }
 </script>
