@@ -8,6 +8,8 @@ import sg.com.officecleanings.workwise.repository.JobRepository;
 import sg.com.officecleanings.workwise.repository.JobEmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sg.com.officecleanings.workwise.model.Subscription;
+import sg.com.officecleanings.workwise.repository.SubscriptionRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +27,9 @@ public class JobService {
     private JobRepository jobRepository;
 
     @Autowired
+    private SubscriptionRepository subscriptionRepository;
+
+    @Autowired
     private JobEmployeeRepository JobEmployeeRepository;
 
     public List<Job> getAllJobs() {
@@ -35,6 +40,16 @@ public class JobService {
         return jobRepository.findById(id);
     }
 
+    public void createJobsFromActiveSubscriptions() {
+        List<Subscription> activeSubscriptions = subscriptionRepository.findByStatus("active");
+        for (Subscription subscription : activeSubscriptions) {
+            Job job = new Job();
+            job.setSubscriptionId(subscription.getId());
+            job.setDescription("Job for subscription " + subscription.getId());
+            // Set other job properties as needed
+            jobRepository.save(job);
+        }
+    }
     public Job saveJob(Job job) {
         Job savedJob = jobRepository.save(job);
         savedJob.getEmployees().forEach(employee -> {

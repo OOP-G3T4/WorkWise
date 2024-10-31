@@ -12,6 +12,9 @@ import sg.com.officecleanings.workwise.service.AiService;
 import sg.com.officecleanings.workwise.service.JobEmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+import sg.com.officecleanings.workwise.service.JobService;
 
 import java.io.IOException;
 import java.util.*;
@@ -24,12 +27,20 @@ public class AiController {
     private final OpenAiChatModel aiModel;
     private final AiService aiService;
     private final JobEmployeeService jobEmployeeService;
+    private final JobService jobService;
 
     @Autowired
-    public AiController(OpenAiChatModel aiModel, AiService aiService, JobEmployeeService jobEmployeeService) {
+    public AiController(OpenAiChatModel aiModel, AiService aiService, JobEmployeeService jobEmployeeService, JobService jobService) {
         this.aiModel = aiModel;
         this.aiService = aiService;
         this.jobEmployeeService = jobEmployeeService;
+        this.jobService = jobService;
+    }
+
+    @PostMapping("/jobs/createFromActiveSubscriptions")
+    public ResponseEntity<String> createJobsFromActiveSubscriptions() {
+        jobService.createJobsFromActiveSubscriptions();
+        return ResponseEntity.ok("Jobs created from active subscriptions.");
     }
 
     @PostMapping("/ai/generate")
