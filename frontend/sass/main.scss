@@ -62,6 +62,14 @@ $utilities: map-merge(
     --bs-btn-disabled-color: #FFFFFF;
 }
 
+.btn-danger {
+    --bs-btn-color: #FFFFFF;
+    --bs-btn-hover-color: #FFFFFF;
+    --bs-btn-active-color: #FFFFFF;
+    --bs-btn-active-bg: #{$danger};
+    --bs-btn-disabled-color: #FFFFFF;
+}
+
 // Custom button class
 .btn-white {
     @include button-variant(#FFFFFF, #FFFFFF, $secondary); // background, border, text color
