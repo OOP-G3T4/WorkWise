@@ -18,7 +18,6 @@
 export default {
     data() {
         return {
-            // possibleStatuses: ["Pending", "Approved", "Rejected"], // Status buttons auto-generated from this array
             possibleStatuses: [
                 {
                     toShow: "Pending",

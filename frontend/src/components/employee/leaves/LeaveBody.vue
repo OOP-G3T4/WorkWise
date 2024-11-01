@@ -118,6 +118,11 @@ export default {
             errorMsg: "",
         }
     },
+    watch: {
+        leaveDetailsArr() {
+            this.updateBeforeAfterTodayArrs();
+        }
+    },
     methods: {
         sortByDate(arrToSort) {
             arrToSort.sort((a, b) => {
@@ -146,7 +151,7 @@ export default {
                 return true;
             }
 
-            return leaveObj.status !== "Rejected";
+            return leaveObj.status !== "REJECTED";
         },
         handleFileUpload(e) {
             this.imgUploaded = e.target.files[0];
@@ -189,26 +194,29 @@ export default {
 
             this.errorMsg = "";
             return false;
+        },
+        updateBeforeAfterTodayArrs() {
+            // Split leaveDetailsArr into leavesBeforeToday and leavesAfterToday
+            const today = new Date();
+
+            this.leaveDetailsArr.forEach(leave => {
+                const end = new Date(leave.endDate);
+                end.setHours(23, 59, 59, 999);
+
+                if (end < today) {
+                    this.leavesBeforeToday.push(leave);
+                } else {
+                    this.leavesAfterToday.push(leave);
+                }
+            });
+
+            // Sort leavesBeforeToday and leavesAfterToday
+            this.sortByDate(this.leavesBeforeToday);
+            this.sortByDate(this.leavesAfterToday);
         }
     },
     mounted() {
-        // Split leaveDetailsArr into leavesBeforeToday and leavesAfterToday
-        const today = new Date();
-
-        this.leaveDetailsArr.forEach(leave => {
-            const end = new Date(leave.endDate);
-            end.setHours(23, 59, 59, 999);
-
-            if (end < today) {
-                this.leavesBeforeToday.push(leave);
-            } else {
-                this.leavesAfterToday.push(leave);
-            }
-        });
-
-        // Sort leavesBeforeToday and leavesAfterToday
-        this.sortByDate(this.leavesBeforeToday);
-        this.sortByDate(this.leavesAfterToday);
+        this.updateBeforeAfterTodayArrs();
     },
 };
 </script>

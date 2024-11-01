@@ -508,8 +508,8 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                 </div>
 
                 <div class="modal-footer d-flex justify-content-between" v-if="isEditMode">
-                    <button type="button" class="btn btn-light" @click="openDelModal(true)">
-                        <font-awesome-icon icon="fa-solid fa-calendar-xmark" />
+                    <button type="button" class="btn btn-outline-danger" @click="openDelModal(true)">
+                        <font-awesome-icon icon="fa-solid fa-trash" />
                     </button>
 
                     <div>
@@ -531,7 +531,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" :id="`job-del-modal-label-${jobDetails.appointmentId}`"><font-awesome-icon icon="fa-solid fa-calendar-xmark" class="me-2" />Confirm Cancellation?</h1>
+                    <h1 class="modal-title fs-5 ms-1" :id="`job-del-modal-label-${jobDetails.appointmentId}`"><font-awesome-icon icon="fa-solid fa-trash" class="me-2" />Confirm Cancellation?</h1>
                     <button type="button" class="btn-close" @click="openMainModal(true)"></button>
                 </div>
 
@@ -542,7 +542,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" @click="openMainModal(true)" >Cancel</button>
-                    <button type="button" class="btn btn-danger" @click="confirmCancelJob()">Confirm</button>
+                    <button type="button" class="btn btn-outline-danger" @click="confirmCancelJob()">Confirm</button>
                 </div>
             </div>
         </div>
