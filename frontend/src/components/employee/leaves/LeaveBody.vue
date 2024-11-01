@@ -20,7 +20,7 @@ import LeaveCard from '../../general/leaves/LeaveCard.vue';
         <LeaveCard v-if="showCardLogic(e_leave)" :leaveDetails="e_leave" />
     </div>
 
-    <!-- Add New Job Modal -->
+    <!-- Add New Application Modal -->
     <div class="modal fade" id="empAddLeaveModal" tabindex="-1" aria-labelledby="empAddLeaveModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -47,13 +47,13 @@ import LeaveCard from '../../general/leaves/LeaveCard.vue';
 
                     <!-- [2] Star Date -->
                     <div class="form-floating mt-3">
-                        <input type="date" class="form-control" id="startDateEmpLeaves" v-model="startDate" />
+                        <input type="date" class="form-control" id="startDateEmpLeaves" v-model="startDate" :max="endDate" />
                         <label for="startDateEmpLeaves">Start Date</label>
                     </div>
 
                     <!-- [3] End Date -->
                     <div class="form-floating mt-3">
-                        <input type="date" class="form-control" id="endDateEmpLeaves" v-model="endDate" />
+                        <input type="date" class="form-control" id="endDateEmpLeaves" v-model="endDate" :min="startDate" />
                         <label for="endDateEmpLeaves">End Date</label>
                     </div>
 
