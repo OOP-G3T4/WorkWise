@@ -134,20 +134,20 @@ export default {
             },
 
             leaveStatusIconMap: {
-                "Approved": "fa-solid fa-circle-check",
-                "Rejected": "fa-solid fa-circle-xmark",
-                "Pending": "fa-solid fa-clock",
+                "APPROVED": "fa-solid fa-circle-check",
+                "REJECTED": "fa-solid fa-circle-xmark",
+                "PENDING": "fa-solid fa-clock",
             },
 
             leaveStatusClassMap: {
-                "Approved": "text-success",
-                "Rejected": "text-danger",
-                "Pending": "text-secondary",
+                "APPROVED": "text-success",
+                "REJECTED": "text-danger",
+                "PENDING": "text-secondary",
             },
 
             isSelected: false,
 
-            leaveStatusCheckbox: ['Pending'], // The leave status(es) that will have a checkbox
+            leaveStatusCheckbox: ['PENDING'], // The leave status(es) that will have a checkbox
 
             uploadPhotoModal: null,
 
@@ -200,7 +200,7 @@ export default {
         },
         displayMcError() {
             // Skip if not Admin || not MC || not Pending || MC proof alr uploaded
-            if (this.userType !== "admin" || this.leaveDetails.leaveType != "MC" || this.leaveDetails.status != "Pending" || this.leaveDetails.mcProofUploaded) {
+            if (this.userType !== "admin" || this.leaveDetails.leaveType != "MC" || this.leaveDetails.status != "PENDING" || this.leaveDetails.mcProofUploaded) {
                 return false;
             }
 
@@ -214,7 +214,7 @@ export default {
         },
         displayMcReminder() {
             // Skip if not Employee || not MC || not Pending || MC proof alr uploaded
-            if (this.userType !== "employee" || this.leaveDetails.leaveType != "MC" || this.leaveDetails.status != "Pending" || this.leaveDetails.mcProofUploaded) {
+            if (this.userType !== "employee" || this.leaveDetails.leaveType != "MC" || this.leaveDetails.status != "PENDING" || this.leaveDetails.mcProofUploaded) {
                 return false;
             }
 

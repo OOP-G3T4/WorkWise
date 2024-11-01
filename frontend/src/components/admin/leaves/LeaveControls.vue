@@ -2,7 +2,7 @@
     <div class="container-fluid bg-white py-4">
         <div class="row justify-content-between gy-3">
             <div class="col-auto p-0 d-flex">
-                <button v-for="e_status in possibleStatuses" class="btn btn-resp me-2" :class="statusBtnClass(e_status)" @click="toggleStatus(e_status)" data-bs-toggle="button">{{ e_status }}</button>
+                <button v-for="e_status in possibleStatuses" class="btn btn-resp me-2" :class="statusBtnClass(e_status.toShow)" @click="toggleStatus(e_status.toShow)" data-bs-toggle="button">{{ e_status.toShow }}</button>
             </div>
 
             <div class="col-auto p-0 d-flex">
@@ -18,17 +18,46 @@
 export default {
     data() {
         return {
-            possibleStatuses: ["Pending", "Approved", "Rejected"], // Status buttons auto-generated from this array
+            // possibleStatuses: ["Pending", "Approved", "Rejected"], // Status buttons auto-generated from this array
+            possibleStatuses: [
+                {
+                    toShow: "Pending",
+                    toEmit: "PENDING"
+                },
+                {
+                    toShow: "Approved",
+                    toEmit: "APPROVED"
+                },
+                {
+                    toShow: "Rejected",
+                    toEmit: "REJECTED"
+                }
+            ],
             selectedStatuses: ["Pending"],
         };
     },
     watch: {
         selectedStatuses: {
             handler() {
-                this.$emit("statusChange", this.selectedStatuses);
+                this.emitArr();
             },
             deep: true, //Watch for changes in within array, rather than just the pointer
         },
+    },
+    computed: {
+        mapping() {
+            // returns object of keys (toShow), values (toEmit)
+            let res = {};
+
+            for (let eObj of this.possibleStatuses) {
+                let toShow = eObj.toShow;
+                let toEmit = eObj.toEmit;
+
+                res[toShow] = toEmit;
+            }
+
+            return res;
+        }
     },
     methods: {
         toggleStatus(status) {
@@ -51,10 +80,19 @@ export default {
                 "active": statusSelected,
             };
         },
+        emitArr() {
+            let res = [];
+
+            for (let eStatus of this.selectedStatuses) {
+                res.push(this.mapping[eStatus])
+            }
+
+            this.$emit("statusChange", res)
+        },
     },
     mounted() {
         // Send initial status array to parent
-        this.$emit("statusChange", this.selectedStatuses);
+        this.emitArr();
     },
 };
 </script>
