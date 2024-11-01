@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import sg.com.officecleanings.workwise.model.Job;
 import sg.com.officecleanings.workwise.service.AiService;
 import sg.com.officecleanings.workwise.service.JobEmployeeService;
 import org.springframework.http.HttpStatus;
@@ -27,20 +26,12 @@ public class AiController {
     private final OpenAiChatModel aiModel;
     private final AiService aiService;
     private final JobEmployeeService jobEmployeeService;
-    private final JobService jobService;
 
     @Autowired
-    public AiController(OpenAiChatModel aiModel, AiService aiService, JobEmployeeService jobEmployeeService, JobService jobService) {
+    public AiController(OpenAiChatModel aiModel, AiService aiService, JobEmployeeService jobEmployeeService) {
         this.aiModel = aiModel;
         this.aiService = aiService;
         this.jobEmployeeService = jobEmployeeService;
-        this.jobService = jobService;
-    }
-
-    @PostMapping("/jobs/createFromActiveSubscriptions")
-    public ResponseEntity<String> createJobsFromActiveSubscriptions() {
-        jobService.createJobsFromActiveSubscriptions();
-        return ResponseEntity.ok("Jobs created from active subscriptions.");
     }
 
     @PostMapping("/ai/generate")

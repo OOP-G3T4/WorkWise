@@ -29,6 +29,10 @@ public class Job {
     @JoinColumn(name = "packageId", referencedColumnName = "packageId", nullable = false)
     private SelectedPackage selectedPackage; // Note cannot use Package
 
+    @ManyToOne
+    @JoinColumn(name = "subscriptionId", referencedColumnName = "subscriptionId", nullable = false)
+    private Subscription subscription;
+
     private Date date;
     private Time startTime;
 

@@ -40,16 +40,6 @@ public class JobService {
         return jobRepository.findById(id);
     }
 
-    public void createJobsFromActiveSubscriptions() {
-        List<Subscription> activeSubscriptions = subscriptionRepository.findByStatus("active");
-        for (Subscription subscription : activeSubscriptions) {
-            Job job = new Job();
-            job.setSubscriptionId(subscription.getId());
-            job.setDescription("Job for subscription " + subscription.getId());
-            // Set other job properties as needed
-            jobRepository.save(job);
-        }
-    }
     public Job saveJob(Job job) {
         Job savedJob = jobRepository.save(job);
         savedJob.getEmployees().forEach(employee -> {
@@ -124,6 +114,66 @@ public class JobService {
         List<Job> pendingJobs = jobRepository.findByDateBetweenAndStatusOrderByDateAscStartTimeAsc(startDate, endDate, Job.Status.PENDING);
 
         return pendingJobs;
+    }
+
+    public boolean createJobsFromActiveSubscriptions() {
+        // Calculate the date range for the 4th week in advance
+        LocalDate today = LocalDate.now();
+        LocalDate targetWeekStart = today.plusWeeks(4).with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).plusDays(1);
+        LocalDate targetWeekEnd = targetWeekStart.plusDays(6); // 6 days to complete the week
+
+        List<Subscription> activeSubscriptions = subscriptionRepository.findByStatus("ACTIVE");
+
+        for (Subscription subscription : activeSubscriptions) {
+            if (subscription.getPackageType().equals("BI_WEEKLY")) {
+                // Check if we can schedule a bi-weekly job
+                if (canScheduleBiWeeklyJob(subscription, targetWeekStart, targetWeekEnd)) {
+                    createAndSaveJob(subscription, targetWeekStart); // Schedule job on specified job day
+                }
+            } else if (subscription.getPackageType().equals("WEEKLY")) {
+                // Schedule weekly jobs for the target week
+                createAndSaveJob(subscription, targetWeekStart);
+            }
+        }
+        return true;
+    }
+
+    // Check if a bi-weekly job can be scheduled for the given subscription
+    private boolean canScheduleBiWeeklyJob(Subscription subscription, LocalDate targetWeekStart, LocalDate targetWeekEnd) {
+        LocalDate lastJobDate = jobRepository.findLatestJobDateByClientIdAndPropertyId(subscription.getClient().getClientId(), subscription.getProperty().getPropertyId());
+
+        // Check if there are already 2 jobs in the target month for this subscription
+        int jobsThisMonth = jobRepository.countJobsForSubscriptionInMonth(subscription.getSubscriptionId(), targetWeekStart.getMonthValue(), targetWeekStart.getYear());
+        if (jobsThisMonth >= 2) {
+            return false; // No more jobs needed if we already have 2 in this month
+        }
+
+        // Ensure at least 10 days have passed since the last job
+        return lastJobDate == null || lastJobDate.plusDays(10).isBefore(targetWeekStart);
+    }
+
+    // Helper method to create and save a job on the subscription's scheduled day within the target week
+    private void createAndSaveJob(Subscription subscription, LocalDate targetWeekStart) {
+        // Determine job date within the target week
+        DayOfWeek jobDay = DayOfWeek.valueOf(subscription.getJobDay().toUpperCase());
+        LocalDate jobDate = targetWeekStart.with(TemporalAdjusters.nextOrSame(jobDay));
+        // Calculate the duration in hours
+        long durationInHours = java.time.Duration.between(subscription.getJobStartTime(), subscription.getJobEndTime()).toHours();
+
+        // Create a new Job using the provided constructor
+        Job job = new Job(
+                subscription.getClient(),
+                subscription.getProperty(),
+                subscription.getSelectedPackage(),
+                java.sql.Date.valueOf(jobDate), // Convert LocalDate to java.sql.Date
+                java.sql.Time.valueOf(subscription.getJobStartTime()), // Convert LocalTime to java.sql.Time
+                Job.Status.PENDING,
+                (int) durationInHours,
+                false, // Assuming arrivalProofUploaded is initially false
+                false // Assuming completionProofUploaded is initially false
+        );
+
+        jobRepository.save(job);
     }
 
 }
