@@ -5,13 +5,13 @@ import * as bootstrap from 'bootstrap'
 <template>
     <div class="dropdown">
         <!-- Show Input in Input Text Field -->
-        <div class="input-group mb-3" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-            <button class="btn btn-light">
+        <div class="input-group mb-3" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" :disabled="isDisabled">
+            <button class="btn btn-light" :disabled="isDisabled">
                 <font-awesome-icon icon="fa-solid fa-caret-down" />
             </button>
 
             <div class="form-floating">
-                <input type="text" class="form-control" :id="`show-selected-${fieldName}-${uniqueComponentId}`" placeholder="Username" :value="items[selectedId]" readonly>
+                <input type="text" class="form-control" :id="`show-selected-${fieldName}-${uniqueComponentId}`" placeholder="Username" :value="items[selectedId]" readonly :disabled="isDisabled">
                 <label :for="`show-selected-${fieldName}-${uniqueComponentId}`">{{ fieldName }}</label>
             </div>
         </div>
@@ -60,6 +60,11 @@ export default {
             required: true,
         },
         showId: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        isDisabled: {
             type: Boolean,
             required: false,
             default: false,

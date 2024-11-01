@@ -48,7 +48,7 @@ import DropdownSearch from "../../general/forms/DropdownSearch.vue"
                     </p>
 
                     <!-- [5] Property -->
-                    <DropdownSearch :items="allProperties" fieldName="Property" :uniqueComponentId="uniqueComponentId" @valChange="propertyChange" />
+                    <DropdownSearch :items="allProperties" fieldName="Property" :uniqueComponentId="uniqueComponentId" @valChange="propertyChange" :isDisabled="!clientId" />
                 </div>
 
                 <!-- FOOTER -->
@@ -85,6 +85,11 @@ export default {
             allProperties: {},
             daysOfWeek: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
         };
+    },
+    watch: {
+        clientId() {
+            this.updateClientsProperties();
+        },
     },
     computed: {
         formattedPackages() {
@@ -165,6 +170,25 @@ export default {
         propertyChange(propertyId) {
             this.propertyId = propertyId;
         },
+        updateClientsProperties() {
+            if (this.clientId === "") {
+                return;
+            }
+
+            fetch(`http://localhost:8081/api/client/${this.clientId}/properties`)
+                .then((response) => response.json())
+                .then((data) => {
+                    let allProperties = {};
+
+                    for (let i = 0; i < data.length; i++) {
+                        let e_property = data[i];
+
+                        allProperties[e_property.propertyId] = `${e_property.address}, ${e_property.postalCode}`;
+                    }
+
+                    this.allProperties = allProperties;
+                });
+        },
     },
     mounted() {
         // Fetch all clients
@@ -173,8 +197,8 @@ export default {
             .then((data) => {
                 let allClients = {};
 
-                for (let clientId in data) {
-                    allClients[clientId] = data[clientId].name;
+                for (let e_client of data) {
+                    allClients[e_client.clientId] = e_client.name;
                 }
 
                 this.allClients = allClients;
@@ -193,21 +217,6 @@ export default {
                 }
 
                 this.allPackages = allPackages;
-            });
-        
-        // Fetch all properties
-        fetch("http://localhost:8081/api/property") // Change later to only fetch properties for the client (ADAMBFT)
-            .then((response) => response.json())
-            .then((data) => {
-                let allProperties = {};
-
-                for (let i = 0; i < data.length; i++) {
-                    let e_property = data[i];
-
-                    allProperties[e_property.propertyId] = e_property.address + ", " + e_property.postalCode;
-                }
-
-                this.allProperties = allProperties;
             });
     },
 };
