@@ -15,6 +15,7 @@ import { mapState } from 'vuex';
                 :showPast="selectedFilters.includes('Past')"
                 :showUpcoming="selectedFilters.includes('Upcoming')"
                 :showRejected="selectedFilters.includes('Rejected')"
+                @mc-uploaded="handleMcUploaded"
             />
         </div>
     </div>
@@ -33,20 +34,49 @@ export default {
         handleFilterChange(selectedFilters) {
             this.selectedFilters = selectedFilters;
         },
+        pullLeavesFromApi() {
+            fetch(`http://localhost:8081/api/employee-leave/employee/${this.userId}`)
+            .then(response => response.json())
+            .then(data => {
+                // this.leaveDetailsArr = data;
+
+                let leaveDetailsArr = [];
+
+                for (let i = 0; i < data.length; i++) {
+                    let e_leave = data[i];
+
+                    let newLeave = {
+                        id: e_leave.employeeLeaveId,
+                        leaveType: e_leave.leaveType,
+                        empId: e_leave.employee.employeeId,
+                        applicationDateTime: e_leave.applicationDateTime, // When the leave was applied
+                        startDate: e_leave.startDate,
+                        endDate: e_leave.endDate,
+                        status: e_leave.status,
+                        comments: e_leave.comments,
+                        mcProofUploaded: e_leave.mcProofUploaded,
+                        mcProofImg: e_leave.mcProofImg,
+                    };
+
+                    leaveDetailsArr.push(newLeave);
+                }
+
+                this.leaveDetailsArr = leaveDetailsArr;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        },
+        handleMcUploaded(data) {
+            this.pullLeavesFromApi();
+        }
     },
     computed: {
         ...mapState(["userId"]),  // Access userId from Vuex state
     },
     mounted() {
         // Pull leave details from backend
-        fetch(`http://localhost:8081/api/employee-leave/employee/${this.userId}`)
-            .then(response => response.json())
-            .then(data => {
-                this.leaveDetailsArr = data;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        this.pullLeavesFromApi();
     }
 };
 </script>

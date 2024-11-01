@@ -6,8 +6,8 @@
             </div>
 
             <div class="col-auto p-0 d-flex">
-                <button class="btn btn-resp btn-light me-2"><font-awesome-icon class="me-2" icon="fa-solid fa-xmark" />Reject Selected</button>
-                <button class="btn btn-resp btn-light me-2"><font-awesome-icon class="me-2" icon="fa-solid fa-check" />Approve Selected</button>
+                <button class="btn btn-resp btn-outline-danger me-2" @click="rejectAll()"><font-awesome-icon class="me-2" icon="fa-solid fa-xmark" />Reject Selected</button>
+                <button class="btn btn-resp btn-outline-success me-2" @click="approveAll()"><font-awesome-icon class="me-2" icon="fa-solid fa-check" />Approve Selected</button>
                 <button class="btn btn-resp btn-light"><font-awesome-icon icon="fa-solid fa-filter" /></button>
             </div>
         </div>
@@ -87,6 +87,12 @@ export default {
             }
 
             this.$emit("statusChange", res)
+        },
+        rejectAll() {
+            this.$emit("rejectAll");
+        },
+        approveAll() {
+            this.$emit("approveAll");
         },
     },
     mounted() {

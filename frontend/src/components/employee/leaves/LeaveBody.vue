@@ -1,11 +1,13 @@
 <script setup>
 import LeaveCard from '../../general/leaves/LeaveCard.vue';
+import { mapState } from "vuex";
+import * as bootstrap from 'bootstrap';
 </script>
 
 <template>
     <!-- Past Leaves -->
     <div v-if="showPast" v-for="e_leave in leavesBeforeToday" class="mb-3">
-        <LeaveCard v-if="showCardLogic(e_leave)" :leaveDetails="e_leave" />
+        <LeaveCard v-if="showCardLogic(e_leave)" :leaveDetails="e_leave" @mc-uploaded="mcUploadTrigger" />
     </div>
 
     <!-- Today Line -->
@@ -17,7 +19,7 @@ import LeaveCard from '../../general/leaves/LeaveCard.vue';
 
     <!-- Upcoming Leaves -->
     <div v-if="showUpcoming" v-for="e_leave in leavesAfterToday" class="mb-3">
-        <LeaveCard v-if="showCardLogic(e_leave)" :leaveDetails="e_leave" />
+        <LeaveCard v-if="showCardLogic(e_leave)" :leaveDetails="e_leave" @mc-uploaded="mcUploadTrigger" />
     </div>
 
     <!-- Add New Application Modal -->
@@ -38,8 +40,8 @@ import LeaveCard from '../../general/leaves/LeaveCard.vue';
                     <!-- [1] Application Type (MC or AL) -->
                     <div class="form-floating">
                         <select class="form-select" id="appTypeEmpLeaves" aria-label="Floating label select example" v-model="appType">
-                            <option value="mc">Medical Certificate</option>
-                            <option value="al">Annual Leave</option>
+                            <option value="MC">Medical Certificate</option>
+                            <option value="AL">Annual Leave</option>
                         </select>
 
                         <label for="appTypeEmpLeaves">Application Type</label>
@@ -64,7 +66,7 @@ import LeaveCard from '../../general/leaves/LeaveCard.vue';
                     </div>
 
                     <!-- [5] Upload Photo (If MC) -->
-                    <template v-if="appType == 'mc'">
+                    <template v-if="appType == 'MC'">
                         <hr class="mt-3" />
                         <h6 class="text-secondary ms-1"><font-awesome-icon icon="fa-solid fa-camera" class="me-2" />Upload Photo Proof</h6>
                         <input class="form-control mt-3" type="file" @change="handleFileUpload"/>
@@ -110,20 +112,37 @@ export default {
             leavesAfterToday: [],
 
             // New Leave Application Modal
-            appType: "mc",
+            appType: "MC",
             startDate: "",
             endDate: "",
             comment: "",
             imgUploaded: null,
             errorMsg: "",
+
+            // Apply Leave Modal
+            leaveModal: null,
         }
     },
     watch: {
-        leaveDetailsArr() {
-            this.updateBeforeAfterTodayArrs();
-        }
+        leaveDetailsArr: {
+            handler(newVal) {
+                this.updateBeforeAfterTodayArrs();
+            },
+            deep: true, //Watch for changes in within array, rather than just the pointer
+        },
+    },
+    computed: {
+        ...mapState(["userId"]),
     },
     methods: {
+        clearNewLeaveModal() {
+            this.appType = "MC";
+            this.startDate = "";
+            this.endDate = "";
+            this.comment = "";
+            this.imgUploaded = null;
+            this.errorMsg = "";
+        },
         sortByDate(arrToSort) {
             arrToSort.sort((a, b) => {
                 // Convert startDate and endDate to Date objects
@@ -156,14 +175,68 @@ export default {
         handleFileUpload(e) {
             this.imgUploaded = e.target.files[0];
         },
-        handleSubmit() {
+        async handleSubmit() {
             // Check for errors
             if (this.isError()) {
                 return;
             }
 
-            // Submit form
-            console.log("Form submitted!");
+            // SUBMIT FORM ========================================
+
+            // [1] Prepare postData
+            const empLeave = {
+                "employee": {
+                    "employeeId": this.userId,
+                },
+                "leaveType": this.appType, 
+                "applicationDateTime": new Date().toISOString(),
+                "startDate": this.startDate,
+                "endDate": this.endDate, 
+                "status": "PENDING",
+                "comments": this.comment,
+            }
+  
+            // [2] Send POST request
+            const postData = new FormData();
+            postData.append('employeeLeave', JSON.stringify(empLeave));
+
+            if (this.imgUploaded && this.appType == "MC") {
+                postData.append('file', this.imgUploaded);
+            }
+
+            try {
+                const response = await fetch('http://localhost:8081/api/employee-leave/apply', {
+                    method: 'POST',
+                    body: postData,
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+
+                    // Add new leave to leaveDetailsArr
+                    let newLeave = {
+                        id: data.employeeLeaveId,
+                        leaveType: data.leaveType,
+                        empId: data.employee.employeeId,
+                        applicationDateTime: data.applicationDateTime,
+                        startDate: data.startDate,
+                        endDate: data.endDate,
+                        status: data.status,
+                        comments: data.comments,
+                        mcProofUploaded: data.mcProofUploaded,
+                        mcProofImg: data.mcProofImg,
+                    };
+
+                    this.leaveDetailsArr.push(newLeave);
+
+                    this.clearNewLeaveModal();
+                    this.showLeaveModal(false);
+                } else {
+                    console.error('Error:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
         },
         isError() {
             // Check if all required fields are filled
@@ -199,6 +272,10 @@ export default {
             // Split leaveDetailsArr into leavesBeforeToday and leavesAfterToday
             const today = new Date();
 
+            // Clear arrays
+            this.leavesBeforeToday = [];
+            this.leavesAfterToday = [];
+
             this.leaveDetailsArr.forEach(leave => {
                 const end = new Date(leave.endDate);
                 end.setHours(23, 59, 59, 999);
@@ -213,10 +290,24 @@ export default {
             // Sort leavesBeforeToday and leavesAfterToday
             this.sortByDate(this.leavesBeforeToday);
             this.sortByDate(this.leavesAfterToday);
-        }
+        },
+        showLeaveModal(toOpen) {
+            if (toOpen) {
+                this.leaveModal.show();
+            } else {
+                this.leaveModal.hide();
+            }
+        },
+        mcUploadTrigger(data) {
+            // Triggers when any MC is uploaded
+            this.$emit('mc-uploaded', data);
+        },
     },
     mounted() {
         this.updateBeforeAfterTodayArrs();
+
+        // Apply Leave Modal
+        this.leaveModal = new bootstrap.Modal(document.getElementById('empAddLeaveModal'));
     },
 };
 </script>

@@ -4,7 +4,7 @@ import LeaveCard from '../../general/leaves/LeaveCard.vue';
 
 <template>
     <div v-for="e_leave in leaveDetailsArr" class="mb-3">
-        <LeaveCard v-if="selectedLeaveStatusArr.includes(e_leave.status)" :leaveDetails="e_leave" :employeeDetails="empDetailsArr[e_leave.empId]" />
+        <LeaveCard v-if="selectedLeaveStatusArr.includes(e_leave.status)" :leaveDetails="e_leave" :employeeDetails="empDetailsArr[e_leave.empId]" @selectedChanged="handleSelectChange" />
     </div>
 </template>
 
@@ -15,6 +15,11 @@ export default {
             type: Array,
             required: false,
             default: () => ["Pending", "Approved", "Rejected"],
+        },
+        toUpdateLeaves: {
+            type: Boolean,
+            required: false,
+            default: false,
         },
     },
     data() {
@@ -129,8 +134,62 @@ export default {
                 // }
             ],
 
-            empDetailsArr: {}
+            empDetailsArr: {},
+            selectedLeaveIds: [],
         };
+    },
+    watch: {
+        selectedLeaveIds: {
+            handler() {
+                this.$emit('selectedChanged', this.selectedLeaveIds);
+            },
+            deep: true,
+        },
+        toUpdateLeaves() {
+            this.pullLeavesFromBackend();
+        },
+    },
+    methods: {
+        handleSelectChange(data) {
+            let leaveId = data.id;
+            let isChecked = data.isChecked;
+
+            if (isChecked) {
+                this.selectedLeaveIds.push(leaveId);
+            } else {
+                let index = this.selectedLeaveIds.indexOf(leaveId);
+                this.selectedLeaveIds.splice(index, 1);
+            }
+        },
+        pullLeavesFromBackend() {
+            // Pull leaves data from backend
+            fetch('http://localhost:8081/api/employee-leave')
+                .then(response => response.json())
+                .then(data => {
+                    let leaveDetailsArr = [];
+
+                    for (let i = 0; i < data.length; i++) {
+                        let e_leave = data[i];
+
+                        let newLeave = {
+                            id: e_leave.employeeLeaveId,
+                            leaveType: e_leave.leaveType,
+                            empId: e_leave.employee.employeeId,
+                            applicationDateTime: e_leave.applicationDateTime, // When the leave was applied
+                            startDate: e_leave.startDate,
+                            endDate: e_leave.endDate,
+                            status: e_leave.status,
+                            comments: e_leave.comments,
+                            mcProofUploaded: e_leave.mcProofUploaded,
+                            mcProofImg: e_leave.mcProofImg,
+                        }
+
+                        leaveDetailsArr.push(newLeave);
+                    }
+
+                    this.leaveDetailsArr = leaveDetailsArr;
+                });
+        }
     },
     mounted() {
         // Pull employee data from backend
@@ -159,34 +218,7 @@ export default {
                 this.empDetailsArr = empDetailsArr;
             });
 
-            
-        // Pull leaves data from backend
-        fetch('http://localhost:8081/api/employee-leave')
-            .then(response => response.json())
-            .then(data => {
-                let leaveDetailsArr = [];
-
-                for (let i = 0; i < data.length; i++) {
-                    let e_leave = data[i];
-
-                    let newLeave = {
-                        id: e_leave.employeeLeaveId,
-                        leaveType: e_leave.leaveType,
-                        empId: e_leave.employee.employeeId,
-                        applicationDateTime: e_leave.applicationDateTime, // When the leave was applied
-                        startDate: e_leave.startDate,
-                        endDate: e_leave.endDate,
-                        status: e_leave.status,
-                        comments: e_leave.comments,
-                        mcProofUploaded: e_leave.mcProofUploaded,
-                        mcProofImg: e_leave.mcProofImg,
-                    }
-
-                    leaveDetailsArr.push(newLeave);
-                }
-
-                this.leaveDetailsArr = leaveDetailsArr;
-            });
+        this.pullLeavesFromBackend();
     }
 };
 </script>

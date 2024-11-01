@@ -47,6 +47,7 @@ import {
     faCalendarXmark,
     faCaretDown,
     faMagnifyingGlass,
+    faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -87,6 +88,7 @@ library.add(
     faCalendarXmark,
     faCaretDown,
     faMagnifyingGlass,
+    faDownload,
 );
 
 const app = createApp(App);
