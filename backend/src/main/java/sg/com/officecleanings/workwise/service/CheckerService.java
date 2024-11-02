@@ -87,9 +87,27 @@ public class CheckerService {
             return false;
         }
 
+        // Check if employee has at least one non-working day in the week
+        if (!hasNonWorkingDay(employee, job)) {
+            return false;
+        }
+
         // Check for meal break time clashes
         return hasProperMealBreak(employee, job);
     }
+
+
+    private boolean hasNonWorkingDay(Employee employee, Job job) {
+        LocalDate startDate = job.getDate().with(java.time.DayOfWeek.MONDAY);
+        LocalDate endDate = job.getDate().with(java.time.DayOfWeek.SUNDAY);
+        for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
+            if (jobEmployeeRepository.findByEmployeeAndDate(employee.getEmployeeId(), date).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     // Check if employee has another job on the same day and the job timings clash
     private boolean hasJobTimeClash(Employee employee, Job job) {
@@ -101,8 +119,8 @@ public class CheckerService {
         for (Job j : jobs) {
             LocalTime lastJobStart = j.getStartTime().toLocalTime();
             LocalTime lastJobEnd = lastJobStart.plusHours(j.getActualDuration());
-            System.out.println("Job start: " + jobStart + " Job end: " + jobEnd);
             if (jobStart.isBefore(lastJobEnd) && jobEnd.isAfter(lastJobStart)) {
+                System.out.println("Job time clash detected with job: " + j.getJobId());
                 return true;
             }
         }
@@ -115,6 +133,7 @@ public class CheckerService {
             // Check if the job date falls within the leave period
 
             if (jobDate.isAfter(leave.getStartDate()) && jobDate.isBefore(leave.getEndDate())) {
+                System.out.println("Employee is on leave on " + jobDate);
                 return true; // Employee is on leave
             }
         }
@@ -122,8 +141,13 @@ public class CheckerService {
     }
 
     private boolean hasExceededWorkingHours(Employee employee, Job job) {
-        // to be implemented
-        return false;
+        int maxHours = 44; // Maximum working hours per week
+        LocalDate startDate = job.getDate().with(java.time.DayOfWeek.MONDAY);
+        LocalDate endDate = job.getDate().with(java.time.DayOfWeek.SUNDAY);
+        // get all the jobs of the employee in the week
+        int totalHours = calculateEmployeeWorkingHours(employee, startDate, endDate);
+        System.out.println("Total hours: " + totalHours);
+        return totalHours + job.getActualDuration() > maxHours;
     }
 
     private boolean hasSufficientTravelTime(Employee employee, Job job) {
@@ -141,12 +165,9 @@ public class CheckerService {
     }
 
     private boolean hasProperMealBreak(Employee employee, Job job) {
-        LocalTime jobStart = job.getStartTime().toLocalTime();
-        LocalTime jobEnd = jobStart.plusHours(job.getActualDuration());
-
-        // Check if the job time overlaps with lunch (11am - 1pm) or dinner (5pm - 7pm)
-        return !(jobStart.isAfter(LocalTime.of(11, 0)) && jobEnd.isBefore(LocalTime.of(13, 0)))
-                || !(jobStart.isAfter(LocalTime.of(17, 0)) && jobEnd.isBefore(LocalTime.of(19, 0)));
+        // The employee has a lunch (any 1h from 11am to 1pm) and dinner break (any 1h from 5pm to 7pm) before, between or after the job.
+        // Check if employee has at least 1 hour to spare for lunch and dinner
+        
     }
 
     // To be integrated with a distance API
@@ -160,7 +181,7 @@ public class CheckerService {
         return jobEmployeeRepository.findLastJobForEmployee(employee.getEmployeeId(), PageRequest.of(0, 1)).stream().findFirst();
     }
 
-    public int calculateEmployeeWorkingHours(Employee employee, Date startDate, Date endDate) {
+    public int calculateEmployeeWorkingHours(Employee employee, LocalDate startDate, LocalDate endDate) {
         // Call the repository to calculate total working hours in the given date range
         return jobEmployeeRepository.getWeeklyWorkedHours(employee.getEmployeeId(), startDate, endDate);
     }
