@@ -169,8 +169,8 @@ public class JobService {
                 java.sql.Time.valueOf(subscription.getJobStartTime()), // Convert LocalTime to java.sql.Time
                 Job.Status.PENDING,
                 (int) durationInHours,
-                false, // Assuming arrivalProofUploaded is initially false
-                false // Assuming completionProofUploaded is initially false
+                false,
+                false
         );
 
         jobRepository.save(job);
