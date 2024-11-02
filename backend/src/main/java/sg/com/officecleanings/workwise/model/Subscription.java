@@ -1,4 +1,4 @@
-﻿package sg.com.officecleanings.workwise.model;
+package sg.com.officecleanings.workwise.model;
 
 import jakarta.persistence.*;
 import java.time.LocalTime;

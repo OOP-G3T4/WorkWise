@@ -122,7 +122,7 @@ public class JobService {
         LocalDate targetWeekStart = today.plusWeeks(4).with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).plusDays(1);
         LocalDate targetWeekEnd = targetWeekStart.plusDays(6); // 6 days to complete the week
 
-        List<Subscription> activeSubscriptions = subscriptionRepository.findByStatus("ACTIVE");
+        List<Subscription> activeSubscriptions = subscriptionRepository.findBySubscriptionStatus("ACTIVE");
 
         for (Subscription subscription : activeSubscriptions) {
             if (subscription.getPackageType().equals("BI_WEEKLY")) {
