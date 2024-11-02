@@ -63,7 +63,7 @@ import JobDetails from '../../general/calendar/JobDetails.vue';
                                 <!-- Place Each Job Block -->
                                 <template v-for="jobDetails in eArrJobs[1]">
                                     <div class="e-job-child" :style="eJobChildStyle(jobDetails.startTime)">
-                                        <JobDetails :popoverRight="colIsLeftHalf(idx,idx2)" :heightInPx="calculateHeightPx(jobDetails.startTime, jobDetails.endTime)" :jobDetails="jobDetails" :isCompressed="isCompressed" @jobDeleted="handleJobDeleted" />
+                                        <JobDetails :popoverRight="colIsLeftHalf(idx,idx2)" :heightInPx="calculateHeightPx(jobDetails.startTime, jobDetails.endTime)" :jobDetails="jobDetails" :isCompressed="isCompressed" @jobUpdated="handlejobUpdated" />
                                     </div>
                                 </template>
                             </div>
@@ -351,8 +351,8 @@ export default {
                 flex: `${flexGrow} 1 ${properWidthPerCol * numColsInp}px`,
             }
         },
-        handleJobDeleted(jobId) {
-            this.$emit('jobDeleted', jobId);
+        handlejobUpdated(jobId) {
+            this.$emit('jobUpdated', jobId);
         }
     },
     watch: {

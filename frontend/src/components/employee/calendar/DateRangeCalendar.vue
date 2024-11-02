@@ -317,7 +317,7 @@ export default {
 
                                 // Get employee IDs and end time
                                 const employeeIds = job.employees.map(employee => String(employee.employeeId));
-                                const endTime = this.getEndTime(job.startTime, job.selectedPackage.hours);
+                                const endTime = this.getEndTime(job.startTime, job.actualDuration);
 
                                 // Format job details
                                 var formattedJob = {
@@ -332,17 +332,17 @@ export default {
                                     startTime: job.startTime,
                                     endTime: endTime,
                                     cleaners: employeeIds,
-                                    arrivalProofUploaded: true, // Not included yet in DB, replace later (ADAMBFT)
-                                    completionProofUpload: true, // Not included yet in DB, replace later (ADAMBFT)
+                                    arrivalProofUploaded: job.arrivalProofUploaded,
+                                    completionProofUpload: job.completionProofUploaded,
                                     jobStatus: job.status,
                                     clientDetails: {
                                         clientId: job.client.clientId,
                                         clientName: job.client.name,
                                         clientContact: job.client.phoneNumber,
                                         clientEmail: job.client.email,
-                                        clientAddress: "MAILING ADDRESS PLACEHOLDER", // Not included yet in DB, replace later (ADAMBFT)
-                                        clientGender: "M", // Not included yet in DB, replace later (ADAMBFT)
-                                        clientAge: "42", // Not included yet in DB, replace later (ADAMBFT)
+                                        clientAddress: job.client.clientAddress,
+                                        clientGender: job.client.gender,
+                                        clientAge: job.client.clientAge,
                                     },
                                 }
 
