@@ -47,15 +47,15 @@ import * as bootstrap from 'bootstrap';
                         <label for="appTypeEmpLeaves">Application Type</label>
                     </div>
 
-                    <!-- [2] Star Date -->
+                    <!-- [2] Start Date -->
                     <div class="form-floating mt-3">
-                        <input type="date" class="form-control" id="startDateEmpLeaves" v-model="startDate" :max="endDate" />
+                        <input type="date" class="form-control" id="startDateEmpLeaves" v-model="startDate" :max="endDate" onfocus="this.showPicker()" />
                         <label for="startDateEmpLeaves">Start Date</label>
                     </div>
 
                     <!-- [3] End Date -->
                     <div class="form-floating mt-3">
-                        <input type="date" class="form-control" id="endDateEmpLeaves" v-model="endDate" :min="startDate" />
+                        <input type="date" class="form-control" id="endDateEmpLeaves" v-model="endDate" :min="startDate" onfocus="this.showPicker()" />
                         <label for="endDateEmpLeaves">End Date</label>
                     </div>
 

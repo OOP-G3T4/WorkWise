@@ -127,7 +127,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                     </div>
     
                                     <div class="col-6">
-                                        <button class="btn btn-sm btn-danger w-100" @click="openDelModal(true)">
+                                        <button class="btn btn-sm btn-outline-danger w-100" @click="openDelModal(true)">
                                             Cancel Job
                                         </button>
                                     </div>
@@ -321,6 +321,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                         type="date"
                                         class="form-control"
                                         v-model="jobEdit.date"
+                                        onfocus="this.showPicker()"
                                     />
                                     <label for="floatingInput">Date</label>
                                 </div>
@@ -376,6 +377,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                         min="08:00"
                                         max="22:00"
                                         v-model="jobEdit.startTime"
+                                        onfocus="this.showPicker()"
                                     />
                                     <label for="floatingInput"
                                         >Start Time</label
@@ -392,6 +394,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                         min="08:00"
                                         max="22:00"
                                         v-model="jobEdit.endTime"
+                                        onfocus="this.showPicker()"
                                     />
                                     <label for="floatingInput">End Time</label>
                                 </div>
@@ -483,6 +486,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                         @click="deleteCleaner(idx)"
                                         class="btn btn-secondary"
                                         type="button"
+                                        onfocus="this.showPicker()"
                                     >
                                         <font-awesome-icon
                                             class="mx-2"

@@ -39,7 +39,7 @@ import DropdownSearch from "../../general/forms/DropdownSearch.vue"
 
                     <!-- [4] Start Time -->
                     <div class="form-floating mb-3">
-                        <input type="time" class="form-control" :id="`start-time-${uniqueComponentId}`" v-model="startTime">
+                        <input type="time" class="form-control" :id="`start-time-${uniqueComponentId}`" v-model="startTime" onfocus="this.showPicker()">
                         <label :for="`start-time-${uniqueComponentId}`">Start Time</label>
                     </div>
 
