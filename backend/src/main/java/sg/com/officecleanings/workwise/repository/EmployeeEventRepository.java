@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface EmployeeEventRepository extends JpaRepository<EmployeeEvent, Integer> {
 
-    List<EmployeeEvent> findByEmployeeId(int employeeId);
+    List<EmployeeEvent> findByEmployee_EmployeeId(int employeeId);
 
     List<EmployeeEvent> findByEventDate(Date date);
 

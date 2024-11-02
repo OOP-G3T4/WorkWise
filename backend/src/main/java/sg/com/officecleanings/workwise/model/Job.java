@@ -1,10 +1,9 @@
 package sg.com.officecleanings.workwise.model;
 
 import jakarta.persistence.*;
-import org.hibernate.validator.constraints.Length;
 
-import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -29,7 +28,7 @@ public class Job {
     @JoinColumn(name = "packageId", referencedColumnName = "packageId", nullable = false)
     private SelectedPackage selectedPackage; // Note cannot use Package
 
-    private Date date;
+    private LocalDate date;
     private Time startTime;
 
     @Enumerated(EnumType.STRING)
@@ -48,7 +47,7 @@ public class Job {
     public Job() {
     }
 
-    public Job(Client client, Property property, SelectedPackage selectedPackage, Date date, Time startTime,
+    public Job(Client client, Property property, SelectedPackage selectedPackage, LocalDate date, Time startTime,
             Status status, int actualDuration, Boolean arrivalProofUploaded, Boolean completionProofUploaded) {
         this.client = client;
         this.property = property;
@@ -93,11 +92,11 @@ public class Job {
         this.selectedPackage = selectedPackage;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
