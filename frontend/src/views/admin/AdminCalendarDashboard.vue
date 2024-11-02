@@ -15,7 +15,7 @@ import NewJobModal from "../../components/admin/calendar/NewJobModal.vue";
         <div class="contain-bottom">
             <!-- DAILY CALENDAR -->
             <template v-if="rangeSelected == 'Daily'">
-                <DailyCalendar :isCompressed="isCompressed" :jobDetails="jobDetails" :dateSelected="dateSelected" />
+                <DailyCalendar :isCompressed="isCompressed" :jobDetails="jobDetails" :dateSelected="dateSelected" @jobDeleted="handleJobDeleted" />
             </template>
 
             <!-- WEEKLY CALENDAR -->
@@ -79,10 +79,8 @@ export default {
             this.dateSelected = date;
             this.rangeSelected = "Weekly";
         },
-    },
-    mounted() {
-        // Fetch job details from API [For now, fetch everything]
-        fetch('http://localhost:8081/api/job')
+        pullAllJobs() {
+            fetch('http://localhost:8081/api/job')
             .then(response => response.json())
             .then(data => {
                 // Initialize jobDetails object
@@ -152,6 +150,17 @@ export default {
                     this.jobDetails[jobMonthStr][jobDay].push(formattedJob);
                 }
             })
+        },
+        handleJobDeleted(jobId) {
+            console.log("Job deleted: " + jobId);
+
+            // Refresh jobs
+            this.pullAllJobs();
+        },
+    },
+    mounted() {
+        // Pull jobs on mount
+        this.pullAllJobs();
     },
 };
 </script>

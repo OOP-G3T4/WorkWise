@@ -531,18 +531,24 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5 ms-1" :id="`job-del-modal-label-${jobDetails.appointmentId}`"><font-awesome-icon icon="fa-solid fa-trash" class="me-2" />Confirm Cancellation?</h1>
+                    <h1 class="modal-title fs-5 ms-1" :id="`job-del-modal-label-${jobDetails.appointmentId}`">Confirm Cancellation?</h1>
                     <button type="button" class="btn-close" @click="openMainModal(true)"></button>
                 </div>
 
                 <div class="modal-body">
-                    <p>Are you sure you want to cancel this job?</p>
+                    <p>Are you sure you want to cancel this job?:</p>
+                    <p><span class="fw-bold">Client:</span> {{ jobDetails.clientDetails.clientName }}</p>
+                    <p><span class="fw-bold">Address:</span> {{ jobDetails.jobAddress.address }}</p>
+                    <p><span class="fw-bold">Date:</span> {{ jobDetails.date }}</p>
+                    <p><span class="fw-bold">Time:</span> {{ convertTimeToReadable(jobDetails.startTime) }} - {{ convertTimeToReadable(jobDetails.endTime) }}</p>
+                    
+                    <br />
                     <p>Job cancellations cannot be undone.</p>
                 </div>
                 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" @click="openMainModal(true)" >Cancel</button>
-                    <button type="button" class="btn btn-outline-danger" @click="confirmCancelJob()">Confirm</button>
+                    <button type="button" class="btn btn-outline-danger" @click="confirmCancelJob()"><font-awesome-icon icon="fa-solid fa-trash" class="me-2" />Confirm</button>
                 </div>
             </div>
         </div>
@@ -790,11 +796,22 @@ export default {
                 this.delModal.hide();
             }
         },
-        confirmCancelJob() {
-            // Placeholder for API call to delete job
-            console.log("JOB DELETED PLACEHOLDER" + this.jobDetails.appointmentId);
-            // INSERT API CALL HERE <===========================
+        async confirmCancelJob() {
+            // API call to delete job
+            let jobId = this.jobDetails.appointmentId;
 
+            try {
+                const response = await fetch(`http://localhost:8081/api/job/${jobId}`, {
+                    method: 'DELETE',
+                });
+                if (response.ok) {
+                    this.$emit('jobDeleted', jobId);
+                } else {
+                    console.error('Error deleting the item:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error deleting the item:', error);
+            }
 
             // Close modal
             this.openDelModal(false);
