@@ -105,7 +105,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                         </div>
 
                         <!-- IF ARRIVAL PROOF NOT UPLOADED ERROR -->
-                        <template v-if="showJobStartedWarning">
+                        <div v-show="showJobStartedWarning">
                             <hr class="border-2 rounded border-secondary mt-0" />
 
                             <button class="btn btn-sm btn-danger mb-3" data-bs-toggle="collapse" :href="`#error-msg-collapse-${jobDetails.appointmentId}`" role="button" :aria-controls="`error-msg-collapse-${jobDetails.appointmentId}`"><font-awesome-icon class="me-2" icon="fa-solid fa-caret-down" />ACTION REQUIRED</button>
@@ -150,10 +150,10 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                     </div>
                                 </template>
                             </div>
-                        </template>
+                        </div>
 
                         <!-- IF JOB COMPLETED BUT NO PROOF UPLOADED -->
-                        <template v-if="showJobCompletedWarning">
+                        <div v-show="showJobCompletedWarning">
                             <hr class="border-2 rounded border-secondary mt-0" />
 
                             <button class="btn btn-sm btn-danger mb-3" data-bs-toggle="collapse" :href="`#error-msg-collapse-completed-${jobDetails.appointmentId}`" role="button" :aria-controls="`error-msg-collapse-completed-${jobDetails.appointmentId}`"><font-awesome-icon class="me-2" icon="fa-solid fa-caret-down" />ACTION REQUIRED</button>
@@ -195,7 +195,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                     </div>
                                 </template>
                             </div>
-                        </template>
+                        </div>
 
                         <hr class="border-2 rounded border-secondary mt-0" />
 
