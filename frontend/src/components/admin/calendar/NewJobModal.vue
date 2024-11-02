@@ -89,6 +89,9 @@ export default {
     watch: {
         clientId() {
             this.updateClientsProperties();
+
+            // Reset propertyId
+            this.propertyId = "";
         },
     },
     computed: {

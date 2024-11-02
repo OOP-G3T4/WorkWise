@@ -94,6 +94,14 @@ export default {
         items() {
             // Updates the filteredItems when items changes
             this.filteredItems = this.items;
+
+            // Clear selectedId if it is not in the items
+            if (!(this.selectedId in this.items)) {
+                this.selectedId = "";
+            }
+
+            // Clear searchField
+            this.searchField = "";
         },
     },
     methods: {
