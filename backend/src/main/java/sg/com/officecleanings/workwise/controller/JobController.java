@@ -1,5 +1,6 @@
 package sg.com.officecleanings.workwise.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import sg.com.officecleanings.workwise.model.Employee;
 import sg.com.officecleanings.workwise.model.Job;
 import sg.com.officecleanings.workwise.service.JobService;
@@ -18,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeParseException;
 
 @RestController
+@CrossOrigin(origins = "${cors.allowedOrigins}")
 @RequestMapping("/api/job")
 public class JobController {
 
@@ -144,7 +146,7 @@ public class JobController {
     }
 
     @GetMapping("/by-status")
-    public ResponseEntity<List<Job>> getJobsByStatus(@RequestParam("status") String status) {
+    public ResponseEntity<List<Job>> getJobsByStatus(@RequestParam("status") Job.Status status) {
         try {
             List<Job> jobs = jobService.getJobsByStatus(status);
             return ResponseEntity.ok(jobs);

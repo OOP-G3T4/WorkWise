@@ -1,10 +1,7 @@
 package sg.com.officecleanings.workwise.model;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
+import jakarta.persistence.*;
+import org.hibernate.validator.constraints.Length;
 import sg.com.officecleanings.workwise.model.id.JobEmployeeId;
 
 @Entity
@@ -23,6 +20,7 @@ public class JobEmployee {
     @JoinColumn(name = "employeeId", referencedColumnName = "employeeId", nullable = false)
     private Employee employee;
 
+    @Length(max = 1000)
     private String reasoning;
 
     // Default constructor

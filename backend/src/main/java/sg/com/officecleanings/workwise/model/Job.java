@@ -1,12 +1,17 @@
 package sg.com.officecleanings.workwise.model;
 
 import jakarta.persistence.*;
+import org.hibernate.validator.constraints.Length;
+
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Set;
 
 @Entity
 public class Job {
+    public enum Status {
+        PENDING, SCHEDULED, CANCELLED, IN_PROGRESS, ACTION_REQUIRED, COMPLETED
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +31,15 @@ public class Job {
 
     private Date date;
     private Time startTime;
-    private String status; // need to change to enum
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     private int actualDuration;
+
+    private Boolean arrivalProofUploaded = false;
+
+    private Boolean completionProofUploaded = false;
 
     @ManyToMany
     @JoinTable(name = "jobEmployee", joinColumns = @JoinColumn(name = "jobId"), inverseJoinColumns = @JoinColumn(name = "employeeId"))
@@ -37,7 +49,7 @@ public class Job {
     }
 
     public Job(Client client, Property property, SelectedPackage selectedPackage, Date date, Time startTime,
-            String status, int actualDuration) {
+            Status status, int actualDuration, Boolean arrivalProofUploaded, Boolean completionProofUploaded) {
         this.client = client;
         this.property = property;
         this.selectedPackage = selectedPackage;
@@ -45,6 +57,8 @@ public class Job {
         this.startTime = startTime;
         this.status = status;
         this.actualDuration = actualDuration;
+        this.arrivalProofUploaded = arrivalProofUploaded;
+        this.completionProofUploaded = completionProofUploaded;
     }
 
     public int getJobId() {
@@ -95,11 +109,11 @@ public class Job {
         this.startTime = startTime;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -119,6 +133,22 @@ public class Job {
         this.employees = employees;
     }
 
+    public Boolean getArrivalProofUploaded() {
+        return arrivalProofUploaded;
+    }
+
+    public void setArrivalProofUploaded(Boolean arrivalProofUploaded) {
+        this.arrivalProofUploaded = arrivalProofUploaded;
+    }
+
+    public Boolean getCompletionProofUploaded() {
+        return completionProofUploaded;
+    }
+
+    public void setCompletionProofUploaded(Boolean completionProofUploaded) {
+        this.completionProofUploaded = completionProofUploaded;
+    }
+
     @Override
     public String toString() {
         return "Job{" +
@@ -131,6 +161,8 @@ public class Job {
                 ", status='" + status + '\'' +
                 ", actualDuration=" + actualDuration +
                 ", employees=" + employees +
+                ", arrivalProofUploaded=" + arrivalProofUploaded +
+                ", completionProofUploaded=" + completionProofUploaded +
                 '}';
     }
 }

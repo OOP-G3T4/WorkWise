@@ -3,6 +3,7 @@ package sg.com.officecleanings.workwise.controller;
 import jakarta.validation.Valid;
 import java.util.Optional;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "${cors.allowedOrigins}")
 @RequestMapping("/api/employee")
 public class EmployeeController {
 
@@ -127,5 +129,15 @@ public class EmployeeController {
         Optional<Admin> admin = AdminEmployeeService.findAdminByEmployeeId(employeeId);
         return admin.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
+        Optional<Employee> employee = employeeService.verifyPassword(email, password);
+        if (employee.isPresent()) {
+            return ResponseEntity.ok(employee.get().getEmployeeId());
+        } else {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
     }
 }

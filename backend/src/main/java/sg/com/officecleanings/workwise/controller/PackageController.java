@@ -1,5 +1,6 @@
 package sg.com.officecleanings.workwise.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import sg.com.officecleanings.workwise.model.SelectedPackage;
 import sg.com.officecleanings.workwise.service.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "${cors.allowedOrigins}")
 @RequestMapping("/api/package")
 public class PackageController {
 

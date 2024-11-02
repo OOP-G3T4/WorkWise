@@ -149,12 +149,14 @@ export default {
         userRole: {
             type: String,
             required: true,
+        },
+        userName: {
+            type: String,
+            required: true,
         }
     },
     data() {
         return {
-            userName: "John Doe",
-
             // Offcanvas elem
             sideBarElem: null,
             topNavBarElem: null,
@@ -195,14 +197,14 @@ export default {
                     // To be displayed on the collapsed side bar
                     "main" : [
                         {
-                            "label" : "Leaves",
-                            "icon" : "fa-solid fa-umbrella-beach",
-                            "route" : "/emp-leaves"
-                        },
-                        {
                             "label" : "Calendar",
                             "icon" : "fa-solid fa-calendar",
                             "route" : "/emp-calendar"
+                        },
+                        {
+                            "label" : "Leaves",
+                            "icon" : "fa-solid fa-umbrella-beach",
+                            "route" : "/emp-leaves"
                         }
                     ],
 
@@ -233,7 +235,7 @@ export default {
 
             // If logging out, clear userRole from Vuex
             if (route === "/") {
-                this.$store.commit("clearUserType");
+                this.$store.dispatch("clearUserLogin");
             }
 
             this.$router.push(route);

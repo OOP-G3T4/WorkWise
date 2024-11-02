@@ -1,12 +1,18 @@
 package sg.com.officecleanings.workwise.model;
 
 import jakarta.persistence.*;
-import java.util.Date;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
+
+import java.util.Date;
 
 
 @Entity
 public class EmployeeStatistic {
+
+    public enum PeriodType {
+        WEEKLY, MONTHLY, YEARLY
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +33,8 @@ public class EmployeeStatistic {
     private Date endDate;
 
     @NotNull
-    private String periodType; // need to change to enum
+    @Enumerated(EnumType.STRING)
+    private PeriodType periodType; 
 
     @NotNull
     private int jobsCompleted;
@@ -59,7 +66,7 @@ public class EmployeeStatistic {
     public EmployeeStatistic() {
     }
 
-    public EmployeeStatistic(Employee employee, EmployeeEvent event, Date startDate, Date endDate, String periodType,
+    public EmployeeStatistic(Employee employee, EmployeeEvent event, Date startDate, Date endDate, PeriodType periodType,
             int jobsCompleted, int clientsServed, int newJobs, int cancelledJobs, int rescheduledJobs, int workingHours,
             int overtimeHours, int mcUsed, int alUsed) {
         this.employee = employee;
@@ -118,11 +125,11 @@ public class EmployeeStatistic {
         this.endDate = endDate;
     }
 
-    public String getPeriodType() {
+    public PeriodType getPeriodType() {
         return periodType;
     }
 
-    public void setPeriodType(String periodType) {
+    public void setPeriodType(PeriodType periodType) {
         this.periodType = periodType;
     }
 

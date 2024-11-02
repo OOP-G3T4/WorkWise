@@ -5,7 +5,7 @@ import { mapState } from "vuex";
 
 <template>
     <div class="main-container flex-column flex-md-row">
-        <Navbar v-if="!toHideNavbar()" :userRole="userType" />
+        <Navbar v-if="!toHideNavbar()" :userRole="userType" :userName="userName" />
         <router-view class="content-container" />
     </div>
 </template>
@@ -15,6 +15,7 @@ import { mapState } from "vuex";
 export default {
     computed: {
         ...mapState(["userType"]),  // Access userType from Vuex state
+        ...mapState(["userName"]), // Access userName from Vuex state
     },
     methods: {
         toHideNavbar() {
@@ -22,12 +23,6 @@ export default {
 
             return routesHideNavbar.includes(this.$route.path);
         },
-    },
-    mounted() {
-        // Reroute to login if userRole not set yet on VUEX (adambft)
-        if (!this.userType) {
-            this.$router.push("/");
-        }
     },
 };
 </script>
