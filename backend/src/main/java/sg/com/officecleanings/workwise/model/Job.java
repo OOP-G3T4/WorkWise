@@ -28,6 +28,10 @@ public class Job {
     @JoinColumn(name = "packageId", referencedColumnName = "packageId", nullable = false)
     private SelectedPackage selectedPackage; // Note cannot use Package
 
+    @ManyToOne
+    @JoinColumn(name = "subscriptionId", referencedColumnName = "subscriptionId", nullable = false)
+    private Subscription subscription;
+
     private LocalDate date;
     private Time startTime;
 
@@ -47,11 +51,12 @@ public class Job {
     public Job() {
     }
 
-    public Job(Client client, Property property, SelectedPackage selectedPackage, LocalDate date, Time startTime,
-            Status status, int actualDuration, Boolean arrivalProofUploaded, Boolean completionProofUploaded) {
+    public Job(Client client, Property property, SelectedPackage selectedPackage, Subscription subscription, LocalDate date, Time startTime,
+               Status status, int actualDuration, Boolean arrivalProofUploaded, Boolean completionProofUploaded) {
         this.client = client;
         this.property = property;
         this.selectedPackage = selectedPackage;
+        this.subscription = subscription;
         this.date = date;
         this.startTime = startTime;
         this.status = status;
@@ -155,6 +160,7 @@ public class Job {
                 ", client=" + client +
                 ", property=" + property +
                 ", selectedPackage=" + selectedPackage +
+                ", subscription=" + subscription +
                 ", date=" + date +
                 ", startTime=" + startTime +
                 ", status='" + status + '\'' +
