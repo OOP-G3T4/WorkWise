@@ -40,7 +40,7 @@ import * as bootstrap from 'bootstrap';
 
                             <!-- Employee Name -->
                             <div v-if="userType=='admin'" class="col-auto d-flex align-items-center">
-                                <img src="https://placehold.co/200x200?text=Profile+Pic" alt="Employee Image" class="emp-img me-2 d-none d-md-block" />
+                                <img :src="`https://placehold.co/200x200?text=${getInitials(employeeDetails.name)}`" alt="Employee Image" class="emp-img me-2 d-none d-md-block" />
                                 <h6 class="m-0">{{ employeeDetails.name }}</h6>
                             </div>
 

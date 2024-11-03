@@ -68,21 +68,46 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
     </div>
 
     <!-- Main Modal -->
-    <div class="modal fade" :id="`job-modal-${jobDetails.appointmentId}`" tabindex="-1" :aria-labelledby="`job-modal-label-${jobDetails.appointmentId}`" aria-hidden="true">
+    <div
+        class="modal fade"
+        :id="`job-modal-${jobDetails.appointmentId}`"
+        tabindex="-1"
+        :aria-labelledby="`job-modal-label-${jobDetails.appointmentId}`"
+        aria-hidden="true"
+    >
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header justify-content-between">
-                    <h1 class="modal-title fs-5" :id="`job-modal-label-${jobDetails.appointmentId}`">
+                    <h1
+                        class="modal-title fs-5"
+                        :id="`job-modal-label-${jobDetails.appointmentId}`"
+                    >
                         <span class="text-secondary">Appointment ID:</span>
                         {{ jobDetails.appointmentId }}
                     </h1>
 
                     <div class="d-flex align-items-center">
-                        <button v-if="userType == 'admin' && jobDetails.jobStatus != 'COMPLETED'" @click="toggleEditMode()" type="button" class="btn btn-outline-secondary border-0" :class="isEditMode ? 'active' : ''">
-                            <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+                        <button
+                            v-if="
+                                userType == 'admin' &&
+                                jobDetails.jobStatus != 'COMPLETED'
+                            "
+                            @click="toggleEditMode()"
+                            type="button"
+                            class="btn btn-outline-secondary border-0"
+                            :class="isEditMode ? 'active' : ''"
+                        >
+                            <font-awesome-icon
+                                icon="fa-solid fa-pen-to-square"
+                            />
                         </button>
 
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
                     </div>
                 </div>
 
@@ -93,7 +118,9 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                             <div class="col-12">
                                 <!-- Job Status -->
                                 <p>
-                                    <font-awesome-icon class="me-2" icon="fa-solid fa-circle"
+                                    <font-awesome-icon
+                                        class="me-2"
+                                        icon="fa-solid fa-circle"
                                         :style="{
                                             color: statusColorMap[
                                                 jobDetails.jobStatus
@@ -106,8 +133,10 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
 
                         <!-- IF PROOF NOT UPLOADED ERROR -->
                         <template v-if="showJobStartedWarning">
-                            <hr class="border-2 rounded border-secondary mt-0" />
-    
+                            <hr
+                                class="border-2 rounded border-secondary mt-0"
+                            />
+
                             <div class="row mb-3">
                                 <template v-if="userType == 'admin'">
                                     <div class="col-12">
@@ -115,25 +144,30 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                             ACTION REQUIRED
                                         </h6>
                                         <p>
-                                            Employee did not upload proof of arrival
-                                            within {{ arrivalBufferMinutes }} min.
+                                            Employee did not upload proof of
+                                            arrival within
+                                            {{ arrivalBufferMinutes }} min.
                                             Should this job continue?
                                         </p>
                                     </div>
-    
+
                                     <div class="col-6">
-                                        <button class="btn btn-sm btn-secondary w-100">
+                                        <button
+                                            class="btn btn-sm btn-secondary w-100"
+                                        >
                                             Continue
                                         </button>
                                     </div>
-    
+
                                     <div class="col-6">
-                                        <button class="btn btn-sm btn-danger w-100">
+                                        <button
+                                            class="btn btn-sm btn-danger w-100"
+                                        >
                                             Cancel Job
                                         </button>
                                     </div>
                                 </template>
-    
+
                                 <template v-else-if="userType == 'employee'">
                                     <div class="col-12">
                                         <h6 class="text-danger fw-bold">
@@ -156,7 +190,9 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                             <!-- Img -->
                             <div class="col-auto">
                                 <img
-                                    src="https://placehold.co/200x200?text=Profile+Pic"
+                                    :src="`https://placehold.co/200x200?text=${getInitials(
+                                        jobDetails.clientDetails.clientName
+                                    )}`"
                                     alt="Client Image"
                                     class="client-img"
                                 />
@@ -169,7 +205,9 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                         Client Name
                                     </p>
                                     <h6 class="m-0">
-                                        {{ jobDetails.clientDetails.clientName }}
+                                        {{
+                                            jobDetails.clientDetails.clientName
+                                        }}
                                     </h6>
                                 </div>
                             </div>
@@ -187,7 +225,13 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
 
                             <!-- Package [Edit Mode] -->
                             <div v-else class="col-12">
-                                <DropdownSearch :items="allPackages" :inputValue="jobEdit.packageType" fieldName="Package" :jobId="jobDetails.appointmentId" @valChange="packageChange" />
+                                <DropdownSearch
+                                    :items="allPackages"
+                                    :inputValue="jobEdit.packageType"
+                                    fieldName="Package"
+                                    :jobId="jobDetails.appointmentId"
+                                    @valChange="packageChange"
+                                />
                             </div>
 
                             <!-- Address -->
@@ -200,7 +244,11 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
 
                             <!-- Address [Edit Mode] -->
                             <div v-else class="col-12">
-                                <GmapInput :inputValue="jobEdit.jobAddress.address" fieldName="Address" @valChange="addressChange" />
+                                <GmapInput
+                                    :inputValue="jobEdit.jobAddress.address"
+                                    fieldName="Address"
+                                    @valChange="addressChange"
+                                />
                             </div>
                         </div>
 
@@ -507,17 +555,32 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                     </div>
                 </div>
 
-                <div class="modal-footer d-flex justify-content-between" v-if="isEditMode">
-                    <button type="button" class="btn btn-light" @click="openDelModal(true)">
+                <div
+                    class="modal-footer d-flex justify-content-between"
+                    v-if="isEditMode"
+                >
+                    <button
+                        type="button"
+                        class="btn btn-light"
+                        @click="openDelModal(true)"
+                    >
                         <font-awesome-icon icon="fa-solid fa-calendar-xmark" />
                     </button>
 
                     <div>
-                        <button type="button" class="btn btn-light" @click="revertEdits()">
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            @click="revertEdits()"
+                        >
                             Cancel
                         </button>
-    
-                        <button type="button" class="btn btn-primary ms-3" @click="saveChanges()">
+
+                        <button
+                            type="button"
+                            class="btn btn-primary ms-3"
+                            @click="saveChanges()"
+                        >
                             Save changes
                         </button>
                     </div>
@@ -527,22 +590,52 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
     </div>
 
     <!-- Confirm Delete Modal -->
-    <div class="modal fade" :id="`job-del-modal-${jobDetails.appointmentId}`" tabindex="-1" :aria-labelledby="`job-del-modal-label-${jobDetails.appointmentId}`" aria-hidden="true">
+    <div
+        class="modal fade"
+        :id="`job-del-modal-${jobDetails.appointmentId}`"
+        tabindex="-1"
+        :aria-labelledby="`job-del-modal-label-${jobDetails.appointmentId}`"
+        aria-hidden="true"
+    >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" :id="`job-del-modal-label-${jobDetails.appointmentId}`"><font-awesome-icon icon="fa-solid fa-calendar-xmark" class="me-2" />Confirm Cancellation?</h1>
-                    <button type="button" class="btn-close" @click="openMainModal(true)"></button>
+                    <h1
+                        class="modal-title fs-5"
+                        :id="`job-del-modal-label-${jobDetails.appointmentId}`"
+                    >
+                        <font-awesome-icon
+                            icon="fa-solid fa-calendar-xmark"
+                            class="me-2"
+                        />Confirm Cancellation?
+                    </h1>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        @click="openMainModal(true)"
+                    ></button>
                 </div>
 
                 <div class="modal-body">
                     <p>Are you sure you want to cancel this job?</p>
                     <p>Job cancellations cannot be undone.</p>
                 </div>
-                
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" @click="openMainModal(true)" >Cancel</button>
-                    <button type="button" class="btn btn-danger" @click="confirmCancelJob()">Confirm</button>
+                    <button
+                        type="button"
+                        class="btn btn-light"
+                        @click="openMainModal(true)"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        @click="confirmCancelJob()"
+                    >
+                        Confirm
+                    </button>
                 </div>
             </div>
         </div>
@@ -792,13 +885,14 @@ export default {
         },
         confirmCancelJob() {
             // Placeholder for API call to delete job
-            console.log("JOB DELETED PLACEHOLDER" + this.jobDetails.appointmentId);
+            console.log(
+                "JOB DELETED PLACEHOLDER" + this.jobDetails.appointmentId
+            );
             // INSERT API CALL HERE <===========================
-
 
             // Close modal
             this.openDelModal(false);
-        }
+        },
     },
     mounted() {
         // Sets up main modal
