@@ -18,6 +18,7 @@
 
 <script>
 export default {
+    emits: ['valChange'],
     props: {
         inputValue: {
             type: String,

@@ -13,10 +13,11 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
         :class="parentContainerClasses"
         :style="parentContainerStyle"
         class="rounded"
+        v-bind="$attrs"
     >
         <!-- Job Card -->
         <div @click="openMainModal(true)" class="card" :class="jobCardClasses">
-            <!-- Client Name and Warning (optional) -->
+            <!-- Client Name and Warning (optional) -->            
             <div
                 class="fs-9 fs-md-7 card-header fw-semibold px-2 px-md-3 py-1 py-md-2 text-truncate"
             >
@@ -107,6 +108,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                             class="btn-close"
                             data-bs-dismiss="modal"
                             aria-label="Close"
+                            @click="handleMainModalClosed()"
                         ></button>
                     </div>
                 </div>
@@ -131,57 +133,98 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                             </div>
                         </div>
 
-                        <!-- IF PROOF NOT UPLOADED ERROR -->
-                        <template v-if="showJobStartedWarning">
-                            <hr
-                                class="border-2 rounded border-secondary mt-0"
-                            />
+                        <!-- IF ARRIVAL PROOF NOT UPLOADED ERROR -->
+                        <div v-show="showJobStartedWarning">
+                            <hr class="border-2 rounded border-secondary mt-0" />
 
-                            <div class="row mb-3">
+                            <button class="btn btn-sm btn-danger mb-3" data-bs-toggle="collapse" :href="`#error-msg-collapse-${jobDetails.appointmentId}`" role="button" :aria-controls="`error-msg-collapse-${jobDetails.appointmentId}`"><font-awesome-icon class="me-2" icon="fa-solid fa-caret-down" />ACTION REQUIRED</button>
+    
+                            <div class="row mb-3 collapse" :id="`error-msg-collapse-${jobDetails.appointmentId}`">
                                 <template v-if="userType == 'admin'">
                                     <div class="col-12">
-                                        <h6 class="text-danger fw-bold">
-                                            ACTION REQUIRED
-                                        </h6>
                                         <p>
-                                            Employee did not upload proof of
-                                            arrival within
-                                            {{ arrivalBufferMinutes }} min.
-                                            Should this job continue?
+                                            Employee did not upload proof of arrival
+                                            within {{ arrivalBufferMinutes }} min.
+                                            Would you like to cancel this job?
                                         </p>
                                     </div>
 
                                     <div class="col-6">
-                                        <button
-                                            class="btn btn-sm btn-secondary w-100"
-                                        >
-                                            Continue
+                                        <button class="btn btn-sm btn-light w-100" @click="openErrorMsgCollapse(false)">
+                                            Dismiss
                                         </button>
                                     </div>
 
                                     <div class="col-6">
-                                        <button
-                                            class="btn btn-sm btn-danger w-100"
-                                        >
+                                        <button class="btn btn-sm btn-outline-danger w-100" @click="openDelModal(true)">
                                             Cancel Job
                                         </button>
                                     </div>
                                 </template>
 
                                 <template v-else-if="userType == 'employee'">
-                                    <div class="col-12">
-                                        <h6 class="text-danger fw-bold">
-                                            ACTION REQUIRED
-                                        </h6>
+                                    <div class="col-12 mb-3">
                                         <p class="m-0">
                                             Upload proof of arrival within
                                             {{ arrivalBufferMinutes }} min to
                                             continue this job
                                         </p>
                                     </div>
+
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <input type="file" class="form-control" @change="handleArrivalFileUpload" />
+                                            <button class="btn btn-primary" type="button" @click="submitArrivalImg()">Upload</button>
+                                        </div>
+                                    </div>
                                 </template>
                             </div>
-                        </template>
+                        </div>
+
+                        <!-- IF JOB COMPLETED BUT NO PROOF UPLOADED -->
+                        <div v-show="showJobCompletedWarning">
+                            <hr class="border-2 rounded border-secondary mt-0" />
+
+                            <button class="btn btn-sm btn-danger mb-3" data-bs-toggle="collapse" :href="`#error-msg-collapse-completed-${jobDetails.appointmentId}`" role="button" :aria-controls="`error-msg-collapse-completed-${jobDetails.appointmentId}`"><font-awesome-icon class="me-2" icon="fa-solid fa-caret-down" />ACTION REQUIRED</button>
+    
+                            <div class="row mb-3 collapse" :id="`error-msg-collapse-completed-${jobDetails.appointmentId}`">
+                                <template v-if="userType == 'admin'">
+                                    <div class="col-12">
+                                        <p>
+                                            Employee did not upload proof of completion after end of job.
+                                            Would you like to confirm job completion anyways?
+                                        </p>
+                                    </div>
+    
+                                    <div class="col-6">
+                                        <button class="btn btn-sm btn-light w-100" @click="openErrorMsgCollapseCompleted(false)">
+                                            Dismiss
+                                        </button>
+                                    </div>
+    
+                                    <div class="col-6">
+                                        <button class="btn btn-sm btn-success w-100" @click="confirmJob()">
+                                            Confirm Job Completion
+                                        </button>
+                                    </div>
+                                </template>
+    
+                                <template v-else-if="userType == 'employee'">
+                                    <div class="col-12 mb-3">
+                                        <p class="m-0">
+                                            Upload proof of completion to finish this job
+                                        </p>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <input type="file" class="form-control" @change="handleCompletionFileUpload" />
+                                            <button class="btn btn-primary" type="button" @click="submitCompletedImg()">Upload</button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
 
                         <hr class="border-2 rounded border-secondary mt-0" />
 
@@ -216,22 +259,11 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                         <!-- Package & Address -->
                         <div class="row gy-2 mt-3">
                             <!-- Package -->
-                            <div v-if="!isEditMode" class="col-auto">
+                            <div class="col-auto">
                                 <p class="text-secondary m-0">Package</p>
                                 <h6 class="m-0">
                                     {{ jobDetails.packageType }}
                                 </h6>
-                            </div>
-
-                            <!-- Package [Edit Mode] -->
-                            <div v-else class="col-12">
-                                <DropdownSearch
-                                    :items="allPackages"
-                                    :inputValue="jobEdit.packageType"
-                                    fieldName="Package"
-                                    :jobId="jobDetails.appointmentId"
-                                    @valChange="packageChange"
-                                />
                             </div>
 
                             <!-- Address -->
@@ -243,12 +275,8 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                             </div>
 
                             <!-- Address [Edit Mode] -->
-                            <div v-else class="col-12">
-                                <GmapInput
-                                    :inputValue="jobEdit.jobAddress.address"
-                                    fieldName="Address"
-                                    @valChange="addressChange"
-                                />
+                            <div v-else class="col-12 mt-3">
+                                <DropdownSearch :items="clientProperties" :inputValue="jobEdit.jobAddress.id" fieldName="Address" :uniqueComponentId="jobDetails.appointmentId" @valChange="handleAddressChange" />
                             </div>
                         </div>
 
@@ -326,6 +354,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                         type="date"
                                         class="form-control"
                                         v-model="jobEdit.date"
+                                        onfocus="this.showPicker()"
                                     />
                                     <label for="floatingInput">Date</label>
                                 </div>
@@ -381,6 +410,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                         min="08:00"
                                         max="22:00"
                                         v-model="jobEdit.startTime"
+                                        onfocus="this.showPicker()"
                                     />
                                     <label for="floatingInput"
                                         >Start Time</label
@@ -397,6 +427,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                         min="08:00"
                                         max="22:00"
                                         v-model="jobEdit.endTime"
+                                        onfocus="this.showPicker()"
                                     />
                                     <label for="floatingInput">End Time</label>
                                 </div>
@@ -488,6 +519,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                         @click="deleteCleaner(idx)"
                                         class="btn btn-secondary"
                                         type="button"
+                                        onfocus="this.showPicker()"
                                     >
                                         <font-awesome-icon
                                             class="mx-2"
@@ -555,16 +587,9 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                     </div>
                 </div>
 
-                <div
-                    class="modal-footer d-flex justify-content-between"
-                    v-if="isEditMode"
-                >
-                    <button
-                        type="button"
-                        class="btn btn-light"
-                        @click="openDelModal(true)"
-                    >
-                        <font-awesome-icon icon="fa-solid fa-calendar-xmark" />
+                <div class="modal-footer d-flex justify-content-between" v-if="isEditMode">
+                    <button type="button" class="btn btn-outline-danger" @click="openDelModal(true)">
+                        <font-awesome-icon icon="fa-solid fa-trash" />
                     </button>
 
                     <div>
@@ -600,42 +625,24 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1
-                        class="modal-title fs-5"
-                        :id="`job-del-modal-label-${jobDetails.appointmentId}`"
-                    >
-                        <font-awesome-icon
-                            icon="fa-solid fa-calendar-xmark"
-                            class="me-2"
-                        />Confirm Cancellation?
-                    </h1>
-                    <button
-                        type="button"
-                        class="btn-close"
-                        @click="openMainModal(true)"
-                    ></button>
+                    <h1 class="modal-title fs-5 ms-1" :id="`job-del-modal-label-${jobDetails.appointmentId}`">Confirm Cancellation?</h1>
+                    <button type="button" class="btn-close" @click="openMainModal(true)"></button>
                 </div>
 
                 <div class="modal-body">
-                    <p>Are you sure you want to cancel this job?</p>
+                    <p>Are you sure you want to cancel this job?:</p>
+                    <p><span class="fw-bold">Client:</span> {{ jobDetails.clientDetails.clientName }}</p>
+                    <p><span class="fw-bold">Address:</span> {{ jobDetails.jobAddress.address }}</p>
+                    <p><span class="fw-bold">Date:</span> {{ jobDetails.date }}</p>
+                    <p><span class="fw-bold">Time:</span> {{ convertTimeToReadable(jobDetails.startTime) }} - {{ convertTimeToReadable(jobDetails.endTime) }}</p>
+                    
+                    <br />
                     <p>Job cancellations cannot be undone.</p>
                 </div>
 
                 <div class="modal-footer">
-                    <button
-                        type="button"
-                        class="btn btn-light"
-                        @click="openMainModal(true)"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        type="button"
-                        class="btn btn-danger"
-                        @click="confirmCancelJob()"
-                    >
-                        Confirm
-                    </button>
+                    <button type="button" class="btn btn-light" @click="openMainModal(true)" >Go Back</button>
+                    <button type="button" class="btn btn-outline-danger" @click="confirmCancelJob()"><font-awesome-icon icon="fa-solid fa-trash" class="me-2" />Confirm</button>
                 </div>
             </div>
         </div>
@@ -646,6 +653,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
 import * as bootstrap from "bootstrap";
 
 export default {
+    emits: ["jobUpdated"],
     props: {
         heightInPx: {
             type: Number,
@@ -673,8 +681,13 @@ export default {
             isHovering: false,
             mainModal: null, // Will be automatically populated with bootstrap.Modal on Mounted
             delModal: null, // Will be automatically populated with bootstrap.Modal on Mounted
+            errorMsgCollapse: null, // Will be automatically populated with bootstrap.Collapse on Mounted
+            errorMsgCollapseCompleted: null, // Will be automatically populated with bootstrap.Collapse on Mounted
             currentDateTime: new Date(),
             isEditMode: false,
+
+            arrivalImg: null,
+            completionImg: null,
 
             // EDITING VARIABLES ==============================
             jobEdit: null, // Will be automatically populated with jobDetails object on Mounted
@@ -693,12 +706,22 @@ export default {
             earliestAllowedJobTime: "08:00",
             latestAllowedJobTime: "22:00",
 
-            // TO BE FETCHED FROM API LATER =====================
-            allPackages: {},
-
-            // Employees (key = ID, value = Name)
-            allEmployees: {},
+            // Pull from API
+            allEmployees: {}, // (key = ID, value = Name)
+            clientProperties: {}, // (key = ID, value = AddressString)
+            allPropertyInfo: {}, // (key = ID, value = {address, postalCode})
         };
+    },
+    watch: {
+        jobDetails: {
+            // Deep watch to update jobEdit object when jobDetails change
+            handler() {
+                this.jobEdit = JSON.parse(JSON.stringify(this.jobDetails));
+                this.fetchAllCientProperties();
+            },
+            immediate: true,
+            deep: true,
+        },
     },
     computed: {
         ...mapState(["userType"]), // Access userType from Vuex state
@@ -708,10 +731,11 @@ export default {
             return Object.keys(this.jobDetails.cleaners).length > 1;
         },
 
-        // Returns True if (job is more than X minutes after start time) AND (arrivalProofUploaded is False)
         showJobStartedWarning() {
-            // Return False if photo has been uploaded
-            if (this.jobDetails.arrivalProofUploaded) {
+            // Returns True if (job is more than X minutes after start time) AND (arrivalProofUploaded is False)
+            
+            // Return False if photo has been uploaded OR job status is COMPLETED
+            if (this.jobDetails.arrivalProofUploaded || this.jobDetails.jobStatus == "COMPLETED") {
                 return false;
             }
 
@@ -721,9 +745,35 @@ export default {
 
             if (this.currentDateTime < jobStartDateTime) {
                 return false;
-            } else {
+            } else if (this.userType == "admin") {
                 const diff = (this.currentDateTime - jobStartDateTime) / 60000;
                 return diff > this.arrivalBufferMinutes;
+            } else {
+                // If employee, show warning if job has started
+                return true;
+            }
+        },
+
+        showJobCompletedWarning() {
+            // If proof already uploaded OR job status is COMPLETED, return false
+            if (this.jobDetails.completionProofUpload || this.jobDetails.jobStatus == "COMPLETED") {
+                return false;
+            }
+
+            // If showJobStartedWarning is true, return false
+            if (this.showJobStartedWarning) {
+                return false;
+            }
+
+            // If job not completed, return false
+            const jobEndDateTime = new Date(
+                `${this.jobDetails.date}T${this.jobDetails.endTime}`
+            );
+
+            if (this.currentDateTime < jobEndDateTime) {
+                return false;
+            } else {
+                return true;
             }
         },
 
@@ -772,6 +822,10 @@ export default {
 
         toggleEditMode() {
             this.isEditMode = !this.isEditMode;
+            
+            if (!this.isEditMode) {
+                this.revertEdits();
+            }
         },
 
         convertTimeToReadable(timeIn) {
@@ -843,8 +897,6 @@ export default {
         },
         saveChanges() {
             // Saves all changes made to the jobEdit object
-            console.log("OBJECT SAVED PLACEHOLDER");
-            // INSERT API CALL HERE <===========================
 
             // Check if any errors are present
             if (
@@ -865,14 +917,65 @@ export default {
             ) {
                 return;
             }
+
+            // API call to update job
+            let jobId = this.jobDetails.appointmentId;
+            let reqBody = {
+                "client": {
+                    "clientId": this.jobEdit.clientDetails.clientId
+                },
+                "property": {
+                    "propertyId": this.jobEdit.jobAddress.id
+                },
+                "selectedPackage": {
+                    "packageId": this.jobEdit.packageType
+                },
+                "date": this.jobEdit.date,
+                "startTime": this.formatTime(this.jobEdit.startTime),
+                "status": this.jobEdit.jobStatus,
+                "actualDuration": this.calculateHours(
+                    this.jobEdit.startTime,
+                    this.jobEdit.endTime
+                ),
+                "employees": []
+            }
+
+            // Add all cleaners to the employees array
+            for (let cleanerId of this.jobEdit.cleaners) {
+                reqBody.employees.push({
+                    "employeeId": cleanerId
+                });
+            }
+
+            fetch(`http://localhost:8081/api/job/${jobId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(reqBody),
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        this.$emit("jobUpdated", jobId);
+                        this.isEditMode = false;
+
+                        // Close modal
+                        this.openMainModal(false);
+                        
+                    } else {
+                        console.error(
+                            "Error updating the item:",
+                            response.statusText
+                        );
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error updating the item:", error);
+                });
         },
         addressChange(data) {
             // GMaps input emits the new address, this function updates the jobEdit object
             this.jobEdit.jobAddress.address = data.value;
-        },
-        packageChange(data) {
-            // DropdownSearch emits the new package, this function updates the jobEdit object
-            this.jobEdit.packageType = data;
         },
         openDelModal(toOpen = true) {
             if (toOpen) {
@@ -883,15 +986,130 @@ export default {
                 this.delModal.hide();
             }
         },
-        confirmCancelJob() {
-            // Placeholder for API call to delete job
-            console.log(
-                "JOB DELETED PLACEHOLDER" + this.jobDetails.appointmentId
-            );
-            // INSERT API CALL HERE <===========================
+        async confirmCancelJob() {
+            // API call to delete job
+            let jobId = this.jobDetails.appointmentId;
+
+            try {
+                const response = await fetch(`http://localhost:8081/api/job/${jobId}`, {
+                    method: 'DELETE',
+                });
+                if (response.ok) {
+                    this.$emit('jobUpdated', jobId);
+                } else {
+                    console.error('Error deleting the item:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error deleting the item:', error);
+            }
 
             // Close modal
             this.openDelModal(false);
+        },
+        fetchAllCientProperties() {
+            fetch (`http://localhost:8081/api/client/${this.jobDetails.clientDetails.clientId}/properties`)
+                .then(response => response.json())
+                .then(data => {
+                    // Format data to match clientAddresses object
+                    let allProperties = {};
+                    let allPropertyInfo = {};
+
+                    for (let i = 0; i < data.length; i++) {
+                        let e_property = data[i];
+
+                        allProperties[e_property.propertyId] = `${e_property.address}, ${e_property.postalCode}`;
+                        allPropertyInfo[e_property.propertyId] = {
+                            address: e_property.address,
+                            postalCode: e_property.postalCode,
+                        };
+                    }
+
+                    this.clientProperties = allProperties;
+                    this.allPropertyInfo = allPropertyInfo;
+                });
+        },
+        handleAddressChange(newAddressId) {
+            if (newAddressId == null || newAddressId == "") {
+                return;
+            }
+
+            // Updates the address in the jobEdit object
+            const newAddress = this.allPropertyInfo[newAddressId].address;
+            const newPostalCode = this.allPropertyInfo[newAddressId].postalCode;
+
+            this.jobEdit.jobAddress.id = newAddressId;
+            this.jobEdit.jobAddress.address = newAddress;
+            this.jobEdit.jobAddress.postalCode = newPostalCode;
+        },
+        calculateHours(startTime, endTime) {
+            // Takes in startTime (string in HH:mm format) and endTime (string in HH:mm format) and returns int numHours rounded to closest hour
+            // Assume they are in 24-hour format and on the same day
+            const [startHour, startMin] = startTime.split(":");
+            const [endHour, endMin] = endTime.split(":");
+
+            const startTotal = parseInt(startHour) + (parseInt(startMin) / 60);
+            const endTotal = parseInt(endHour) + (parseInt(endMin) / 60);
+
+            return Math.round(endTotal - startTotal);
+        },
+        formatTime(timeStr) {
+            // If time is alr in HH:mm:ss format, return as is
+            // If time is in HH:mm format, add ":00" to the end
+
+            if (timeStr.length == 5) {
+                return `${timeStr}:00`;
+            } else {
+                return timeStr;
+            }
+        },
+        openErrorMsgCollapse(toOpen = true) {
+            if (toOpen) {
+                this.errorMsgCollapse.show();
+            } else {
+                this.errorMsgCollapse.hide();
+            }
+        },
+        openErrorMsgCollapseCompleted(toOpen = true) {
+            if (toOpen) {
+                this.errorMsgCollapseCompleted.show();
+            } else {
+                this.errorMsgCollapseCompleted.hide();
+            }
+        },
+        handleArrivalFileUpload(event) {
+            // Placeholder function for handling file uploads
+            this.arrivalImg = event.target.files[0];
+        },
+        handleCompletionFileUpload(event) {
+            // Placeholder function for handling file uploads
+            this.completionImg = event.target.files[0];
+        },
+        submitArrivalImg() {
+            const arrivalImg = this.arrivalImg;
+
+            // Placeholder function for submitting arrival image (set arrivalProofUploaded to true) (Change later ADAMBFT)
+            this.jobDetails.arrivalProofUploaded = true;
+
+            // Close the error message
+            this.openErrorMsgCollapse(false);
+        },
+        submitCompletedImg() {
+            const completionImg = this.completionImg;
+
+            // Placeholder function for submitting completion image (set completionProofUploaded to true) (Change later ADAMBFT)
+            this.jobDetails.completionProofUploaded = true;
+
+            // Close the error message
+            this.openErrorMsgCollapseCompleted(false);
+        },
+        confirmJob() {
+            // Send API call to set job status to COMPLETED without photo proof
+            // Placeholder, replace with actual API call (ADAMBFT)
+        },
+        handleMainModalClosed() {
+            // Takes user out of edit mode when modal is closed
+            this.isEditMode = false;
+            this.revertEdits();
         },
     },
     mounted() {
@@ -904,15 +1122,29 @@ export default {
                 )
             );
 
+            // Add listener for modal close event
+            this.mainModal._element.addEventListener("hidden.bs.modal", () => {
+                this.handleMainModalClosed();
+            });
+
             this.delModal = new bootstrap.Modal(
                 document.getElementById(
                     `job-del-modal-${this.jobDetails.appointmentId}`
                 )
             );
-        });
 
-        // Duplicates jobDetails object for editing
-        this.jobEdit = JSON.parse(JSON.stringify(this.jobDetails));
+            this.errorMsgCollapse = new bootstrap.Collapse(
+                document.getElementById(
+                    `error-msg-collapse-${this.jobDetails.appointmentId}`
+                )
+            );
+
+            this.errorMsgCollapseCompleted = new bootstrap.Collapse(
+                document.getElementById(
+                    `error-msg-collapse-completed-${this.jobDetails.appointmentId}`
+                )
+            );
+        });
 
         // Auto update time every minute
         setInterval(() => {
@@ -932,21 +1164,6 @@ export default {
                 }
 
                 this.allEmployees = formattedEmployees;
-            });
-
-        // Pull actual packages from API
-        fetch("http://localhost:8081/api/package")
-            .then((response) => response.json())
-            .then((data) => {
-                var arr_pkgs = {};
-
-                for (var i = 0; i < data.length; i++) {
-                    const pkg_id = data[i].packageId;
-
-                    arr_pkgs[pkg_id] = pkg_id;
-                }
-
-                this.allPackages = arr_pkgs;
             });
     },
 };

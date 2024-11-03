@@ -5,19 +5,19 @@ import * as bootstrap from 'bootstrap'
 <template>
     <div class="dropdown">
         <!-- Show Input in Input Text Field -->
-        <div class="input-group mb-3" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-            <button class="btn btn-light">
+        <div class="input-group mb-3" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" :disabled="isDisabled">
+            <button class="btn btn-light" :disabled="isDisabled">
                 <font-awesome-icon icon="fa-solid fa-caret-down" />
             </button>
 
             <div class="form-floating">
-                <input type="text" class="form-control" :id="`show-selected-${fieldName}-${jobId}`" placeholder="Username" :value="items[selectedId]" readonly>
-                <label :for="`show-selected-${fieldName}-${jobId}`">{{ fieldName }}</label>
+                <input type="text" class="form-control" :id="`show-selected-${fieldName}-${uniqueComponentId}`" placeholder="Username" :value="items[selectedId]" readonly :disabled="isDisabled">
+                <label :for="`show-selected-${fieldName}-${uniqueComponentId}`">{{ fieldName }}</label>
             </div>
         </div>
 
         <!-- Dropdown Menu -->
-        <form class="dropdown-menu p-3 w-100">
+        <form class="dropdown-menu p-3 w-100" :id="`dropdown-search-${fieldName}-${uniqueComponentId}`">
             <!-- Search Field -->
             <div class="input-group input-group-sm mb-3">
                 <span class="input-group-text">
@@ -41,13 +41,14 @@ import * as bootstrap from 'bootstrap'
 
 <script>
 export default {
+    emits: ['valChange'],
     props: {
         items: {
             type: Object,
             required: true,
         },
         inputValue: {
-            type: String,
+            type: [String, Number],
             required: false,
             default: "",
         },
@@ -55,11 +56,16 @@ export default {
             type: String,
             required: true,
         },
-        jobId: {
-            type: Number,
+        uniqueComponentId: {
+            type: [String, Number],
             required: true,
         },
         showId: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        isDisabled: {
             type: Boolean,
             required: false,
             default: false,
@@ -86,6 +92,24 @@ export default {
                 })
             );
         },
+        items() {
+            // Clear selectedId if it is not in the items
+            if (!(this.selectedId in this.items)) {
+                this.selectedId = "";
+            } else {
+                this.selectedId = this.inputValue;
+            }
+
+            // Updates the filteredItems when items changes
+            this.filteredItems = this.items;
+
+            // Clear searchField
+            this.searchField = "";
+        },
+        inputValue() {
+            // Updates the selectedId when inputValue changes
+            this.selectedId = this.inputValue;
+        },
     },
     methods: {
         emitValue() {
@@ -108,7 +132,8 @@ export default {
     },
     mounted() {
         // Initializes the dropdown
-        this.dropdown = new bootstrap.Dropdown(this.$el);
+        let dropdownElement = document.getElementById(`dropdown-search-${this.fieldName}-${this.uniqueComponentId}`);
+        this.dropdown = new bootstrap.Dropdown(dropdownElement);
     },
 }
 </script>

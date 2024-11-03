@@ -40,6 +40,7 @@
 
 <script>
 export default {
+    emits: ['curDateChanged', 'zoomChanged'],
     props: {
         dateSelected: {
             type: Date,

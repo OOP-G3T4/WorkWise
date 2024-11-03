@@ -5,7 +5,7 @@ import * as bootstrap from 'bootstrap';
 
 <template>
     <!-- Leave Card -->
-    <div class="accordion mb-3" :id="`leave-id-${leaveDetails.id}`">
+    <div class="accordion mb-3" :id="`leave-id-${leaveDetails.id}`" v-bind="$attrs">
         <div class="accordion-item" :class="accordianClasses">
             <!-- Top Section (Always in view) -->
             <h2 class="accordion-header">
@@ -72,6 +72,13 @@ import * as bootstrap from 'bootstrap';
                             <p class="m-0 fs-7 fs-md-6"><font-awesome-icon class="me-2" icon="fa-solid fa-comment" />{{ leaveDetails.comments }}</p>
                         </div>
 
+                        <!-- MC Photo -->
+                        <div class="col-12">
+                            <template v-if="leaveDetails.mcProofUploaded">
+                                <button class="btn btn-light" @click="downloadImage()"><font-awesome-icon icon="fa-solid fa-download" class="me-2" />Download Image</button>
+                            </template>
+                        </div>
+
                         <!-- Photo Upload Button -->
                         <div v-if="displayMcReminder()">
                             <button class="btn btn-primary btn-sm" @click="showPicModal(true)"><font-awesome-icon class="me-2" icon="fa-solid fa-camera" />Upload Photo</button>
@@ -106,6 +113,7 @@ import * as bootstrap from 'bootstrap';
 
 <script>
 export default {
+    emits: ['selectedChanged', 'mc-uploaded'],
     props: {
         leaveDetails: {
             type: Object,
@@ -114,6 +122,42 @@ export default {
         employeeDetails: {
             type: Object,
             required: false,
+        },
+    },
+    data() {
+        return {
+            leaveTypeIconMap: {
+                "MC": "fa-solid fa-briefcase-medical",
+                "AL": "fa-solid fa-umbrella-beach",
+            },
+
+            leaveStatusIconMap: {
+                "APPROVED": "fa-solid fa-circle-check",
+                "REJECTED": "fa-solid fa-circle-xmark",
+                "PENDING": "fa-solid fa-clock",
+            },
+
+            leaveStatusClassMap: {
+                "APPROVED": "text-success",
+                "REJECTED": "text-danger",
+                "PENDING": "text-secondary",
+            },
+
+            isSelected: false,
+
+            leaveStatusCheckbox: ['PENDING'], // The leave status(es) that will have a checkbox
+
+            uploadPhotoModal: null,
+
+            imageUploaded: null,
+        };
+    },
+    watch: {
+        isSelected(newVal) {
+            this.$emit('selectedChanged', {
+                'id': this.leaveDetails.id,
+                'isChecked' : newVal
+            });
         },
     },
     computed: {
@@ -125,34 +169,6 @@ export default {
                 "border border-3 border-primary": this.displayMcReminder(),
             };
         },
-    },
-    data() {
-        return {
-            leaveTypeIconMap: {
-                "MC": "fa-solid fa-briefcase-medical",
-                "AL": "fa-solid fa-umbrella-beach",
-            },
-
-            leaveStatusIconMap: {
-                "Approved": "fa-solid fa-circle-check",
-                "Rejected": "fa-solid fa-circle-xmark",
-                "Pending": "fa-solid fa-clock",
-            },
-
-            leaveStatusClassMap: {
-                "Approved": "text-success",
-                "Rejected": "text-danger",
-                "Pending": "text-secondary",
-            },
-
-            isSelected: false,
-
-            leaveStatusCheckbox: ['Pending'], // The leave status(es) that will have a checkbox
-
-            uploadPhotoModal: null,
-
-            imageUploaded: null,
-        };
     },
     methods: {
         convertPhoneToHumanReadable(phoneStr) {
@@ -200,7 +216,7 @@ export default {
         },
         displayMcError() {
             // Skip if not Admin || not MC || not Pending || MC proof alr uploaded
-            if (this.userType !== "admin" || this.leaveDetails.leaveType != "MC" || this.leaveDetails.status != "Pending" || this.leaveDetails.mcProofUploaded) {
+            if (this.userType !== "admin" || this.leaveDetails.leaveType != "MC" || this.leaveDetails.status != "PENDING" || this.leaveDetails.mcProofUploaded) {
                 return false;
             }
 
@@ -214,7 +230,7 @@ export default {
         },
         displayMcReminder() {
             // Skip if not Employee || not MC || not Pending || MC proof alr uploaded
-            if (this.userType !== "employee" || this.leaveDetails.leaveType != "MC" || this.leaveDetails.status != "Pending" || this.leaveDetails.mcProofUploaded) {
+            if (this.userType !== "employee" || this.leaveDetails.leaveType != "MC" || this.leaveDetails.status != "PENDING" || this.leaveDetails.mcProofUploaded) {
                 return false;
             }
 
@@ -243,11 +259,49 @@ export default {
         handleFileUpload(e) {
             this.imageUploaded = e.target.files[0];
         },
-        handleSave() {
-            // Save the image to the server (adambft)
-            console.log(this.imageUploaded);
-            this.showPicModal(false);
+        async handleSave() {
+            // Save the image to the server
+            
+            if (!this.imageUploaded) {
+                alert("No image uploaded");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', this.imageUploaded);
+
+            try {
+                const response = await fetch(`http://localhost:8081/api/employee-leave/${this.leaveDetails.id}/upload-mc`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+
+                    this.$emit('mc-uploaded', data);
+
+                    this.showPicModal(false);
+                } else {
+                    console.error('Error:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
         },
+        downloadImage() {
+            fetch(`http://localhost:8081/api/employee-leave/${this.leaveDetails.id}/image`)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(new Blob([blob]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', `mc_proof_${this.leaveDetails.id}-${this.leaveDetails.leaveType}.jpg`);
+                    document.body.appendChild(link);
+                    link.click();
+                    link.parentNode.removeChild(link);
+                });
+        }
     },
     mounted() {
         if (this.showCheckBox()) {

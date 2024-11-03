@@ -16,6 +16,7 @@
 
 <script>
 export default {
+    emits: ["filterChange"],
     data() {
         return {
             possibleFilters: ["Upcoming", "Past", "Rejected"], // Status buttons auto-generated from this array
