@@ -166,10 +166,4 @@ public class JobController {
             return ResponseEntity.badRequest().body(null);
         }
     }
-
-    @PostMapping("/jobs/createFromActiveSubscriptions")
-    public ResponseEntity<String> createJobsFromActiveSubscriptions() {
-        boolean status = jobService.createJobsFromActiveSubscriptions();
-        return ResponseEntity.ok("status: " + status);
-    }
 }

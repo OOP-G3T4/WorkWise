@@ -336,7 +336,7 @@ VALUES
     (17, 3, 3, 3, 'W_MAISONETTE_HDB', '2024-11-11', '19:00:00', 'PENDING', 3, FALSE, FALSE),  -- Monday night
     (18, 4, 4, 4, 'W_5RM_CONDO', '2024-11-12', '18:00:00', 'PENDING', 4, FALSE, FALSE),  -- Tuesday night
     (19, 5, 5, 5, 'W_2RM_CONDO', '2024-11-13', '18:00:00', 'PENDING', 3, FALSE, FALSE),  -- Wednesday night
-    (20, 6, 6, 6. 'W_3RM_HDB', '2024-11-13', '19:00:00', 'PENDING', 3, FALSE, FALSE),  -- Wednesday night
+    (20, 6, 6, 6, 'W_3RM_HDB', '2024-11-13', '19:00:00', 'PENDING', 3, FALSE, FALSE),  -- Wednesday night
     (21, 7, 7, 7, 'W_4RM_CONDO', '2024-11-14', '09:00:00', 'PENDING', 4, FALSE, FALSE),  -- Thursday morning
     (22, 8, 8, 8, 'W_5RM_HDB', '2024-11-14', '13:00:00', 'PENDING', 4, FALSE, FALSE),  -- Thursday afternoon
     (23, 9, 9, 9,'W_LANDED', '2024-11-15', '13:00:00', 'PENDING', 4, FALSE, FALSE),  -- Friday afternoon

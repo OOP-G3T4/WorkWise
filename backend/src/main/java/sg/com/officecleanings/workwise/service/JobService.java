@@ -117,39 +117,67 @@ public class JobService {
     }
 
     public boolean createJobsFromActiveSubscriptions() {
+        System.out.println("Creating jobs from active subscriptions method called.");
         // Calculate the date range for the 4th week in advance
-        LocalDate today = LocalDate.now();
+//        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.of(2024, 11, 3);
+
         LocalDate targetWeekStart = today.plusWeeks(4).with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).plusDays(1);
+        System.out.println("Target Week Start: " + targetWeekStart);
         LocalDate targetWeekEnd = targetWeekStart.plusDays(6); // 6 days to complete the week
+        System.out.println("Target Week End: " + targetWeekEnd);
 
         List<Subscription> activeSubscriptions = subscriptionRepository.findBySubscriptionStatus("ACTIVE");
 
         for (Subscription subscription : activeSubscriptions) {
+//            System.out.println("Subscription ID: " + subscription.getSubscriptionId());
+//            System.out.println("Subscription Status: " + subscription.getSubscriptionStatus());
+//            System.out.println("Package Type: " + subscription.getPackageType());
+//            System.out.println("Job Day: " + subscription.getJobDay());
+//            System.out.println("Job Start Time: " + subscription.getJobStartTime());
+//            System.out.println("Job End Time: " + subscription.getJobEndTime());
+//            System.out.println("Client: " + subscription.getClient());
+//            System.out.println("Property: " + subscription.getProperty());
+//            System.out.println("Selected Package: " + subscription.getSelectedPackage());
             if (subscription.getPackageType().equals("BI_WEEKLY")) {
                 // Check if we can schedule a bi-weekly job
-                if (canScheduleBiWeeklyJob(subscription, targetWeekStart, targetWeekEnd)) {
-                    createAndSaveJob(subscription, targetWeekStart); // Schedule job on specified job day
+
+                if (canScheduleBiWeeklyJob(subscription, targetWeekStart)) {
+//                    createAndSaveJob(subscription, targetWeekStart); // Schedule job on specified job day
+                    System.out.println("------------- Bi-weekly job --------------");
                 }
             } else if (subscription.getPackageType().equals("WEEKLY")) {
+                System.out.println("------------- Weekly job ---------------");
                 // Schedule weekly jobs for the target week
-                createAndSaveJob(subscription, targetWeekStart);
+//                createAndSaveJob(subscription, targetWeekStart);
             }
         }
         return true;
     }
 
     // Check if a bi-weekly job can be scheduled for the given subscription
-    private boolean canScheduleBiWeeklyJob(Subscription subscription, LocalDate targetWeekStart, LocalDate targetWeekEnd) {
+    private boolean canScheduleBiWeeklyJob(Subscription subscription, LocalDate targetWeekStart) {
+        System.out.println("Running canScheduleBiWeeklyJob method.");
         LocalDate lastJobDate = jobRepository.findLatestJobDateByClientIdAndPropertyId(subscription.getClient().getClientId(), subscription.getProperty().getPropertyId());
+        System.out.println("Last Job Date: " + lastJobDate);
 
         // Check if there are already 2 jobs in the target month for this subscription
         int jobsThisMonth = jobRepository.countJobsForSubscriptionInMonth(subscription.getSubscriptionId(), targetWeekStart.getMonthValue(), targetWeekStart.getYear());
+        System.out.println("Jobs this month: " + jobsThisMonth);
         if (jobsThisMonth >= 2) {
+            System.out.println("Returning false due to month limit.");
             return false; // No more jobs needed if we already have 2 in this month
         }
 
-        // Ensure at least 10 days have passed since the last job
-        return lastJobDate == null || lastJobDate.plusDays(10).isBefore(targetWeekStart);
+        // If there is a last job date, and it is within the past 10 days, return false
+        if (lastJobDate != null && lastJobDate.plusDays(10).isAfter(targetWeekStart)) {
+            System.out.println("Returning false due to having a job less than 2 weeks ago.");
+            return false;
+
+        }
+
+        System.out.println("Returning true.");
+        return true;
     }
 
     // Helper method to create and save a job on the subscription's scheduled day within the target week
@@ -158,13 +186,15 @@ public class JobService {
         DayOfWeek jobDay = DayOfWeek.valueOf(subscription.getJobDay().toUpperCase());
         LocalDate jobDate = targetWeekStart.with(TemporalAdjusters.nextOrSame(jobDay));
         // Calculate the duration in hours
-        long durationInHours = java.time.Duration.between(subscription.getJobStartTime(), subscription.getJobEndTime()).toHours();
+//        long durationInHours = java.time.Duration.between(subscription.getJobStartTime(), subscription.getJobEndTime()).toHours();
+        int durationInHours = 3;
 
         // Create a new Job using the provided constructor
         Job job = new Job(
                 subscription.getClient(),
                 subscription.getProperty(),
                 subscription.getSelectedPackage(),
+                subscription,
                 java.sql.Date.valueOf(jobDate), // Convert LocalDate to java.sql.Date
                 java.sql.Time.valueOf(subscription.getJobStartTime()), // Convert LocalTime to java.sql.Time
                 Job.Status.PENDING,

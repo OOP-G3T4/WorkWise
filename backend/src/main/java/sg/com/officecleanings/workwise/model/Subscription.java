@@ -24,8 +24,13 @@ public class Subscription {
 
     private String packageType;
     private String jobDay;
+
+    @Column(name = "job_starttime")
     private LocalTime jobStartTime;
+
+    @Column(name = "job_endtime")
     private LocalTime jobEndTime;
+
     private String subscriptionStatus;
 
     public Subscription() {
