@@ -7,12 +7,12 @@ import NewJobModal from "../../components/admin/calendar/NewJobModal.vue";
 </script>
 
 <template>
-    <div class="contain-parent">
+    <div class="contain-parent" v-bind="$attrs">
         <div class="contain-top p-3">
             <DatePicker @zoomChanged="adjustZoom" :dateSelected="dateSelected" :rangeSelected="rangeSelected" @curDateChanged="dateChanged" />
         </div>
 
-        <div class="contain-bottom">
+        <div class="contain-bottom" v-if="jobDetails">
             <!-- DAILY CALENDAR -->
             <template v-if="rangeSelected == 'Daily'">
                 <DailyCalendar :isCompressed="isCompressed" :jobDetails="jobDetails" :dateSelected="dateSelected" @jobUpdated="handlejobUpdated" />

@@ -33,6 +33,7 @@
 
 <script>
 export default {
+    emits: ['navToDate'],
     props: {
         jobDetails: {
             type: Object,

@@ -16,6 +16,7 @@
 
 <script>
 export default {
+    emits: ["statusChange", "rejectAll", "approveAll"],
     data() {
         return {
             possibleStatuses: [

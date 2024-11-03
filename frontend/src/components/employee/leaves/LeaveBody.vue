@@ -5,77 +5,79 @@ import * as bootstrap from 'bootstrap';
 </script>
 
 <template>
-    <!-- Past Leaves -->
-    <div v-if="showPast" v-for="e_leave in leavesBeforeToday" class="mb-3">
-        <LeaveCard v-if="showCardLogic(e_leave)" :leaveDetails="e_leave" @mc-uploaded="mcUploadTrigger" />
-    </div>
-
-    <!-- Today Line -->
-    <div v-if="showPast && showUpcoming" class="d-flex justify-content-center align-items-center mb-4">
-        <hr class="w-100 my-0 border border-dark rounded" />
-        <p class="mx-3 my-0 text-secondary">Today</p>
-        <hr class="w-100 my-0 border border-dark rounded" />
-    </div>
-
-    <!-- Upcoming Leaves -->
-    <div v-if="showUpcoming" v-for="e_leave in leavesAfterToday" class="mb-3">
-        <LeaveCard v-if="showCardLogic(e_leave)" :leaveDetails="e_leave" @mc-uploaded="mcUploadTrigger" />
-    </div>
-
-    <!-- Add New Application Modal -->
-    <div class="modal fade" id="empAddLeaveModal" tabindex="-1" aria-labelledby="empAddLeaveModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="empAddLeaveModalLabel">New Application</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                    <!-- Error Msg -->
-                    <div v-if="errorMsg" class="alert alert-danger text-center p-2">
-                        <font-awesome-icon icon="fa-solid fa-circle-exclamation" class="me-2" />{{ errorMsg }}
+    <div>
+        <!-- Past Leaves -->
+        <div v-if="showPast" v-for="e_leave in leavesBeforeToday" class="mb-3">
+            <LeaveCard v-if="showCardLogic(e_leave)" :leaveDetails="e_leave" @mc-uploaded="mcUploadTrigger" />
+        </div>
+    
+        <!-- Today Line -->
+        <div v-if="showPast && showUpcoming" class="d-flex justify-content-center align-items-center mb-4">
+            <hr class="w-100 my-0 border border-dark rounded" />
+            <p class="mx-3 my-0 text-secondary">Today</p>
+            <hr class="w-100 my-0 border border-dark rounded" />
+        </div>
+    
+        <!-- Upcoming Leaves -->
+        <div v-if="showUpcoming" v-for="e_leave in leavesAfterToday" class="mb-3">
+            <LeaveCard v-if="showCardLogic(e_leave)" :leaveDetails="e_leave" @mc-uploaded="mcUploadTrigger" />
+        </div>
+    
+        <!-- Add New Application Modal -->
+        <div class="modal fade" id="empAddLeaveModal" tabindex="-1" aria-labelledby="empAddLeaveModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="empAddLeaveModalLabel">New Application</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-
-                    <!-- [1] Application Type (MC or AL) -->
-                    <div class="form-floating">
-                        <select class="form-select" id="appTypeEmpLeaves" aria-label="Floating label select example" v-model="appType">
-                            <option value="MC">Medical Certificate</option>
-                            <option value="AL">Annual Leave</option>
-                        </select>
-
-                        <label for="appTypeEmpLeaves">Application Type</label>
+    
+                    <div class="modal-body">
+                        <!-- Error Msg -->
+                        <div v-if="errorMsg" class="alert alert-danger text-center p-2">
+                            <font-awesome-icon icon="fa-solid fa-circle-exclamation" class="me-2" />{{ errorMsg }}
+                        </div>
+    
+                        <!-- [1] Application Type (MC or AL) -->
+                        <div class="form-floating">
+                            <select class="form-select" id="appTypeEmpLeaves" aria-label="Floating label select example" v-model="appType">
+                                <option value="MC">Medical Certificate</option>
+                                <option value="AL">Annual Leave</option>
+                            </select>
+    
+                            <label for="appTypeEmpLeaves">Application Type</label>
+                        </div>
+    
+                        <!-- [2] Start Date -->
+                        <div class="form-floating mt-3">
+                            <input type="date" class="form-control" id="startDateEmpLeaves" v-model="startDate" :max="endDate" onfocus="this.showPicker()" />
+                            <label for="startDateEmpLeaves">Start Date</label>
+                        </div>
+    
+                        <!-- [3] End Date -->
+                        <div class="form-floating mt-3">
+                            <input type="date" class="form-control" id="endDateEmpLeaves" v-model="endDate" :min="startDate" onfocus="this.showPicker()" />
+                            <label for="endDateEmpLeaves">End Date</label>
+                        </div>
+    
+                        <!-- [4] Comments -->
+                        <div class="form-floating mt-3">
+                            <textarea class="form-control" placeholder="Comments" id="commentsEmpLeaves" style="height: 100px;" v-model="comment"></textarea>
+                            <label for="commentsEmpLeaves">Comments</label>
+                        </div>
+    
+                        <!-- [5] Upload Photo (If MC) -->
+                        <template v-if="appType == 'MC'">
+                            <hr class="mt-3" />
+                            <h6 class="text-secondary ms-1"><font-awesome-icon icon="fa-solid fa-camera" class="me-2" />Upload Photo Proof</h6>
+                            <input class="form-control mt-3" type="file" @change="handleFileUpload"/>
+                        </template>
                     </div>
-
-                    <!-- [2] Start Date -->
-                    <div class="form-floating mt-3">
-                        <input type="date" class="form-control" id="startDateEmpLeaves" v-model="startDate" :max="endDate" onfocus="this.showPicker()" />
-                        <label for="startDateEmpLeaves">Start Date</label>
+    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" @click="handleSubmit()">Submit</button>
                     </div>
-
-                    <!-- [3] End Date -->
-                    <div class="form-floating mt-3">
-                        <input type="date" class="form-control" id="endDateEmpLeaves" v-model="endDate" :min="startDate" onfocus="this.showPicker()" />
-                        <label for="endDateEmpLeaves">End Date</label>
-                    </div>
-
-                    <!-- [4] Comments -->
-                    <div class="form-floating mt-3">
-                        <textarea class="form-control" placeholder="Comments" id="commentsEmpLeaves" style="height: 100px;" v-model="comment"></textarea>
-                        <label for="commentsEmpLeaves">Comments</label>
-                    </div>
-
-                    <!-- [5] Upload Photo (If MC) -->
-                    <template v-if="appType == 'MC'">
-                        <hr class="mt-3" />
-                        <h6 class="text-secondary ms-1"><font-awesome-icon icon="fa-solid fa-camera" class="me-2" />Upload Photo Proof</h6>
-                        <input class="form-control mt-3" type="file" @change="handleFileUpload"/>
-                    </template>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" @click="handleSubmit()">Submit</button>
                 </div>
             </div>
         </div>
@@ -84,6 +86,7 @@ import * as bootstrap from 'bootstrap';
 
 <script>
 export default {
+    emits: ['mc-uploaded'],
     props: {
         leaveDetailsArr: {
             type: Array,

@@ -41,13 +41,14 @@ import * as bootstrap from 'bootstrap'
 
 <script>
 export default {
+    emits: ['valChange'],
     props: {
         items: {
             type: Object,
             required: true,
         },
         inputValue: {
-            type: String,
+            type: [String, Number],
             required: false,
             default: "",
         },
@@ -56,7 +57,7 @@ export default {
             required: true,
         },
         uniqueComponentId: {
-            type: String,
+            type: [String, Number],
             required: true,
         },
         showId: {
@@ -92,16 +93,22 @@ export default {
             );
         },
         items() {
-            // Updates the filteredItems when items changes
-            this.filteredItems = this.items;
-
             // Clear selectedId if it is not in the items
             if (!(this.selectedId in this.items)) {
                 this.selectedId = "";
+            } else {
+                this.selectedId = this.inputValue;
             }
+
+            // Updates the filteredItems when items changes
+            this.filteredItems = this.items;
 
             // Clear searchField
             this.searchField = "";
+        },
+        inputValue() {
+            // Updates the selectedId when inputValue changes
+            this.selectedId = this.inputValue;
         },
     },
     methods: {

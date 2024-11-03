@@ -10,6 +10,7 @@ import LeaveCard from '../../general/leaves/LeaveCard.vue';
 
 <script>
 export default {
+    emits: ['selectedChanged'],
     props: {
         selectedLeaveStatusArr: {
             type: Array,

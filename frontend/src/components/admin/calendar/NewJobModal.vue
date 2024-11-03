@@ -44,7 +44,7 @@ import DropdownSearch from "../../general/forms/DropdownSearch.vue"
                     </div>
 
                     <p v-if="endTimeObj">
-                        <span class="fw-bold">Duration: </span> {{ `${dateObjReadable(startTimeObj)} - ${dateObjReadable(endTimeObj)} (${this.allPackages[this.packageId].hours} hrs)` }}
+                        <span class="fw-bold">Duration: </span> {{ `${dateObjReadable(startTimeObj)} - ${dateObjReadable(endTimeObj)} (${allPackages[packageId].hours} hrs)` }}
                     </p>
 
                     <!-- [5] Property -->

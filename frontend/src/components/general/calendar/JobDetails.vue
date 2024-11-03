@@ -13,6 +13,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
         :class="parentContainerClasses"
         :style="parentContainerStyle"
         class="rounded"
+        v-bind="$attrs"
     >
         <!-- Job Card -->
         <div @click="openMainModal(true)" class="card" :class="jobCardClasses">
@@ -107,6 +108,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                             class="btn-close"
                             data-bs-dismiss="modal"
                             aria-label="Close"
+                            @click="handleMainModalClosed()"
                         ></button>
                     </div>
                 </div>
@@ -651,6 +653,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
 import * as bootstrap from "bootstrap";
 
 export default {
+    emits: ["jobUpdated"],
     props: {
         heightInPx: {
             type: Number,
@@ -708,6 +711,17 @@ export default {
             clientProperties: {}, // (key = ID, value = AddressString)
             allPropertyInfo: {}, // (key = ID, value = {address, postalCode})
         };
+    },
+    watch: {
+        jobDetails: {
+            // Deep watch to update jobEdit object when jobDetails change
+            handler() {
+                this.jobEdit = JSON.parse(JSON.stringify(this.jobDetails));
+                this.fetchAllCientProperties();
+            },
+            immediate: true,
+            deep: true,
+        },
     },
     computed: {
         ...mapState(["userType"]), // Access userType from Vuex state
@@ -808,6 +822,10 @@ export default {
 
         toggleEditMode() {
             this.isEditMode = !this.isEditMode;
+            
+            if (!this.isEditMode) {
+                this.revertEdits();
+            }
         },
 
         convertTimeToReadable(timeIn) {
@@ -1011,6 +1029,10 @@ export default {
                 });
         },
         handleAddressChange(newAddressId) {
+            if (newAddressId == null || newAddressId == "") {
+                return;
+            }
+
             // Updates the address in the jobEdit object
             const newAddress = this.allPropertyInfo[newAddressId].address;
             const newPostalCode = this.allPropertyInfo[newAddressId].postalCode;
@@ -1084,6 +1106,11 @@ export default {
             // Send API call to set job status to COMPLETED without photo proof
             // Placeholder, replace with actual API call (ADAMBFT)
         },
+        handleMainModalClosed() {
+            // Takes user out of edit mode when modal is closed
+            this.isEditMode = false;
+            this.revertEdits();
+        },
     },
     mounted() {
         // Sets up main modal
@@ -1094,6 +1121,11 @@ export default {
                     `job-modal-${this.jobDetails.appointmentId}`
                 )
             );
+
+            // Add listener for modal close event
+            this.mainModal._element.addEventListener("hidden.bs.modal", () => {
+                this.handleMainModalClosed();
+            });
 
             this.delModal = new bootstrap.Modal(
                 document.getElementById(
@@ -1114,16 +1146,10 @@ export default {
             );
         });
 
-        // Duplicates jobDetails object for editing
-        this.jobEdit = JSON.parse(JSON.stringify(this.jobDetails));
-
         // Auto update time every minute
         setInterval(() => {
             this.currentDateTime = new Date();
         }, 60000);
-
-        // Pull clients properties from API
-        this.fetchAllCientProperties();
 
         // Pull actual employees from API
         fetch("http://localhost:8081/api/employee")

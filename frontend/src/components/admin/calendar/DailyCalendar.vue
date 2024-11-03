@@ -125,6 +125,7 @@ import JobDetails from "../../general/calendar/JobDetails.vue";
 
 <script>
 export default {
+    emits: ['jobUpdated'],
     props: {
         isCompressed: {
             type: Boolean,

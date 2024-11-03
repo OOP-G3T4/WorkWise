@@ -5,7 +5,7 @@ import * as bootstrap from 'bootstrap';
 
 <template>
     <!-- Leave Card -->
-    <div class="accordion mb-3" :id="`leave-id-${leaveDetails.id}`">
+    <div class="accordion mb-3" :id="`leave-id-${leaveDetails.id}`" v-bind="$attrs">
         <div class="accordion-item" :class="accordianClasses">
             <!-- Top Section (Always in view) -->
             <h2 class="accordion-header">
@@ -113,6 +113,7 @@ import * as bootstrap from 'bootstrap';
 
 <script>
 export default {
+    emits: ['selectedChanged', 'mc-uploaded'],
     props: {
         leaveDetails: {
             type: Object,

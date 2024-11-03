@@ -44,6 +44,7 @@
 
 <script>
 export default {
+    emits: ['navToDate', 'navToWeek'],
     props: {
         jobDetails: {
             type: Object,
