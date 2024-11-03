@@ -5,6 +5,7 @@ import EmpLeavesDashboard from "../views/employee/EmpLeavesDashboard.vue";
 import EmpCalendarDashboard from "../views/employee/EmpCalendarDashboard.vue";
 import Login from "../views/Login.vue";
 import store from "../store";
+import AdminInsightDashboard from "../views/admin/AdminInsightDashboard.vue";
 
 const routes = [
     {
@@ -48,6 +49,11 @@ const routes = [
             allowedUserTypes: ["employee"],
         },
     },
+    {
+        path: "/insight-dashboard",
+        name: "InsightDashboard",
+        component: AdminInsightDashboard,
+    }
 ];
 
 const router = createRouter({
