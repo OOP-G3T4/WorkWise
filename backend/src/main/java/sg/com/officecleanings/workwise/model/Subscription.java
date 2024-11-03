@@ -22,14 +22,14 @@ public class Subscription {
     @JoinColumn(name = "packageId", referencedColumnName = "packageId", nullable = false)
     private SelectedPackage selectedPackage;
 
-    private String packageType;
+    // private String packageType;
     private String jobDay;
 
     @Column(name = "job_starttime")
     private LocalTime jobStartTime;
 
-    @Column(name = "job_endtime")
-    private LocalTime jobEndTime;
+    // @Column(name = "job_endtime")
+    // private LocalTime jobEndTime;
 
     private String subscriptionStatus;
 
@@ -40,10 +40,10 @@ public class Subscription {
         this.client = client;
         this.property = property;
         this.selectedPackage = selectedPackage;
-        this.packageType = packageType;
+        // this.packageType = packageType;
         this.jobDay = jobDay;
         this.jobStartTime = jobStartTime;
-        this.jobEndTime = jobEndTime;
+        // this.jobEndTime = jobEndTime;
         this.subscriptionStatus = subscriptionStatus;
     }
 
@@ -80,13 +80,13 @@ public class Subscription {
         this.selectedPackage = selectedPackage;
     }
 
-    public String getPackageType() {
-        return packageType;
-    }
+    // public String getPackageType() {
+    //     return packageType;
+    // }
 
-    public void setPackageType(String packageType) {
-        this.packageType = packageType;
-    }
+    // public void setPackageType(String packageType) {
+    //     this.packageType = packageType;
+    // }
 
     public String getJobDay() {
         return jobDay;
@@ -104,13 +104,13 @@ public class Subscription {
         this.jobStartTime = jobStartTime;
     }
 
-    public LocalTime getJobEndTime() {
-        return jobEndTime;
-    }
+    // public LocalTime getJobEndTime() {
+    //     return jobEndTime;
+    // }
 
-    public void setJobEndTime(LocalTime jobEndTime) {
-        this.jobEndTime = jobEndTime;
-    }
+    // public void setJobEndTime(LocalTime jobEndTime) {
+    //     this.jobEndTime = jobEndTime;
+    // }
 
     public String getSubscriptionStatus() {
         return subscriptionStatus;
