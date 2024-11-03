@@ -130,26 +130,17 @@ public class JobService {
         List<Subscription> activeSubscriptions = subscriptionRepository.findBySubscriptionStatus("ACTIVE");
 
         for (Subscription subscription : activeSubscriptions) {
-//            System.out.println("Subscription ID: " + subscription.getSubscriptionId());
-//            System.out.println("Subscription Status: " + subscription.getSubscriptionStatus());
-//            System.out.println("Package Type: " + subscription.getPackageType());
-//            System.out.println("Job Day: " + subscription.getJobDay());
-//            System.out.println("Job Start Time: " + subscription.getJobStartTime());
-//            System.out.println("Job End Time: " + subscription.getJobEndTime());
-//            System.out.println("Client: " + subscription.getClient());
-//            System.out.println("Property: " + subscription.getProperty());
-//            System.out.println("Selected Package: " + subscription.getSelectedPackage());
             if (subscription.getPackageType().equals("BI_WEEKLY")) {
-                // Check if we can schedule a bi-weekly job
+                System.out.println("------------- Bi-weekly job --------------");
 
+                // Check if we can schedule a bi-weekly job
                 if (canScheduleBiWeeklyJob(subscription, targetWeekStart)) {
-//                    createAndSaveJob(subscription, targetWeekStart); // Schedule job on specified job day
-                    System.out.println("------------- Bi-weekly job --------------");
+                    createAndSaveJob(subscription, targetWeekStart); // Schedule job on specified job day
                 }
             } else if (subscription.getPackageType().equals("WEEKLY")) {
                 System.out.println("------------- Weekly job ---------------");
                 // Schedule weekly jobs for the target week
-//                createAndSaveJob(subscription, targetWeekStart);
+                createAndSaveJob(subscription, targetWeekStart);
             }
         }
         return true;
@@ -159,11 +150,9 @@ public class JobService {
     private boolean canScheduleBiWeeklyJob(Subscription subscription, LocalDate targetWeekStart) {
         System.out.println("Running canScheduleBiWeeklyJob method.");
         LocalDate lastJobDate = jobRepository.findLatestJobDateByClientIdAndPropertyId(subscription.getClient().getClientId(), subscription.getProperty().getPropertyId());
-        System.out.println("Last Job Date: " + lastJobDate);
 
         // Check if there are already 2 jobs in the target month for this subscription
         int jobsThisMonth = jobRepository.countJobsForSubscriptionInMonth(subscription.getSubscriptionId(), targetWeekStart.getMonthValue(), targetWeekStart.getYear());
-        System.out.println("Jobs this month: " + jobsThisMonth);
         if (jobsThisMonth >= 2) {
             System.out.println("Returning false due to month limit.");
             return false; // No more jobs needed if we already have 2 in this month
@@ -182,12 +171,12 @@ public class JobService {
 
     // Helper method to create and save a job on the subscription's scheduled day within the target week
     private void createAndSaveJob(Subscription subscription, LocalDate targetWeekStart) {
+        System.out.println("Creating and saving job.");
         // Determine job date within the target week
         DayOfWeek jobDay = DayOfWeek.valueOf(subscription.getJobDay().toUpperCase());
         LocalDate jobDate = targetWeekStart.with(TemporalAdjusters.nextOrSame(jobDay));
         // Calculate the duration in hours
-//        long durationInHours = java.time.Duration.between(subscription.getJobStartTime(), subscription.getJobEndTime()).toHours();
-        int durationInHours = 3;
+        long durationInHours = java.time.Duration.between(subscription.getJobStartTime(), subscription.getJobEndTime()).toHours();
 
         // Create a new Job using the provided constructor
         Job job = new Job(
@@ -203,6 +192,7 @@ public class JobService {
                 false
         );
 
+        System.out.println("Saving job.");
         jobRepository.save(job);
     }
 
