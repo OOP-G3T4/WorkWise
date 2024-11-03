@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Repository
 public interface JobRepository extends JpaRepository<Job, Integer> {
 
-    @Query("SELECT MAX(j.date) FROM Job j WHERE j.client.clientId = :clientId AND j.property.propertyId = :propertyId")
+    @Query("SELECT MAX(j.date) FROM Job j WHERE j.subscription.client.clientId = :clientId AND j.subscription.property.propertyId = :propertyId")
     LocalDate findLatestJobDateByClientIdAndPropertyId(@Param("clientId") Integer clientId, @Param("propertyId") Integer propertyId);
 
     @Query("SELECT COUNT(j) FROM Job j WHERE j.subscription.subscriptionId = :subscriptionId AND MONTH(j.date) = :month AND YEAR(j.date) = :year")
@@ -32,7 +32,9 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
 
     List<Job> findByDateBetweenOrderByDateAscStartTimeAsc(Date startDate, Date endDate);
 
-    List<Job> findByPropertyPropertyId(int propertyId);
+    // List<Job> findByPropertyPropertyId(int propertyId);
+    @Query("SELECT j FROM Job j WHERE j.subscription.property.propertyId = :propertyId")
+    List<Job> findByPropertyId(@Param("propertyId") int propertyId);
     
     List<Job> findByStatus(Job.Status status);
 

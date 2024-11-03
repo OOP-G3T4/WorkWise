@@ -130,14 +130,14 @@ public class JobService {
         List<Subscription> activeSubscriptions = subscriptionRepository.findBySubscriptionStatus("ACTIVE");
 
         for (Subscription subscription : activeSubscriptions) {
-            if (subscription.getPackageType().equals("BI_WEEKLY")) {
+            if (subscription.getSelectedPackage().getType().equals("BI_WEEKLY")) {
                 System.out.println("------------- Bi-weekly job --------------");
 
                 // Check if we can schedule a bi-weekly job
                 if (canScheduleBiWeeklyJob(subscription, targetWeekStart)) {
                     createAndSaveJob(subscription, targetWeekStart); // Schedule job on specified job day
                 }
-            } else if (subscription.getPackageType().equals("WEEKLY")) {
+            } else if (subscription.getSelectedPackage().getType().equals("WEEKLY")) {
                 System.out.println("------------- Weekly job ---------------");
                 // Schedule weekly jobs for the target week
                 createAndSaveJob(subscription, targetWeekStart);
@@ -176,7 +176,8 @@ public class JobService {
         DayOfWeek jobDay = DayOfWeek.valueOf(subscription.getJobDay().toUpperCase());
         LocalDate jobDate = targetWeekStart.with(TemporalAdjusters.nextOrSame(jobDay));
         // Calculate the duration in hours
-        long durationInHours = java.time.Duration.between(subscription.getJobStartTime(), subscription.getJobEndTime()).toHours();
+        long durationInHours = subscription.getSelectedPackage().getHours();
+        // long durationInHours = java.time.Duration.between(subscription.getJobStartTime(), subscription.getJobEndTime()).toHours();
 
         // Create a new Job using the provided constructor
         Job job = new Job(
