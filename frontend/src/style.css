@@ -22,10 +22,20 @@
 /* Enabling cursors */
 .cursor-pointer {
     cursor: pointer;
+    transition: filter 0.3s ease;
 }
 
 .cursor-pointer:hover {
     filter: brightness(85%);
+}
+
+.hover-border {
+    box-sizing: border-box;
+    transition: box-shadow 0.3s ease;
+}
+
+.hover-border:hover {
+    box-shadow: 0 0 0 0.125rem #0c0f1a;
 }
 
 /* GMaps Autofill (Allow it to be seen on Modals) */

@@ -1,6 +1,5 @@
 <script setup>
 import { mapState } from "vuex";
-import GmapInput from "../forms/GmapInput.vue";
 import DropdownSearch from "../forms/DropdownSearch.vue";
 </script>
 
@@ -12,14 +11,14 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
         @click="openMainModal(true)"
         :class="parentContainerClasses"
         :style="parentContainerStyle"
-        class="rounded"
+        class="rounded hover-border"
         v-bind="$attrs"
     >
         <!-- Job Card -->
         <div @click="openMainModal(true)" class="card" :class="jobCardClasses">
             <!-- Client Name and Warning (optional) -->            
             <div
-                class="fs-9 fs-md-7 card-header fw-semibold px-2 px-md-3 py-1 py-md-2 text-truncate"
+                class="fs-9 fs-md-7 card-header fw-semibold px-2 px-md-3 py-1 py-md-2 text-truncate flex-shrink-0"
             >
                 <font-awesome-icon
                     v-if="showJobStartedWarning"
@@ -57,7 +56,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
 
             <!-- Job status -->
             <div
-                class="card-footer fs-10 fs-md-8 px-2 px-md-3 py-1 py-md-2 text-truncate"
+                class="card-footer fs-10 fs-md-8 px-2 px-md-3 py-1 py-md-2 text-truncate flex-shrink-0"
             >
                 <font-awesome-icon
                     class="me-2"
@@ -685,6 +684,7 @@ export default {
             errorMsgCollapseCompleted: null, // Will be automatically populated with bootstrap.Collapse on Mounted
             currentDateTime: new Date(),
             isEditMode: false,
+            isAnimate: false,
 
             arrivalImg: null,
             completionImg: null,
@@ -722,6 +722,19 @@ export default {
             immediate: true,
             deep: true,
         },
+        isCompressed: {
+            handler(newVal) {
+                // Only set isAnimate to true after 1ms if isCompressed is true
+                if (newVal) {
+                    setTimeout(() => {
+                        this.isAnimate = true;
+                    }, 1);
+                } else {
+                    this.isAnimate = false;
+                }
+            },
+            immediate: true,
+        }
     },
     computed: {
         ...mapState(["userType"]), // Access userType from Vuex state
@@ -801,7 +814,9 @@ export default {
                 showPopoverRight: this.popoverRight && this.isCompressed,
                 showPopoverLeft: !this.popoverRight && this.isCompressed,
                 "h-100": !this.isCompressed,
-                "d-none": this.isCompressed && !this.isHovering,
+                "hide-card-right invisible opacity-0": this.isCompressed && !this.isHovering && this.popoverRight,
+                "hide-card-left invisible opacity-0": this.isCompressed && !this.isHovering && !this.popoverRight,
+                "animate-card": this.isAnimate,
             };
         },
     },
@@ -1182,6 +1197,19 @@ export default {
     z-index: 1000;
     pointer-events: none;
     width: 250px;
+    transform: translateX(0);
+}
+
+.animate-card {
+    transition: visibility 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hide-card-left {
+    transform: translateX(-10%);
+}
+
+.hide-card-right {
+    transform: translateX(10%);
 }
 
 @media (max-width: 768px) {

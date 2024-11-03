@@ -8,7 +8,7 @@ import * as bootstrap from 'bootstrap';
     <div class="accordion mb-3" :id="`leave-id-${leaveDetails.id}`" v-bind="$attrs">
         <div class="accordion-item" :class="accordianClasses">
             <!-- Top Section (Always in view) -->
-            <h2 class="accordion-header">
+            <h2 class="accordion-header cursor-pointer">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="`#flush-collapse-leave-id-${leaveDetails.id}`" aria-expanded="false" :aria-controls="`#flush-collapse-leave-id-${leaveDetails.id}`" :id="`accordian-btn-${leaveDetails.id}`">                    
                     <div class="container-fluid p-0">
                         <!-- Error Message -->
