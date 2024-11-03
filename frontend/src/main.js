@@ -47,6 +47,9 @@ import {
     faCalendarXmark,
     faCaretDown,
     faMagnifyingGlass,
+    faChartSimple,
+    faMoneyBill,
+    faBoxOpen,
     faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -88,10 +91,27 @@ library.add(
     faCalendarXmark,
     faCaretDown,
     faMagnifyingGlass,
+    faChartSimple,
+    faMoneyBill,
+    faBoxOpen,
     faDownload,
 );
 
 const app = createApp(App);
+
+app.mixin({
+    methods: {
+        getInitials(name) {
+            const parts = name.trim().split(" ");
+            
+            const firstInitial = parts[0] ? parts[0][0].toUpperCase() : "";
+        
+            const secondInitial = parts[1] ? parts[1][0].toUpperCase() : "";
+        
+            return firstInitial + secondInitial;
+        }
+    }
+})
 
 app.component("font-awesome-icon", FontAwesomeIcon);
 

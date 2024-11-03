@@ -88,9 +88,6 @@ public class JobController {
     public ResponseEntity<List<Job>> getJobsByEmployeeId(@PathVariable int employeeId) {
         try {
             List<Job> jobs = jobService.getJobsByEmployeeId(employeeId);
-            if (jobs.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
             return new ResponseEntity<>(jobs, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
