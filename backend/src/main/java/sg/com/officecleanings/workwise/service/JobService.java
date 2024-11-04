@@ -8,6 +8,8 @@ import sg.com.officecleanings.workwise.repository.JobRepository;
 import sg.com.officecleanings.workwise.repository.JobEmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sg.com.officecleanings.workwise.model.Subscription;
+import sg.com.officecleanings.workwise.repository.SubscriptionRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +25,9 @@ public class JobService {
 
     @Autowired
     private JobRepository jobRepository;
+
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
 
     @Autowired
     private JobEmployeeRepository JobEmployeeRepository;
@@ -109,6 +114,86 @@ public class JobService {
         List<Job> pendingJobs = jobRepository.findByDateBetweenAndStatusOrderByDateAscStartTimeAsc(startDate, endDate, Job.Status.PENDING);
 
         return pendingJobs;
+    }
+
+    public boolean createJobsFromActiveSubscriptions() {
+        System.out.println("Creating jobs from active subscriptions method called.");
+        // Calculate the date range for the 4th week in advance
+//        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.of(2024, 11, 3);
+
+        LocalDate targetWeekStart = today.plusWeeks(4).with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).plusDays(1);
+        System.out.println("Target Week Start: " + targetWeekStart);
+        LocalDate targetWeekEnd = targetWeekStart.plusDays(6); // 6 days to complete the week
+        System.out.println("Target Week End: " + targetWeekEnd);
+
+        List<Subscription> activeSubscriptions = subscriptionRepository.findBySubscriptionStatus("ACTIVE");
+
+        for (Subscription subscription : activeSubscriptions) {
+            if (subscription.getPackageType().equals("BI_WEEKLY")) {
+                System.out.println("------------- Bi-weekly job --------------");
+
+                // Check if we can schedule a bi-weekly job
+                if (canScheduleBiWeeklyJob(subscription, targetWeekStart)) {
+                    createAndSaveJob(subscription, targetWeekStart); // Schedule job on specified job day
+                }
+            } else if (subscription.getPackageType().equals("WEEKLY")) {
+                System.out.println("------------- Weekly job ---------------");
+                // Schedule weekly jobs for the target week
+                createAndSaveJob(subscription, targetWeekStart);
+            }
+        }
+        return true;
+    }
+
+    // Check if a bi-weekly job can be scheduled for the given subscription
+    private boolean canScheduleBiWeeklyJob(Subscription subscription, LocalDate targetWeekStart) {
+        System.out.println("Running canScheduleBiWeeklyJob method.");
+        LocalDate lastJobDate = jobRepository.findLatestJobDateByClientIdAndPropertyId(subscription.getClient().getClientId(), subscription.getProperty().getPropertyId());
+
+        // Check if there are already 2 jobs in the target month for this subscription
+        int jobsThisMonth = jobRepository.countJobsForSubscriptionInMonth(subscription.getSubscriptionId(), targetWeekStart.getMonthValue(), targetWeekStart.getYear());
+        if (jobsThisMonth >= 2) {
+            System.out.println("Returning false due to month limit.");
+            return false; // No more jobs needed if we already have 2 in this month
+        }
+
+        // If there is a last job date, and it is within the past 10 days, return false
+        if (lastJobDate != null && lastJobDate.plusDays(10).isAfter(targetWeekStart)) {
+            System.out.println("Returning false due to having a job less than 2 weeks ago.");
+            return false;
+
+        }
+
+        System.out.println("Returning true.");
+        return true;
+    }
+
+    // Helper method to create and save a job on the subscription's scheduled day within the target week
+    private void createAndSaveJob(Subscription subscription, LocalDate targetWeekStart) {
+        System.out.println("Creating and saving job.");
+        // Determine job date within the target week
+        DayOfWeek jobDay = DayOfWeek.valueOf(subscription.getJobDay().toUpperCase());
+        LocalDate jobDate = targetWeekStart.with(TemporalAdjusters.nextOrSame(jobDay));
+        // Calculate the duration in hours
+        long durationInHours = java.time.Duration.between(subscription.getJobStartTime(), subscription.getJobEndTime()).toHours();
+
+        // Create a new Job using the provided constructor
+        Job job = new Job(
+                subscription.getClient(),
+                subscription.getProperty(),
+                subscription.getSelectedPackage(),
+                subscription,
+                java.sql.Date.valueOf(jobDate), // Convert LocalDate to java.sql.Date
+                java.sql.Time.valueOf(subscription.getJobStartTime()), // Convert LocalTime to java.sql.Time
+                Job.Status.PENDING,
+                (int) durationInHours,
+                false,
+                false
+        );
+
+        System.out.println("Saving job.");
+        jobRepository.save(job);
     }
 
 }
