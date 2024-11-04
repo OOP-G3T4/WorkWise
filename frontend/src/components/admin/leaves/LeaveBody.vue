@@ -164,7 +164,7 @@ export default {
         },
         pullLeavesFromBackend() {
             // Pull leaves data from backend
-            fetch('http://localhost:8081/api/employee-leave')
+            fetch(`${this.$apiUrl}/employee-leave`)
                 .then(response => response.json())
                 .then(data => {
                     let leaveDetailsArr = [];
@@ -194,7 +194,7 @@ export default {
     },
     mounted() {
         // Pull employee data from backend
-        fetch('http://localhost:8081/api/employee')
+        fetch(`${this.$apiUrl}/employee`)
             .then(response => response.json())
             .then(data => {
                 let empDetailsArr = {};

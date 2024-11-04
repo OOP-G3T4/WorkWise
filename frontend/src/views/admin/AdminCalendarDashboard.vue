@@ -80,7 +80,7 @@ export default {
             this.rangeSelected = "Weekly";
         },
         pullAllJobs() {
-            fetch('http://localhost:8081/api/job')
+            fetch(`${this.$apiUrl}/job`)
             .then(response => response.json())
             .then(data => {
                 // Initialize jobDetails object

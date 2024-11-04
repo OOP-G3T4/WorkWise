@@ -962,7 +962,7 @@ export default {
                 });
             }
 
-            fetch(`http://localhost:8081/api/job/${jobId}`, {
+            fetch(`${this.$apiUrl}/job/${jobId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -1006,7 +1006,7 @@ export default {
             let jobId = this.jobDetails.appointmentId;
 
             try {
-                const response = await fetch(`http://localhost:8081/api/job/${jobId}`, {
+                const response = await fetch(`${this.$apiUrl}/job/${jobId}`, {
                     method: 'DELETE',
                 });
                 if (response.ok) {
@@ -1022,7 +1022,7 @@ export default {
             this.openDelModal(false);
         },
         fetchAllCientProperties() {
-            fetch (`http://localhost:8081/api/client/${this.jobDetails.clientDetails.clientId}/properties`)
+            fetch (`${this.$apiUrl}/client/${this.jobDetails.clientDetails.clientId}/properties`)
                 .then(response => response.json())
                 .then(data => {
                     // Format data to match clientAddresses object
@@ -1167,7 +1167,7 @@ export default {
         }, 60000);
 
         // Pull actual employees from API
-        fetch("http://localhost:8081/api/employee")
+        fetch(`${this.$apiUrl}/employee`)
             .then((response) => response.json())
             .then((data) => {
                 // Format data to match allEmployees object

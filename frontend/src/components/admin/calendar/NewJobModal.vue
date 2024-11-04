@@ -178,7 +178,7 @@ export default {
                 return;
             }
 
-            fetch(`http://localhost:8081/api/client/${this.clientId}/properties`)
+            fetch(`${this.$apiUrl}/client/${this.clientId}/properties`)
                 .then((response) => response.json())
                 .then((data) => {
                     let allProperties = {};
@@ -195,7 +195,7 @@ export default {
     },
     mounted() {
         // Fetch all clients
-        fetch("http://localhost:8081/api/client")
+        fetch(`${this.$apiUrl}/client`)
             .then((response) => response.json())
             .then((data) => {
                 let allClients = {};
@@ -208,7 +208,7 @@ export default {
             });
         
         // Fetch all packages
-        fetch("http://localhost:8081/api/package")
+        fetch(`${this.$apiUrl}/package`)
             .then((response) => response.json())
             .then((data) => {
                 let allPackages = {};

@@ -271,7 +271,7 @@ export default {
             formData.append('file', this.imageUploaded);
 
             try {
-                const response = await fetch(`http://localhost:8081/api/employee-leave/${this.leaveDetails.id}/upload-mc`, {
+                const response = await fetch(`${this.$apiUrl}/employee-leave/${this.leaveDetails.id}/upload-mc`, {
                     method: 'POST',
                     body: formData,
                 });
@@ -290,7 +290,7 @@ export default {
             }
         },
         downloadImage() {
-            fetch(`http://localhost:8081/api/employee-leave/${this.leaveDetails.id}/image`)
+            fetch(`${this.$apiUrl}/employee-leave/${this.leaveDetails.id}/image`)
                 .then(response => response.blob())
                 .then(blob => {
                     const url = window.URL.createObjectURL(new Blob([blob]));

@@ -296,7 +296,7 @@ export default {
         },
         pullJobData() {
             // Pulls jobs data for this employee from the API
-            fetch(`http://localhost:8081/api/job/employee/${this.userId}`)
+            fetch(`${this.$apiUrl}/job/employee/${this.userId}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok:', response.statusText);

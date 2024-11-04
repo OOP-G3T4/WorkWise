@@ -369,7 +369,7 @@ export default {
             document.body.removeChild(link);
         },
         fetchEmployees() {
-            fetch("http://localhost:8081/api/employee")
+            fetch(`${this.$apiUrl}/employee`)
                 .then((response) => response.json())
                 .then((data) => {
                     this.employees.push(...data);
@@ -379,7 +379,7 @@ export default {
                 );
         },
         fetchPackageId() {
-            fetch("http://localhost:8081/api/package")
+            fetch(`${this.$apiUrl}/package`)
                 .then((response) => response.json())
                 .then((data) => {
                     for (const packageData of data) {
@@ -392,7 +392,7 @@ export default {
                 );
         },
         fetchJobData() {
-            fetch("http://localhost:8081/api/job")
+            fetch(`${this.$apiUrl}/job`)
                 .then((response) => response.json())
                 .then((data) => this.processJobData(data))
                 .catch((error) =>

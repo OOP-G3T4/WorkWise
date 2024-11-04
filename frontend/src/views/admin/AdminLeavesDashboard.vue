@@ -34,7 +34,7 @@ export default {
             let command = toApprove ? "approve" : "reject";
 
             for (let leaveId of this.selectedLeaveIds) {
-                let fetchPromise = fetch(`http://localhost:8081/api/employee-leave/${leaveId}/${command}`, {
+                let fetchPromise = fetch(`${this.$apiUrl}/employee-leave/${leaveId}/${command}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
