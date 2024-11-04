@@ -1,5 +1,7 @@
 <template>
-    <div class="w-100 h-100 bg-light d-flex justify-content-center align-items-center">
+    <div class="w-100 h-100 bg-primary-light d-flex flex-column justify-content-center align-items-center">
+        <img src="/workwise_main.svg" alt="Logo" class="img-fluid w-25 mb-3" />
+
         <div class="bg-white p-4 pb-5 rounded-4 m-3">
             <div class="container-fluid">
                 <!-- Login title -->
