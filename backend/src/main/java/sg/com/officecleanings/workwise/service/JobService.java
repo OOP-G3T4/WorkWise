@@ -184,7 +184,7 @@ public class JobService {
                 subscription.getProperty(),
                 subscription.getSelectedPackage(),
                 subscription,
-                java.sql.Date.valueOf(jobDate), // Convert LocalDate to java.sql.Date
+                jobDate, // Convert LocalDate to java.sql.Date
                 java.sql.Time.valueOf(subscription.getJobStartTime()), // Convert LocalTime to java.sql.Time
                 Job.Status.PENDING,
                 (int) durationInHours,
