@@ -241,11 +241,10 @@ export default {
         },
         isToday() {
             // Returns true if the selected date is today
-            var today = this.today;
-            return (
-                today.toISOString().split("T")[0] ==
-                this.dateSelected.toISOString().split("T")[0]
-            );
+            const today = this.today.getFullYear() + "-" + this.today.getMonth() + "-" + this.today.getDate();;
+            const dateSelectedStr = this.dateSelected.getFullYear() + "-" + this.dateSelected.getMonth() + "-" + this.dateSelected.getDate();
+
+            return today == dateSelectedStr;
         },
         hideTopBar() {
             return this.isCompressed || this.jobDetailsArr.length == 0;
