@@ -1166,8 +1166,8 @@ export default {
             this.currentDateTime = new Date();
         }, 60000);
 
-        // Pull actual employees from API
-        fetch(`${this.$apiUrl}/employee`)
+        // Pull actual employees from API (ONLY those available for the job)
+        fetch(`${this.$apiUrl}/checker/job/${this.jobDetails.appointmentId}`)
             .then((response) => response.json())
             .then((data) => {
                 // Format data to match allEmployees object
