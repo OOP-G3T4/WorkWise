@@ -480,52 +480,24 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                     </button>
                                 </div>
 
-                                <div
-                                    class="input-group mb-2"
-                                    v-for="(
-                                        e_cleaner_id, idx
-                                    ) in jobEdit.cleaners"
-                                    :key="idx"
-                                >
-                                    <div class="form-floating">
-                                        <select
-                                            class="form-select"
-                                            v-model="jobEdit.cleaners[idx]"
-                                        >
-                                            <option
-                                                v-for="(
-                                                    e_employee, e_listed_id
-                                                ) in allEmployees"
-                                                :value="e_listed_id"
-                                                :disabled="
-                                                    jobEdit.cleaners.includes(
-                                                        e_listed_id
-                                                    )
-                                                "
-                                            >
-                                                {{ e_employee }} (ID:
-                                                {{ e_listed_id }})
-                                            </option>
-                                        </select>
-
-                                        <label for="floatingInput"
-                                            >Cleaner {{ idx + 1 }}</label
-                                        >
-                                    </div>
-
-                                    <button
-                                        v-if="jobEdit.cleaners.length > 1"
-                                        @click="deleteCleaner(idx)"
-                                        class="btn btn-secondary"
-                                        type="button"
-                                        onfocus="this.showPicker()"
-                                    >
-                                        <font-awesome-icon
-                                            class="mx-2"
-                                            icon="fa-solid fa-trash"
+                                <template v-for="(e_emp_id, idx) in jobEdit.cleaners" :key="idx">
+                                    <div class="d-flex">
+                                        <DropdownSearch
+                                            :items="allEmployees"
+                                            :inputValue="e_emp_id"
+                                            :fieldName="`Cleaner ${idx + 1}`"
+                                            :uniqueComponentId="`${jobDetails.appointmentId}-${idx}`"
+                                            @valChange="(data) => handleCleanerChange(data, idx)"
+                                            :showId="true"
+                                            class="flex-grow-1"
+                                            :disabled-items="jobEdit.cleaners"
                                         />
-                                    </button>
-                                </div>
+
+                                        <button class="btn btn-outline-danger mb-3 ms-2" @click="deleteCleaner(e_emp_id)">
+                                            <font-awesome-icon icon="fa-solid fa-trash" />
+                                        </button>
+                                    </div>
+                                </template>
                             </div>
                         </div>
 
@@ -901,8 +873,9 @@ export default {
             }
         },
 
-        deleteCleaner(idx) {
-            // Deletes a cleaner from the job
+        deleteCleaner(emp_id) {
+            // Deletes a cleaner from the job (search within jobEdit.cleaners for the emp_id and remove it)
+            const idx = this.jobEdit.cleaners.indexOf(emp_id);
             this.jobEdit.cleaners.splice(idx, 1);
         },
         revertEdits() {
@@ -1125,6 +1098,9 @@ export default {
             // Takes user out of edit mode when modal is closed
             this.isEditMode = false;
             this.revertEdits();
+        },
+        handleCleanerChange(addedEmpid, idx) {
+            this.jobEdit.cleaners[idx] = addedEmpid;
         },
     },
     mounted() {
