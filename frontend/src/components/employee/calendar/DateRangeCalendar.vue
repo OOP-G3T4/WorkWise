@@ -34,7 +34,7 @@ import { mapState } from "vuex";
             <template v-for="(eDateObj, idx) in arrDates" :key="idx">
                 <div class="container-fluid d-flex flex-column position-relative" :class="canClientColExpand ? 'w-100' : ''" :style="clientColStyles">
                     <!-- Now Line (Horizontal Line that shows you Current Time) -->
-                    <div v-if="isToday(eDateObj.dateStr)" class="now-line" :style="nowLineStyle"></div>
+                    <div v-if="isToday(eDateObj.dateStr)" class="now-line flash" :style="nowLineStyle"></div>
 
                     <!-- Client Details (TOP) -->
                     <div class="sticky-top bg-white row justify-content-center align-items-center pt-2" :style="{flex: `0 1 ${topPaddingPx}px`}">
@@ -504,6 +504,11 @@ export default {
         },
     },
     mounted() {
+        // Update this.today every minute
+        setInterval(() => {
+            this.today = new Date();
+        }, 60000);
+
         // Initialize ResizeObserver to track the height changes for #main-container-range-cal
         const observer = new ResizeObserver(this.updateContainerHeight);
         const mainContainer = document.querySelector('#main-container-range-cal');
