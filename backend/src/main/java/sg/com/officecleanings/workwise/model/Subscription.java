@@ -6,6 +6,10 @@ import java.time.LocalTime;
 @Entity
 public class Subscription {
 
+    public enum subscriptionStatus {
+        ACTIVE, PAUSED, CANCELLED
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int subscriptionId;
@@ -31,12 +35,13 @@ public class Subscription {
     // @Column(name = "job_endtime")
     // private LocalTime jobEndTime;
 
-    private String subscriptionStatus;
+    @Enumerated(EnumType.STRING)
+    private subscriptionStatus subscriptionStatus;
 
     public Subscription() {
     }
 
-    public Subscription(Client client, Property property, SelectedPackage selectedPackage, String packageType, String jobDay, LocalTime jobStartTime, LocalTime jobEndTime, String subscriptionStatus) {
+    public Subscription(Client client, Property property, SelectedPackage selectedPackage, String jobDay, LocalTime jobStartTime, subscriptionStatus subscriptionStatus) {
         this.client = client;
         this.property = property;
         this.selectedPackage = selectedPackage;
@@ -112,11 +117,11 @@ public class Subscription {
     //     this.jobEndTime = jobEndTime;
     // }
 
-    public String getSubscriptionStatus() {
+    public subscriptionStatus getSubscriptionStatus() {
         return subscriptionStatus;
     }
 
-    public void setSubscriptionStatus(String subscriptionStatus) {
+    public void setSubscriptionStatus(subscriptionStatus subscriptionStatus) {
         this.subscriptionStatus = subscriptionStatus;
     }
 }
