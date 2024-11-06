@@ -442,6 +442,7 @@ export default {
                 height: this.yHeightPx - padding + "px",
                 width: `${properWidthPerCol * numColsInp}px`,
                 flex: `${flexGrow} 1 ${properWidthPerCol * numColsInp}px`,
+                boxSizing: "content-box",
             };
         },
         handlejobUpdated(jobId) {

@@ -58,7 +58,7 @@ import * as bootstrap from "bootstrap";
         >
             <!-- Header (Top) -->
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title row" id="mainSideNavBarLabel">
+                <h5 class="offcanvas-title row ps-2" id="mainSideNavBarLabel">
                     <img src="/workwise_main.svg" alt="Logo" class="img-fluid" style="max-width: 200px;" />
                 </h5>
                 <button
@@ -152,7 +152,9 @@ import * as bootstrap from "bootstrap";
         <!-- Top Navbar (For MD and below) -->
         <nav class="navbar navbar-expand-md bg-light d-md-none">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">WorkWise</a>
+                <a class="navbar-brand" href="#">
+                    <img src="/workwise_main.svg" class="ms-2" alt="Logo" style="width: 120px;" />
+                </a>
 
                 <button
                     class="navbar-toggler"
