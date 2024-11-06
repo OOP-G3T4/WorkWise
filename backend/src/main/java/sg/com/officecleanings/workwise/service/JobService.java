@@ -181,9 +181,9 @@ public class JobService {
 
         // Create a new Job using the provided constructor
         Job job = new Job(
-                subscription.getClient(),
-                subscription.getProperty(),
-                subscription.getSelectedPackage(),
+                // subscription.getClient(),
+                // subscription.getProperty(),
+                // subscription.getSelectedPackage(),
                 subscription,
                 java.sql.Date.valueOf(jobDate), // Convert LocalDate to java.sql.Date
                 java.sql.Time.valueOf(subscription.getJobStartTime()), // Convert LocalTime to java.sql.Time
@@ -197,4 +197,7 @@ public class JobService {
         jobRepository.save(job);
     }
 
+    public List<Job> getJobsBySubscriptionId(int subscriptionId) {
+        return jobRepository.findBySubscriptionSubscriptionId(subscriptionId);
+    }
 }
