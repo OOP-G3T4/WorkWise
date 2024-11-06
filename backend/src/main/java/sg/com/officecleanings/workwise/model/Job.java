@@ -52,7 +52,7 @@ public class Job {
     public Job() {
     }
 
-    public Job(Client client, Property property, SelectedPackage selectedPackage, Subscription subscription, Date date, Time startTime,
+    public Job(Subscription subscription, Date date, Time startTime,
                Status status, int actualDuration, Boolean arrivalProofUploaded, Boolean completionProofUploaded) {
         // this.client = client;
         // this.property = property;
@@ -170,5 +170,13 @@ public class Job {
                 ", arrivalProofUploaded=" + arrivalProofUploaded +
                 ", completionProofUploaded=" + completionProofUploaded +
                 '}';
+    }
+
+    public Subscription getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
     }
 }
