@@ -16,17 +16,17 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int jobId;
 
-    @ManyToOne
-    @JoinColumn(name = "clientId", referencedColumnName = "clientId", nullable = false)
-    private Client client;
+    // @ManyToOne
+    // @JoinColumn(name = "clientId", referencedColumnName = "clientId", nullable = false)
+    // private Client client;
 
-    @ManyToOne
-    @JoinColumn(name = "propertyId", referencedColumnName = "propertyId", nullable = false)
-    private Property property;
+    // @ManyToOne
+    // @JoinColumn(name = "propertyId", referencedColumnName = "propertyId", nullable = false)
+    // private Property property;
 
-    @ManyToOne
-    @JoinColumn(name = "packageId", referencedColumnName = "packageId", nullable = false)
-    private SelectedPackage selectedPackage; // Note cannot use Package
+    // @ManyToOne
+    // @JoinColumn(name = "packageId", referencedColumnName = "packageId", nullable = false)
+    // private SelectedPackage selectedPackage; // Note cannot use Package
 
     @ManyToOne
     @JoinColumn(name = "subscriptionId", referencedColumnName = "subscriptionId", nullable = false)
@@ -51,11 +51,11 @@ public class Job {
     public Job() {
     }
 
-    public Job(Client client, Property property, SelectedPackage selectedPackage, Subscription subscription, LocalDate date, Time startTime,
+    public Job(Subscription subscription, Date date, Time startTime,
                Status status, int actualDuration, Boolean arrivalProofUploaded, Boolean completionProofUploaded) {
-        this.client = client;
-        this.property = property;
-        this.selectedPackage = selectedPackage;
+        // this.client = client;
+        // this.property = property;
+        // this.selectedPackage = selectedPackage;
         this.subscription = subscription;
         this.date = date;
         this.startTime = startTime;
@@ -73,29 +73,29 @@ public class Job {
         this.jobId = jobId;
     }
 
-    public Client getClient() {
-        return client;
-    }
+    // public Client getClient() {
+    //     return client;
+    // }
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
+    // public void setClient(Client client) {
+    //     this.client = client;
+    // }
 
-    public Property getProperty() {
-        return property;
-    }
+    // public Property getProperty() {
+    //     return property;
+    // }
 
-    public void setProperty(Property property) {
-        this.property = property;
-    }
+    // public void setProperty(Property property) {
+    //     this.property = property;
+    // }
 
-    public SelectedPackage getSelectedPackage() {
-        return selectedPackage;
-    }
+    // public SelectedPackage getSelectedPackage() {
+    //     return selectedPackage;
+    // }
 
-    public void setSelectedPackage(SelectedPackage selectedPackage) {
-        this.selectedPackage = selectedPackage;
-    }
+    // public void setSelectedPackage(SelectedPackage selectedPackage) {
+    //     this.selectedPackage = selectedPackage;
+    // }
 
     public LocalDate getDate() {
         return date;
@@ -157,9 +157,9 @@ public class Job {
     public String toString() {
         return "Job{" +
                 "jobId=" + jobId +
-                ", client=" + client +
-                ", property=" + property +
-                ", selectedPackage=" + selectedPackage +
+                // ", client=" + client +
+                // ", property=" + property +
+                // ", selectedPackage=" + selectedPackage +
                 ", subscription=" + subscription +
                 ", date=" + date +
                 ", startTime=" + startTime +
@@ -169,5 +169,13 @@ public class Job {
                 ", arrivalProofUploaded=" + arrivalProofUploaded +
                 ", completionProofUploaded=" + completionProofUploaded +
                 '}';
+    }
+
+    public Subscription getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
     }
 }

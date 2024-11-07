@@ -50,21 +50,6 @@ public class ClientController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteClient(@PathVariable int id) {
-        try{
-            Optional<Client> clientOptional = clientService.getClientById(id);
-            if (clientOptional.isEmpty()) {
-                String errorMessage = "Client with ID " + id + " not found.";
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
-            }
-            clientService.deleteClient(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).build();
-        }
-    }
 
     @GetMapping("/{id}/properties")
     public ResponseEntity<List<Property>> getPropertiesByClientId(@PathVariable int id) {

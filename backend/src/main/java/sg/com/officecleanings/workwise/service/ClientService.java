@@ -43,24 +43,5 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
-    @Transactional
-    public void deleteClient(int id) {
-        List<ClientProperty> clientProperties = clientPropertyRepository.findByClientClientId(id);
-
-        clientPropertyRepository.deleteByClient_ClientId(id);
-
-        for (ClientProperty cp : clientProperties) {
-            Property property = cp.getProperty();
-            if (property != null) {
-                List<Job> jobs = jobRepository.findByPropertyPropertyId(property.getPropertyId());
-                for (Job job : jobs) {
-                    jobRepository.deleteById(job.getJobId());
-                }
-                propertyRepository.deleteById(property.getPropertyId());
-            }
-        }
-
-        clientRepository.deleteById(id);
-    }
 
 }
