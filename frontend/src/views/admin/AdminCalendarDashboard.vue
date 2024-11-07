@@ -7,15 +7,15 @@ import NewJobModal from "../../components/admin/calendar/NewJobModal.vue";
 </script>
 
 <template>
-    <div class="contain-parent">
+    <div class="contain-parent" v-bind="$attrs">
         <div class="contain-top p-3">
             <DatePicker @zoomChanged="adjustZoom" :dateSelected="dateSelected" :rangeSelected="rangeSelected" @curDateChanged="dateChanged" />
         </div>
 
-        <div class="contain-bottom">
+        <div class="contain-bottom" v-if="jobDetails">
             <!-- DAILY CALENDAR -->
             <template v-if="rangeSelected == 'Daily'">
-                <DailyCalendar :isCompressed="isCompressed" :jobDetails="jobDetails" :dateSelected="dateSelected" />
+                <DailyCalendar :isCompressed="isCompressed" :jobDetails="jobDetails" :dateSelected="dateSelected" @jobUpdated="handlejobUpdated" />
             </template>
 
             <!-- WEEKLY CALENDAR -->
@@ -79,10 +79,8 @@ export default {
             this.dateSelected = date;
             this.rangeSelected = "Weekly";
         },
-    },
-    mounted() {
-        // Fetch job details from API [For now, fetch everything]
-        fetch('http://localhost:8081/api/job')
+        pullAllJobs() {
+            fetch('http://localhost:8081/api/job')
             .then(response => response.json())
             .then(data => {
                 // Initialize jobDetails object
@@ -94,7 +92,7 @@ export default {
 
                     // Get employee IDs and end time
                     const employeeIds = job.employees.map(employee => String(employee.employeeId));
-                    const endTime = this.getEndTime(job.startTime, job.selectedPackage.hours);
+                    const endTime = this.getEndTime(job.startTime, job.actualDuration);
 
                     // Update min and max time axis if needed
                     var startHour = parseInt(job.startTime.split(":")[0]);
@@ -126,17 +124,17 @@ export default {
                         startTime: job.startTime,
                         endTime: endTime,
                         cleaners: employeeIds,
-                        arrivalProofUploaded: true, // Not included yet in DB, replace later (ADAMBFT)
-                        completionProofUpload: true, // Not included yet in DB, replace later (ADAMBFT)
+                        arrivalProofUploaded: job.arrivalProofUploaded,
+                        completionProofUpload: job.completionProofUploaded,
                         jobStatus: job.status,
                         clientDetails: {
                             clientId: job.client.clientId,
                             clientName: job.client.name,
                             clientContact: job.client.phoneNumber,
                             clientEmail: job.client.email,
-                            clientAddress: "MAILING ADDRESS PLACEHOLDER", // Not included yet in DB, replace later (ADAMBFT)
-                            clientGender: "M", // Not included yet in DB, replace later (ADAMBFT)
-                            clientAge: "42", // Not included yet in DB, replace later (ADAMBFT)
+                            clientAddress: job.client.clientAddress,
+                            clientGender: job.client.gender,
+                            clientAge: job.client.clientAge,
                         },
                     }
 
@@ -152,6 +150,15 @@ export default {
                     this.jobDetails[jobMonthStr][jobDay].push(formattedJob);
                 }
             })
+        },
+        handlejobUpdated(jobId) {
+            // Refresh jobs
+            this.pullAllJobs();
+        },
+    },
+    mounted() {
+        // Pull jobs on mount
+        this.pullAllJobs();
     },
 };
 </script>

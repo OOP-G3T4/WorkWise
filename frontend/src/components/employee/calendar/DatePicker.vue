@@ -26,6 +26,7 @@
 
 <script>
 export default {
+    emits: ['dateRangeChange'],
     data() {
         return {
             // Time range buttons

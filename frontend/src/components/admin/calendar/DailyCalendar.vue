@@ -110,25 +110,8 @@ import JobDetails from "../../general/calendar/JobDetails.vue";
                             <div class="position-relative">
                                 <!-- Place Each Job Block -->
                                 <template v-for="jobDetails in eArrJobs[1]">
-                                    <div
-                                        class="e-job-child"
-                                        :style="
-                                            eJobChildStyle(jobDetails.startTime)
-                                        "
-                                    >
-                                        <JobDetails
-                                            :popoverRight="
-                                                colIsLeftHalf(idx, idx2)
-                                            "
-                                            :heightInPx="
-                                                calculateHeightPx(
-                                                    jobDetails.startTime,
-                                                    jobDetails.endTime
-                                                )
-                                            "
-                                            :jobDetails="jobDetails"
-                                            :isCompressed="isCompressed"
-                                        />
+                                    <div class="e-job-child" :style="eJobChildStyle(jobDetails.startTime)">
+                                        <JobDetails :popoverRight="colIsLeftHalf(idx,idx2)" :heightInPx="calculateHeightPx(jobDetails.startTime, jobDetails.endTime)" :jobDetails="jobDetails" :isCompressed="isCompressed" @jobUpdated="handlejobUpdated" />
                                     </div>
                                 </template>
                             </div>
@@ -142,6 +125,7 @@ import JobDetails from "../../general/calendar/JobDetails.vue";
 
 <script>
 export default {
+    emits: ['jobUpdated'],
     props: {
         isCompressed: {
             type: Boolean,
@@ -458,6 +442,9 @@ export default {
                 flex: `${flexGrow} 1 ${properWidthPerCol * numColsInp}px`,
             };
         },
+        handlejobUpdated(jobId) {
+            this.$emit('jobUpdated', jobId);
+        }
     },
     watch: {
         hideTopBar(newVal) {

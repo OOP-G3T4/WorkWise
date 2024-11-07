@@ -50,6 +50,7 @@ import {
     faChartSimple,
     faMoneyBill,
     faBoxOpen,
+    faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -93,6 +94,7 @@ library.add(
     faChartSimple,
     faMoneyBill,
     faBoxOpen,
+    faDownload,
 );
 
 const app = createApp(App);
