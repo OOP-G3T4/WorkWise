@@ -190,7 +190,9 @@ public class JobService {
                 Job.Status.PENDING,
                 (int) durationInHours,
                 false,
-                false
+                null,
+                false,
+                null
         );
 
         System.out.println("Saving job.");
@@ -200,4 +202,6 @@ public class JobService {
     public List<Job> getJobsBySubscriptionId(int subscriptionId) {
         return jobRepository.findBySubscriptionSubscriptionId(subscriptionId);
     }
+
+
 }
