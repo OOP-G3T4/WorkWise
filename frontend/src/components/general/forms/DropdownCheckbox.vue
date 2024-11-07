@@ -34,7 +34,7 @@ import * as bootstrap from 'bootstrap'
                 </div>
 
                 <!-- Select All Button -->
-                <button type="button" class="btn btn-sm btn-light col-auto ms-2" @click="selectedIds = Object.keys(filteredItems)">
+                <button type="button" class="btn btn-sm btn-light col-auto ms-2" @click="selectAllFiltered()">
                     <font-awesome-icon icon="fa-solid fa-check" />
                 </button>
 
@@ -161,6 +161,10 @@ export default {
             } else {
                 this.selectedIds.push(key);
             }
+        },
+        selectAllFiltered() {
+            // Adds all the filtered items to the selectedIds
+            this.selectedIds = Object.keys(this.filteredItems);
         },
         listBtnClass(id) {
             // Returns the class for the list button

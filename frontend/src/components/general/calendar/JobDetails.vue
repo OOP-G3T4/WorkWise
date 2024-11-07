@@ -1150,15 +1150,25 @@ export default {
             .then((response) => response.json())
             .then((data) => {
                 // Format data to match allEmployees object
-                var formattedEmployees = {};
-
                 for (var i = 0; i < data.length; i++) {
                     var employee = data[i];
-                    formattedEmployees[employee.employeeId] = employee.name;
+                    this.allEmployees[employee.employeeId] = employee.name;
                 }
-
-                this.allEmployees = formattedEmployees;
             });
+        
+        // Also pull any employees already assigned to the job
+        let jobCleaners = this.jobDetails.cleaners;
+
+        for (let e_cleaner_id of jobCleaners) {
+            // Only run if the employee is not already in the allEmployees object
+            if (!this.allEmployees[e_cleaner_id]) {
+                fetch(`${this.$apiUrl}/employee/${e_cleaner_id}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    this.allEmployees[e_cleaner_id] = data.name;
+                });
+            }
+        }
     },
 };
 </script>
