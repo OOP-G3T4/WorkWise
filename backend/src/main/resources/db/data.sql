@@ -101,7 +101,7 @@ VALUES
         (97, 'Nico Mannion', 'nico.mannion@example.com', '80692345', '7 Outram Rd, Singapore 169078', 'MALE', 23, '2024-11-01'),
         (98, 'Killian Hayes', 'killian.hayes@example.com', '81693456', '567 Thomson Rd, Singapore 298183', 'MALE', 23, '2024-11-01'),
         (99, 'Trey Murphy III', 'trey.murphy@example.com', '82693456', '22 Sin Ming Rd, Singapore 575667', 'MALE', 23, '2024-11-01'),
-        (100, 'Jalen Johnson', 'jalen.johnson@example.com', '83693456', '55 Kent Ridge Rd, Singapore 119278', 'MALE', 22, '2024-11-01')
+        (100, 'Jalen Johnson', 'jalen.johnson@example.com', '83693456', '55 Kent Ridge Rd, Singapore 119278', 'MALE', 22, '2024-11-01');
 
 -- Insert sample properties
 INSERT INTO property (property_id, address, postal_code)
@@ -337,11 +337,7 @@ VALUES (1, 'Marky McFly', '4 Tampines Central 5, Singapore 529510, East', '91234
         (14, 'Pooh Jun Sui', '2 Jalan Bukit Merah, Singapore 150002, Central', '94123456', 'pooh.jun.sui@example.com', 'Honey Cleaner!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
         (15, 'Seng Da', '2 Jalan Bukit Merah, Singapore 150002, Central', '95123456', 'seng.da@example.com', 'Overnight warrior!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
         (16, 'Adam Apple', '2 Jalan Bukit Merah, Singapore 150002, Central', '96123456', 'adam.apple@example.com', 'Cleaning Specialist!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
-        (13, 'Seth Yup', '1 Jalan Anak Bukit, Singapore 588998, West', '93123456', 'seth.yup@example.com', 'Cleaning guru!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
-        (14, 'Pooh Jun Sui', '2 Jalan Bukit Merah, Singapore 150002, Central', '94123456', 'pooh.jun.sui@example.com', 'Honey Cleaner!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
-        (15, 'Seng Da', '2 Jalan Bukit Merah, Singapore 150002, Central', '95123456', 'seng.da@example.com', 'Overnight warrior!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
-        (16, 'Adam Apple', '2 Jalan Bukit Merah, Singapore 150002, Central', '96123456', 'adam.apple@example.com', 'Cleaning Specialist!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
-        (17, 'Mike Hawk', '55 Hillview Ave, Singapore 669567', 'mike.hawk@example.com', 'Mike is on the job!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
+        (17, 'Mike Hawk', '55 Hillview Ave, Singapore 669567', '91234555', 'mike.hawk@example.com', 'Mike is on the job!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
         (18, 'Moe Lester', '1 Jurong West Street 72, Singapore 649223', '94123456', 'm.lester@example.com', 'Can clean up any mess!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
         (19, 'Sum Ting Wong', '1 Clementi Ave 3, Singapore 129902', '95123456', 'sm.wong@example.com', 'Nothing is wrong when you choose Sum Ting Wong!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
         (20, 'Hugh Mungus', '25 Cove Way, 098209', '96123456', 'hugh.mung@example.com', 'No mess is too huge!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO');
@@ -356,7 +352,7 @@ INSERT INTO admin_employee (admin_id, employee_id)
 VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5),
         (1, 6), (1, 7), (1, 8), (1, 9), (1, 10),
         (2, 11), (2, 12), (2, 13), (2, 14), (2, 15),
-        (2, 16), (2, 17), (2, 18), (2, 19), (2, 20),
+        (2, 16), (2, 17), (2, 18), (2, 19), (2, 20);
 
 -- Insert sample package
 INSERT INTO selected_package (package_id, package_type, price, house_size, house_type, hourly_rate, pax, hours)
@@ -2629,32 +2625,32 @@ VALUES
 (2033, 104, '2023-12-21', '14:00:00', 'COMPLETED', 3.5, TRUE, TRUE);
 
 -- 68 had wrong indexing (my bad)
-(2034, 68, '2023-01-05', '09:00:00', 'COMPLETED', 3, True, True)
-(2035, 68, '2023-01-19', '09:00:00', 'COMPLETED', 3, True, True)
-(2036, 68, '2023-02-02', '09:00:00', 'COMPLETED', 3, True, True)
-(2037, 68, '2023-02-16', '09:00:00', 'COMPLETED', 3, True, True)
-(2038, 68, '2023-03-02', '09:00:00', 'COMPLETED', 3, True, True)
-(2039, 68, '2023-03-16', '09:00:00', 'COMPLETED', 3, True, True)
-(2040, 68, '2023-03-30', '09:00:00', 'COMPLETED', 3, True, True)
-(2041, 68, '2023-04-13', '09:00:00', 'COMPLETED', 3, True, True)
-(2042, 68, '2023-04-27', '09:00:00', 'COMPLETED', 3, True, True)
-(2043, 68, '2023-05-11', '09:00:00', 'COMPLETED', 3, True, True)
-(2044, 68, '2023-05-25', '09:00:00', 'COMPLETED', 3, True, True)
-(2045, 68, '2023-06-08', '09:00:00', 'COMPLETED', 3, True, True)
-(2046, 68, '2023-06-22', '09:00:00', 'COMPLETED', 3, True, True)
-(2047, 68, '2023-07-06', '09:00:00', 'COMPLETED', 3, True, True)
-(2048, 68, '2023-07-20', '09:00:00', 'COMPLETED', 3, True, True)
-(2049, 68, '2023-08-03', '09:00:00', 'COMPLETED', 3, True, True)
-(2050, 68, '2023-08-17', '09:00:00', 'COMPLETED', 3, True, True)
-(2051, 68, '2023-08-31', '09:00:00', 'COMPLETED', 3, True, True)
-(2052, 68, '2023-09-14', '09:00:00', 'COMPLETED', 3, True, True)
-(2053, 68, '2023-09-28', '09:00:00', 'COMPLETED', 3, True, True)
-(2054, 68, '2023-10-12', '09:00:00', 'COMPLETED', 3, True, True)
-(2055, 68, '2023-10-26', '09:00:00', 'COMPLETED', 3, True, True)
-(2056, 68, '2023-11-09', '09:00:00', 'COMPLETED', 3, True, True)
-(2057, 68, '2023-11-23', '09:00:00', 'COMPLETED', 3, True, True)
-(2058, 68, '2023-12-07', '09:00:00', 'COMPLETED', 3, True, True)
-(2059, 68, '2023-12-21', '09:00:00', 'COMPLETED', 3, True, True)
+(2034, 68, '2023-01-05', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2035, 68, '2023-01-19', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2036, 68, '2023-02-02', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2037, 68, '2023-02-16', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2038, 68, '2023-03-02', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2039, 68, '2023-03-16', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2040, 68, '2023-03-30', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2041, 68, '2023-04-13', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2042, 68, '2023-04-27', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2043, 68, '2023-05-11', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2044, 68, '2023-05-25', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2045, 68, '2023-06-08', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2046, 68, '2023-06-22', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2047, 68, '2023-07-06', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2048, 68, '2023-07-20', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2049, 68, '2023-08-03', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2050, 68, '2023-08-17', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2051, 68, '2023-08-31', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2052, 68, '2023-09-14', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2053, 68, '2023-09-28', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2054, 68, '2023-10-12', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2055, 68, '2023-10-26', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2056, 68, '2023-11-09', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2057, 68, '2023-11-23', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2058, 68, '2023-12-07', '09:00:00', 'COMPLETED', 3, TRUE, TRUE),
+(2059, 68, '2023-12-21', '09:00:00', 'COMPLETED', 3, TRUE, TRUE);
 
 -- Link jobs to employees
 INSERT INTO job_employee (job_id, employee_id, reasoning)
