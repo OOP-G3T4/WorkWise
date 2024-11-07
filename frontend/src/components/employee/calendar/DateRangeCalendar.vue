@@ -303,7 +303,7 @@ export default {
                     }
                     
                     return response.json().then(data => {
-                        // Handle blank response [ADAMBFT: Await backend implementation to return 200 with empty array]
+                        // Handle blank response
                         if (!data) {
                             this.jobDetailsArr = [];
                             return;

@@ -6,11 +6,11 @@ import LeaveBody from '../../components/admin/leaves/LeaveBody.vue';
 <template>
     <div class="contain-parent px-3 px-md-4">
         <div class="contain-top">
-            <LeaveControls @statusChange="handleStatusChange" @rejectAll="approveAll(false)" @approveAll="approveAll(true)" />
+            <LeaveControls @statusChange="handleStatusChange" @rejectAll="approveAll(false)" @approveAll="approveAll(true)" @filterChange="handleFilterChange" />
         </div>
         
         <div class="contain-bottom">
-            <LeaveBody :selectedLeaveStatusArr="selectedLeaveStatuses" :toUpdateLeaves="toUpdateLeaves" @selectedChanged="handleSelectedChange" ref="" />
+            <LeaveBody :selectedLeaveStatusArr="selectedLeaveStatuses" :toUpdateLeaves="toUpdateLeaves" @selectedChanged="handleSelectedChange" :filtersObj="filterObj" />
         </div>
     </div>
 </template>
@@ -22,6 +22,12 @@ export default {
             selectedLeaveStatuses: ["Pending", "Approved", "Rejected"],
             selectedLeaveIds: [],
             toUpdateLeaves: false,
+
+            // For filtering
+            filterObj : {
+                employees: [],
+                leavetypes: [],
+            },
         };
     },
     methods: {
@@ -72,6 +78,10 @@ export default {
         },
         handleSelectedChange(selectedLeaveIds) {
             this.selectedLeaveIds = selectedLeaveIds;
+        },
+        handleFilterChange(filters) {
+            // Handle filter change
+            this.filterObj = filters;
         },
     },
 };

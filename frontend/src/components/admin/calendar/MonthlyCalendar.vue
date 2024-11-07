@@ -223,6 +223,12 @@ export default {
         dateSelected() {
             this.updateMaxJobs();
         },
+        jobDetails: {
+            handler() {
+                this.updateMaxJobs();
+            },
+            deep: true,
+        },
     },
     mounted() {
         this.updateMaxJobs();

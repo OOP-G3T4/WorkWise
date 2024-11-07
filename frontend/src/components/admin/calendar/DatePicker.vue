@@ -1,3 +1,7 @@
+<script setup>
+import FilterButton from './FilterButton.vue';
+</script>
+
 <template>
     <div class="container-fluid p-0 m-0">
         <div class="row justify-content-between align-items-center m-0">
@@ -31,7 +35,7 @@
                 <button class="btn btn-resp btn-primary d-md-none me-2" @click="shiftToday()" :disabled="isToday"><font-awesome-icon icon="fa-solid fa-calendar" /></button>
                 <button class="btn btn-resp btn-light d-md-none me-2" @click="toggleZoom()"><font-awesome-icon :icon="zoomedOut ? 'fa-solid fa-magnifying-glass-plus' : 'fa-solid fa-magnifying-glass-minus'" /></button>
 
-                <button class="btn btn-resp btn-light"><font-awesome-icon icon="fa-solid fa-filter" /></button>
+                <FilterButton @filterChanged="handleFilterChange" />
                 <button class="btn btn-resp btn-light ms-2" type="button" data-bs-toggle="modal" data-bs-target="#adminAddNewJobModal"><font-awesome-icon icon="fa-solid fa-plus" /><span class="ms-2 d-none d-md-inline-block">New Job</span></button>
             </div>
         </div>
@@ -40,7 +44,7 @@
 
 <script>
 export default {
-    emits: ['curDateChanged', 'zoomChanged'],
+    emits: ['curDateChanged', 'zoomChanged', 'filterChanged'],
     props: {
         dateSelected: {
             type: Date,
@@ -182,6 +186,9 @@ export default {
         },
         handleTimeRangeClick(e_range) {
             this.selectedRange = e_range;
+        },
+        handleFilterChange(selectedFilters) {
+            this.$emit('filterChanged', selectedFilters);
         },
     },
     mounted() {

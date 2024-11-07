@@ -667,9 +667,12 @@ export default {
             // SETTINGS BELOW ===================================
             // To change color of statuses
             statusColorMap: {
-                "IN PROGRESS": "#e3b322", // Not a current field update later (ADAMBFT)
-                COMPLETED: "#0f6320",
-                PENDING: "#858585",
+                PENDING: '#858585',
+                SCHEDULED: '#858585',
+                CANCELLED: '#FF5E5B',
+                IN_PROGRESS: '#F3B73E',
+                ACTION_REQUIRED: '#2a86b4',
+                COMPLETED: '#008761',
             },
 
             // Buffer time allowed after job starts before warning is shown if arrivalProof is not uploaded

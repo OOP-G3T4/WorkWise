@@ -9,7 +9,7 @@ import NewJobModal from "../../components/admin/calendar/NewJobModal.vue";
 <template>
     <div class="contain-parent" v-bind="$attrs">
         <div class="contain-top p-3">
-            <DatePicker @zoomChanged="adjustZoom" :dateSelected="dateSelected" :rangeSelected="rangeSelected" @curDateChanged="dateChanged" />
+            <DatePicker @zoomChanged="adjustZoom" :dateSelected="dateSelected" :rangeSelected="rangeSelected" @curDateChanged="dateChanged" @filterChanged="handleFilterChange" />
         </div>
 
         <div class="contain-bottom" v-if="jobDetails">
@@ -40,12 +40,117 @@ export default {
         return {
             isCompressed: false,
 
-            // Job Details (Sorted by month, then day)
-            jobDetails: null,
+            allJobsRaw: null, // Raw data from API
 
             dateSelected: new Date(),
             rangeSelected: "",
+
+            // Filters Applied
+            selectedClients: [],
+            selectedEmployees: [],
+            selectedPackages: [],
+            selectedStatuses: [],
         };
+    },
+    computed: {
+        jobDetails() {
+            // Jobs sorted by month, then day { "mm-yyyy": { "dd": [job1, job2, ...] } }
+            let res = {};
+
+            for (var i = 0; i < this.filteredJobs.length; i++) {
+                // Handle each job object
+                var job = this.filteredJobs[i];
+
+                // Get employee IDs and end time
+                const employeeIds = job.employees.map(employee => String(employee.employeeId));
+                const endTime = this.getEndTime(job.startTime, job.actualDuration);
+
+                // Update min and max time axis if needed
+                var startHour = parseInt(job.startTime.split(":")[0]);
+                var endHour = parseInt(endTime.split(":")[0]) + 1;
+
+                if (startHour < this.timeAxisMin) {
+                    this.timeAxisMin = startHour;
+                }
+
+                if (endHour > this.timeAxisMax) {
+                    this.timeAxisMax = endHour;
+                }
+
+                // Get job month in "mm-yyyy" and day in "dd" format
+                var jobDate = new Date(job.date);
+                var jobMonthStr = (jobDate.getMonth()+1) + "-" + jobDate.getFullYear();
+                var jobDay = jobDate.getDate();
+
+                // Format job details
+                var formattedJob = {
+                    appointmentId: job.jobId,
+                    packageType: job.selectedPackage.packageId,
+                    jobAddress: {
+                        id: job.property.propertyId,
+                        address: job.property.address,
+                        postalCode: job.property.postalCode,
+                    },
+                    date: job.date,
+                    startTime: job.startTime,
+                    endTime: endTime,
+                    cleaners: employeeIds,
+                    arrivalProofUploaded: job.arrivalProofUploaded,
+                    completionProofUpload: job.completionProofUploaded,
+                    jobStatus: job.status,
+                    clientDetails: {
+                        clientId: job.client.clientId,
+                        clientName: job.client.name,
+                        clientContact: job.client.phoneNumber,
+                        clientEmail: job.client.email,
+                        clientAddress: job.client.clientAddress,
+                        clientGender: job.client.gender,
+                        clientAge: job.client.clientAge,
+                    },
+                }
+
+                // Add job to jobDetails object
+                if (!(jobMonthStr in res)) {
+                    res[jobMonthStr] = {};
+                }
+
+                if (!(jobDay in res[jobMonthStr])) {
+                    res[jobMonthStr][jobDay] = [];
+                }
+
+                res[jobMonthStr][jobDay].push(formattedJob);
+            }
+
+            return res;
+        },
+        filteredJobs() {
+            // If no jobs pulled yet
+            if (this.allJobsRaw == null) {
+                return [];
+            }
+
+            // If any filters not applied yet
+            if (!this.selectedClients || !this.selectedEmployees || !this.selectedPackages || !this.selectedStatuses) {
+                return this.jobDetails;
+            }
+
+            let res = [];
+
+            for (var i = 0; i < this.allJobsRaw.length; i++) {
+                var job = this.allJobsRaw[i];
+
+                var clientMatch = this.selectedClients.length == 0 || this.selectedClients.includes(String(job.client.clientId));
+                var employeeMatch = this.selectedEmployees.length == 0 || job.employees.some(employee => this.selectedEmployees.includes(String(employee.employeeId)));
+                var packageMatch = this.selectedPackages.length == 0 || this.selectedPackages.includes(job.selectedPackage.packageId);
+                var statusMatch = this.selectedStatuses.length == 0 || this.selectedStatuses.includes(job.status);
+
+                if (clientMatch && employeeMatch && packageMatch && statusMatch) {
+                    res.push(job);
+                }
+            }
+
+            return res;
+        },
     },
     methods: {
         adjustZoom(data) {
@@ -83,77 +188,18 @@ export default {
             fetch(`${this.$apiUrl}/job`)
             .then(response => response.json())
             .then(data => {
-                // Initialize jobDetails object
-                this.jobDetails = {};
-
-                for (var i = 0; i < data.length; i++) {
-                    // Handle each job object
-                    var job = data[i];
-
-                    // Get employee IDs and end time
-                    const employeeIds = job.employees.map(employee => String(employee.employeeId));
-                    const endTime = this.getEndTime(job.startTime, job.actualDuration);
-
-                    // Update min and max time axis if needed
-                    var startHour = parseInt(job.startTime.split(":")[0]);
-                    var endHour = parseInt(endTime.split(":")[0]) + 1;
-
-                    if (startHour < this.timeAxisMin) {
-                        this.timeAxisMin = startHour;
-                    }
-
-                    if (endHour > this.timeAxisMax) {
-                        this.timeAxisMax = endHour;
-                    }
-
-                    // Get job month in "mm-yyyy" and day in "dd" format
-                    var jobDate = new Date(job.date);
-                    var jobMonthStr = (jobDate.getMonth()+1) + "-" + jobDate.getFullYear();
-                    var jobDay = jobDate.getDate();
-
-                    // Format job details
-                    var formattedJob = {
-                        appointmentId: job.jobId,
-                        packageType: job.selectedPackage.packageId,
-                        jobAddress: {
-                            id: job.property.propertyId,
-                            address: job.property.address,
-                            postalCode: job.property.postalCode,
-                        },
-                        date: job.date,
-                        startTime: job.startTime,
-                        endTime: endTime,
-                        cleaners: employeeIds,
-                        arrivalProofUploaded: job.arrivalProofUploaded,
-                        completionProofUpload: job.completionProofUploaded,
-                        jobStatus: job.status,
-                        clientDetails: {
-                            clientId: job.client.clientId,
-                            clientName: job.client.name,
-                            clientContact: job.client.phoneNumber,
-                            clientEmail: job.client.email,
-                            clientAddress: job.client.clientAddress,
-                            clientGender: job.client.gender,
-                            clientAge: job.client.clientAge,
-                        },
-                    }
-
-                    // Add job to jobDetails object
-                    if (!(jobMonthStr in this.jobDetails)) {
-                        this.jobDetails[jobMonthStr] = {};
-                    }
-
-                    if (!(jobDay in this.jobDetails[jobMonthStr])) {
-                        this.jobDetails[jobMonthStr][jobDay] = [];
-                    }
-
-                    this.jobDetails[jobMonthStr][jobDay].push(formattedJob);
-                }
+                this.allJobsRaw = data;
             })
         },
         handlejobUpdated(jobId) {
             // Refresh jobs
             this.pullAllJobs();
+        },
+        handleFilterChange(data) {
+            this.selectedClients = data.clients;
+            this.selectedEmployees = data.employees;
+            this.selectedPackages = data.packages;
+            this.selectedStatuses = data.statuses;
         },
     },
     mounted() {
