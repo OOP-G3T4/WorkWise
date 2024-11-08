@@ -196,7 +196,7 @@ public class CheckerService {
     private boolean hasJobTimeClash(Employee employee, Job job, List<JobAssignmentDTO> jobAssignments) {
         List<Job> jobs = jobEmployeeRepository.findByEmployeeAndDate(employee.getEmployeeId(), job.getDate());
         LocalTime jobStart = job.getStartTime().toLocalTime();
-        LocalTime jobEnd = jobStart.plusHours(job.getActualDuration() == 0 ? job.getSelectedPackage().getHours() : job.getActualDuration());
+        LocalTime jobEnd = jobStart.plusHours(job.getActualDuration() == 0 ? job.getSubscription().getSelectedPackage().getHours(): job.getActualDuration());
 
         for (Job j : jobs) {
             LocalTime lastJobStart = j.getStartTime().toLocalTime();
@@ -216,7 +216,7 @@ public class CheckerService {
                     Job newJob = getJobDetails(assignment.getJobId());
                     if (newJob != null && newJob.getDate().equals(job.getDate())) {
                         LocalTime newJobStart = newJob.getStartTime().toLocalTime();
-                        LocalTime newJobEnd = newJobStart.plusHours(newJob.getActualDuration() == 0 ? newJob.getSelectedPackage().getHours() : newJob.getActualDuration());
+                        LocalTime newJobEnd = newJobStart.plusHours(newJob.getActualDuration() == 0 ? newJob.getSubscription().getSelectedPackage().getHours() : newJob.getActualDuration());
                         if (jobStart.isBefore(newJobEnd) && jobEnd.isAfter(newJobStart)) {
                             System.out.println("Job time clash detected");
                             System.out.println("Job 1: " + jobStart + " - " + jobEnd);
@@ -281,7 +281,7 @@ public class CheckerService {
         LocalTime newJobStart = job.getStartTime().toLocalTime();
 
         // Calculate travel time in minutes
-        int travelTime = calculateTravelTime(lastJob.getProperty().getPostalCode(), job.getProperty().getPostalCode());
+        int travelTime = calculateTravelTime(lastJob.getSubscription().getProperty().getPostalCode(), job.getSubscription().getProperty().getPostalCode());
 
         // Check if there is enough time to travel between jobs
         boolean hasSufficientTime = lastJobEnd.plusMinutes(travelTime).isBefore(newJobStart);
@@ -307,7 +307,7 @@ public class CheckerService {
     private boolean hasProperMealBreak(Employee employee, Job job, List<JobAssignmentDTO> jobAssignments) {
         LocalDate jobDate = job.getDate();
         LocalTime jobStart = job.getStartTime().toLocalTime();
-        LocalTime jobEnd = jobStart.plusHours(job.getActualDuration() == 0 ? job.getSelectedPackage().getHours() : job.getActualDuration());
+        LocalTime jobEnd = jobStart.plusHours(job.getActualDuration() == 0 ? job.getSubscription().getSelectedPackage().getHours() : job.getActualDuration());
 
         LocalTime lunchStart = LocalTime.of(11, 0);
         LocalTime lunchEnd = LocalTime.of(13, 0);
@@ -340,7 +340,7 @@ public class CheckerService {
             boolean isUninterrupted = true;
             for (Job j : jobs) {
                 LocalTime jobStart = j.getStartTime().toLocalTime();
-                LocalTime jobEnd = jobStart.plusHours(j.getActualDuration() == 0 ? j.getSelectedPackage().getHours() : j.getActualDuration());
+                LocalTime jobEnd = jobStart.plusHours(j.getActualDuration() == 0 ? j.getSubscription().getSelectedPackage().getHours() : j.getActualDuration());
                 if (time.isBefore(jobEnd) && time.plusHours(1).isAfter(jobStart)) {
                     isUninterrupted = false;
                     break;
