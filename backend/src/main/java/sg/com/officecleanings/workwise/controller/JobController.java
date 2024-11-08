@@ -110,11 +110,11 @@ public class JobController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
+    
     @GetMapping("/by-day")
     public ResponseEntity<List<Job>> getJobsByDay(@RequestParam("date") String dateStr) {
         try {
-            Date date = Date.valueOf(dateStr);
+            LocalDate date = LocalDate.parse(dateStr);
             List<Job> jobs = jobService.getJobsByDay(date);
             return ResponseEntity.ok(jobs);
         } catch (IllegalArgumentException e) {
