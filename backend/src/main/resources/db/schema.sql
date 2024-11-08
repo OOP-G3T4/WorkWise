@@ -110,11 +110,11 @@ CREATE TABLE IF NOT EXISTS `subscription` (
     `client_id` INT NOT NULL,
     `property_id` INT NOT NULL,
     `package_id` VARCHAR(25) NOT NULL,
-    `package_type` ENUM('WEEKLY', 'BI_WEEKLY') NOT NULL,
+    -- `package_type` ENUM('WEEKLY', 'BI_WEEKLY') NOT NULL,
     `job_day` ENUM('MONDAY', 'TUESDAY', 'WEDNESDAY',
                    'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY') NOT NULL,
     `job_starttime` TIME NOT NULL,
-    `job_endtime` TIME NOT NULL,
+    -- `job_endtime` TIME NOT NULL,
     `subscription_status` ENUM('ACTIVE', 'PAUSED', 'CANCELLED') NOT NULL,
     PRIMARY KEY (`subscription_id`),
     FOREIGN KEY (`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE,
@@ -124,21 +124,23 @@ CREATE TABLE IF NOT EXISTS `subscription` (
 
 CREATE TABLE IF NOT EXISTS `job` (
     `job_id` int  NOT NULL AUTO_INCREMENT,
-    `client_id` int  NOT NULL ,
-    `property_id` int  NOT NULL ,
+    -- `client_id` int  NOT NULL ,
+    -- `property_id` int  NOT NULL ,
     `subscription_id` int NOT NULL,
-    `package_id` varchar(25) NOT NULL,
+    -- `package_id` varchar(25) NOT NULL,
     `date` date  NOT NULL ,
     `start_time` time  NOT NULL ,
     `status` ENUM('PENDING', 'SCHEDULED', 'CANCELLED', 'IN_PROGRESS', 'ACTION_REQUIRED', 'COMPLETED')  NOT NULL ,
     `actual_duration` int  NOT NULL ,
     `arrival_proof_uploaded` BOOLEAN NOT NULL,
+    `arrival_proof_img` LONGBLOB,
     `completion_proof_uploaded` BOOLEAN NOT NULL,
+    `completion_proof_img` LONGBLOB,
     PRIMARY KEY (`job_id`),
-    FOREIGN KEY (`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE,
-    FOREIGN KEY (`property_id`) REFERENCES `property`(`property_id`) ON DELETE CASCADE,
-    FOREIGN KEY (`subscription_id`) REFERENCES `subscription`(`subscription_id`) ON DELETE CASCADE,
-    FOREIGN KEY (`package_id`) REFERENCES `selected_package`(`package_id`) ON DELETE CASCADE
+    -- FOREIGN KEY (`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE,
+    -- FOREIGN KEY (`property_id`) REFERENCES `property`(`property_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`subscription_id`) REFERENCES `subscription`(`subscription_id`) ON DELETE CASCADE
+    -- FOREIGN KEY (`package_id`) REFERENCES `selected_package`(`package_id`) ON DELETE CASCADE
     )ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE IF NOT EXISTS `job_employee` (

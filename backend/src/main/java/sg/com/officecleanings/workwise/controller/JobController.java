@@ -6,9 +6,11 @@ import sg.com.officecleanings.workwise.model.Job;
 import sg.com.officecleanings.workwise.service.JobService;
 import sg.com.officecleanings.workwise.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -108,11 +110,11 @@ public class JobController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
+    
     @GetMapping("/by-day")
     public ResponseEntity<List<Job>> getJobsByDay(@RequestParam("date") String dateStr) {
         try {
-            Date date = Date.valueOf(dateStr);
+            LocalDate date = LocalDate.parse(dateStr);
             List<Job> jobs = jobService.getJobsByDay(date);
             return ResponseEntity.ok(jobs);
         } catch (IllegalArgumentException e) {
@@ -161,6 +163,66 @@ public class JobController {
             return ResponseEntity.ok(jobs);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @PostMapping("/{id}/upload-arrival-proof")
+    public ResponseEntity<String> uploadArrivalProofImg(@PathVariable int id, @RequestParam("file") MultipartFile file) {
+        try {
+            Optional<Job> jobOptional = jobService.getJobById(id);
+            if (jobOptional.isPresent()) {
+                Job job = jobOptional.get();
+                job.setArrivalProofImg(file.getBytes());
+                job.setArrivalProofUploaded(true);
+                jobService.saveJob(job);
+                return ResponseEntity.ok("Arrival proof image uploaded successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading arrival proof image.");
+        }
+    }
+
+    @PostMapping("/{id}/upload-completion-proof")
+    public ResponseEntity<String> uploadCompletionProofImg(@PathVariable int id, @RequestParam("file") MultipartFile file) {
+        try {
+            Optional<Job> jobOptional = jobService.getJobById(id);
+            if (jobOptional.isPresent()) {
+                Job job = jobOptional.get();
+                job.setCompletionProofImg(file.getBytes());
+                job.setCompletionProofUploaded(true);
+                jobService.saveJob(job);
+                return ResponseEntity.ok("Completion proof image uploaded successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading completion proof image.");
+        }
+    }
+
+    @GetMapping("/{id}/arrival-proof")
+    public ResponseEntity<byte[]> getArrivalProofImg(@PathVariable int id) {
+        Optional<Job> jobOptional = jobService.getJobById(id);
+        if (jobOptional.isPresent()) {
+            Job job = jobOptional.get();
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(job.getArrivalProofImg());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping("/{id}/completion-proof")
+    public ResponseEntity<byte[]> getCompletionProofImg(@PathVariable int id) {
+        Optional<Job> jobOptional = jobService.getJobById(id);
+        if (jobOptional.isPresent()) {
+            Job job = jobOptional.get();
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(job.getCompletionProofImg());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 }

@@ -3,6 +3,7 @@ package sg.com.officecleanings.workwise.model;
 import jakarta.persistence.*;
 
 import java.sql.Time;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -16,17 +17,20 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int jobId;
 
-    @ManyToOne
-    @JoinColumn(name = "clientId", referencedColumnName = "clientId", nullable = false)
-    private Client client;
+    // @ManyToOne
+    // @JoinColumn(name = "clientId", referencedColumnName = "clientId", nullable =
+    // false)
+    // private Client client;
 
-    @ManyToOne
-    @JoinColumn(name = "propertyId", referencedColumnName = "propertyId", nullable = false)
-    private Property property;
+    // @ManyToOne
+    // @JoinColumn(name = "propertyId", referencedColumnName = "propertyId",
+    // nullable = false)
+    // private Property property;
 
-    @ManyToOne
-    @JoinColumn(name = "packageId", referencedColumnName = "packageId", nullable = false)
-    private SelectedPackage selectedPackage; // Note cannot use Package
+    // @ManyToOne
+    // @JoinColumn(name = "packageId", referencedColumnName = "packageId", nullable
+    // = false)
+    // private SelectedPackage selectedPackage; // Note cannot use Package
 
     @ManyToOne
     @JoinColumn(name = "subscriptionId", referencedColumnName = "subscriptionId", nullable = false)
@@ -44,6 +48,14 @@ public class Job {
 
     private Boolean completionProofUploaded = false;
 
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] arrivalProofImg;
+
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] completionProofImg;
+
     @ManyToMany
     @JoinTable(name = "jobEmployee", joinColumns = @JoinColumn(name = "jobId"), inverseJoinColumns = @JoinColumn(name = "employeeId"))
     private Set<Employee> employees;
@@ -51,18 +63,22 @@ public class Job {
     public Job() {
     }
 
-    public Job(Client client, Property property, SelectedPackage selectedPackage, Subscription subscription, LocalDate date, Time startTime,
-               Status status, int actualDuration, Boolean arrivalProofUploaded, Boolean completionProofUploaded) {
-        this.client = client;
-        this.property = property;
-        this.selectedPackage = selectedPackage;
+    public Job(Subscription subscription, LocalDate date, Time startTime,
+            Status status, int actualDuration, Boolean arrivalProofUploaded, byte[] arrivalProofImg,
+            Boolean completionProofUploaded,
+            byte[] completionProofImg) {
+        // this.client = client;
+        // this.property = property;
+        // this.selectedPackage = selectedPackage;
         this.subscription = subscription;
         this.date = date;
         this.startTime = startTime;
         this.status = status;
         this.actualDuration = actualDuration;
         this.arrivalProofUploaded = arrivalProofUploaded;
+        this.arrivalProofImg = arrivalProofImg;
         this.completionProofUploaded = completionProofUploaded;
+        this.completionProofImg = completionProofImg;
     }
 
     public int getJobId() {
@@ -73,29 +89,29 @@ public class Job {
         this.jobId = jobId;
     }
 
-    public Client getClient() {
-        return client;
-    }
+    // public Client getClient() {
+    // return client;
+    // }
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
+    // public void setClient(Client client) {
+    // this.client = client;
+    // }
 
-    public Property getProperty() {
-        return property;
-    }
+    // public Property getProperty() {
+    // return property;
+    // }
 
-    public void setProperty(Property property) {
-        this.property = property;
-    }
+    // public void setProperty(Property property) {
+    // this.property = property;
+    // }
 
-    public SelectedPackage getSelectedPackage() {
-        return selectedPackage;
-    }
+    // public SelectedPackage getSelectedPackage() {
+    // return selectedPackage;
+    // }
 
-    public void setSelectedPackage(SelectedPackage selectedPackage) {
-        this.selectedPackage = selectedPackage;
-    }
+    // public void setSelectedPackage(SelectedPackage selectedPackage) {
+    // this.selectedPackage = selectedPackage;
+    // }
 
     public LocalDate getDate() {
         return date;
@@ -153,13 +169,29 @@ public class Job {
         this.completionProofUploaded = completionProofUploaded;
     }
 
+    public byte[] getArrivalProofImg() {
+        return arrivalProofImg;
+    }
+
+    public void setArrivalProofImg(byte[] arrivalProofImg) {
+        this.arrivalProofImg = arrivalProofImg;
+    }
+
+    public byte[] getCompletionProofImg() {
+        return completionProofImg;
+    }
+
+    public void setCompletionProofImg(byte[] completionProofImg) {
+        this.completionProofImg = completionProofImg;
+    }
+
     @Override
     public String toString() {
         return "Job{" +
                 "jobId=" + jobId +
-                ", client=" + client +
-                ", property=" + property +
-                ", selectedPackage=" + selectedPackage +
+                // ", client=" + client +
+                // ", property=" + property +
+                // ", selectedPackage=" + selectedPackage +
                 ", subscription=" + subscription +
                 ", date=" + date +
                 ", startTime=" + startTime +
@@ -169,5 +201,13 @@ public class Job {
                 ", arrivalProofUploaded=" + arrivalProofUploaded +
                 ", completionProofUploaded=" + completionProofUploaded +
                 '}';
+    }
+
+    public Subscription getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
     }
 }
