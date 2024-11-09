@@ -58,6 +58,55 @@ public class JobController {
         try {
             Optional<Job> job = jobService.getJobById(id);
             if (job.isPresent()) {
+                Job existingJob = job.get();
+
+                // Preserve the values of all attributes that are not updated, allowing for partial edits:
+
+                // subscription
+                if (jobDetails.getSubscription() == null) {
+                    jobDetails.setSubscription(existingJob.getSubscription());
+                }
+
+                // date
+                if (jobDetails.getDate() == null) {
+                    jobDetails.setDate(existingJob.getDate());
+                }
+
+                // startTime
+                if (jobDetails.getStartTime() == null) {
+                    jobDetails.setStartTime(existingJob.getStartTime());
+                }
+
+                // status
+                if (jobDetails.getStatus() == null) {
+                    jobDetails.setStatus(existingJob.getStatus());
+                }
+
+                // employees
+                if (jobDetails.getEmployees() == null) {
+                    jobDetails.setEmployees(existingJob.getEmployees());
+                }
+
+                // arrivalProofUploaded
+                if (existingJob.getArrivalProofUploaded() != null && existingJob.getArrivalProofUploaded()) {
+                    jobDetails.setArrivalProofUploaded(true);
+                }
+
+                // arrivalProofImg
+                if (existingJob.getArrivalProofImg() != null) {
+                    jobDetails.setArrivalProofImg(existingJob.getArrivalProofImg());
+                }
+
+                // completionProofUploaded
+                if (existingJob.getCompletionProofUploaded() != null && existingJob.getCompletionProofUploaded()) {
+                    jobDetails.setCompletionProofUploaded(true);
+                }
+
+                // completionProofImg
+                if (existingJob.getCompletionProofImg() != null) {
+                    jobDetails.setCompletionProofImg(existingJob.getCompletionProofImg());
+                }
+
                 jobDetails.setJobId(id);
                 return ResponseEntity.ok(jobService.saveJob(jobDetails));
             }
