@@ -21,7 +21,7 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                 class="fs-9 fs-md-7 card-header fw-semibold px-2 px-md-3 py-1 py-md-2 text-truncate flex-shrink-0"
             >
                 <font-awesome-icon
-                    v-if="showJobStartedWarning"
+                    v-if="showJobStartedWarning || showJobCompletedWarning"
                     class="text-danger me-2"
                     icon="fa-solid fa-circle-exclamation"
                 />{{ jobDetails.clientDetails.clientName }}
@@ -162,19 +162,10 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                 </template>
 
                                 <template v-else-if="userType == 'employee'">
-                                    <div class="col-12 mb-3">
-                                        <p class="m-0">
-                                            Upload proof of arrival within
-                                            {{ arrivalBufferMinutes }} min to
-                                            continue this job
-                                        </p>
-                                    </div>
-
                                     <div class="col-12">
-                                        <div class="input-group">
-                                            <input type="file" class="form-control" @change="handleArrivalFileUpload" />
-                                            <button class="btn btn-primary" type="button" @click="submitArrivalImg()">Upload</button>
-                                        </div>
+                                        <p class="m-0">
+                                            Upload proof of arrival to continue this job
+                                        </p>
                                     </div>
                                 </template>
                             </div>
@@ -209,17 +200,10 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                 </template>
     
                                 <template v-else-if="userType == 'employee'">
-                                    <div class="col-12 mb-3">
+                                    <div class="col-12">
                                         <p class="m-0">
                                             Upload proof of completion to finish this job
                                         </p>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <div class="input-group">
-                                            <input type="file" class="form-control" @change="handleCompletionFileUpload" />
-                                            <button class="btn btn-primary" type="button" @click="submitCompletedImg()">Upload</button>
-                                        </div>
                                     </div>
                                 </template>
                             </div>
@@ -266,16 +250,11 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                             </div>
 
                             <!-- Address -->
-                            <div v-if="!isEditMode" class="col-auto">
+                            <div class="col-auto">
                                 <p class="text-secondary m-0">Address</p>
                                 <h6 class="m-0">
                                     {{ jobDetails.jobAddress.address }}
                                 </h6>
-                            </div>
-
-                            <!-- Address [Edit Mode] -->
-                            <div v-else class="col-12 mt-3">
-                                <DropdownSearch :items="clientProperties" :inputValue="jobEdit.jobAddress.id" fieldName="Address" :uniqueComponentId="jobDetails.appointmentId" @valChange="handleAddressChange" />
                             </div>
                         </div>
 
@@ -439,7 +418,10 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                 <p class="text-secondary m-0">
                                     Cleaner{{ overOneCleaner ? `s` : `` }}
                                 </p>
-                                <h6 class="m-0">
+
+                                <h6 v-if="jobDetails.cleaners.length==0" class="m-0">NIL</h6>
+
+                                <h6 v-else class="m-0">
                                     <template
                                         v-for="(
                                             e_cleaner_id, index
@@ -497,6 +479,74 @@ import DropdownSearch from "../forms/DropdownSearch.vue";
                                             <font-awesome-icon icon="fa-solid fa-trash" />
                                         </button>
                                     </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Arrival & Completion Proof Image Downloads -->
+                        <div class="row mt-3">
+                            <!-- ARRIVAL PROOF SECTION -->
+
+                            <!-- Download Arrival Proof -->
+                            <div class="col" v-if="jobDetails.arrivalProofUploaded">
+                                <button class="btn btn-light w-100 mb-3" @click="downloadArrivalImage()">
+                                    <font-awesome-icon icon="fa-solid fa-download" class="me-2" />Arrival Proof
+                                </button>
+                            </div>
+
+                            <!-- Upload Arrival Proof Input -->
+                            <div :class="isJobStartBeforeToday(jobDetails.date, jobDetails.startTime) ? 'col-12' : 'col'" v-else>
+                                <template v-if="userType != 'admin'">
+                                    <p class="text-secondary mb-1"><font-awesome-icon icon="fa-solid fa-camera" class="me-2" />Upload Arrival Proof</p>
+    
+                                    <div v-if="isJobStartBeforeToday(jobDetails.date, jobDetails.startTime)" class="input-group mb-3">
+                                        <input type="file" class="form-control" @change="handleArrivalFileUpload" />
+                                        <button class="btn btn-primary" type="button" @click="submitArrivalImg()">Upload</button>
+                                    </div>
+                                    
+                                    <p v-else class="text-secondary fst-italic">Job not started</p>
+                                </template>
+
+                                <template v-else>
+                                    <p class="text-secondary mb-1"><font-awesome-icon icon="fa-solid fa-camera" class="me-2" />Arrival Proof</p>
+    
+                                    <p v-if="isJobStartBeforeToday(jobDetails.date, jobDetails.startTime)" class="text-secondary fst-italic">Not yet uploaded</p>
+                                    
+                                    <p v-else class="text-secondary fst-italic">Job not started</p>
+                                </template>
+                            </div>
+
+
+                            <!-- COMPLETION PROOF SECTION -->
+
+                            <!-- Download Completion Proof -->
+                            <div class="col-12" v-if="jobDetails.completionProofUploaded">
+                                <button class="btn btn-light w-100" @click="downloadCompletionImage()">
+                                    <font-awesome-icon icon="fa-solid fa-download" class="me-2" />Completion Proof
+                                </button>
+                            </div>
+
+                            <!-- Upload Completion Proof Input -->
+                            <div :class="isJobStartBeforeToday(jobDetails.date, jobDetails.startTime) ? 'col-12' : 'col'" v-else>
+                                <template v-if="userType != 'admin'">
+                                    <p class="text-secondary mb-1"><font-awesome-icon icon="fa-solid fa-camera" class="me-2" />Upload Completion Proof</p>
+    
+                                    <div v-if="isJobStartBeforeToday(jobDetails.date, jobDetails.startTime) && jobDetails.arrivalProofUploaded" class="input-group mb-3">
+                                        <input type="file" class="form-control" @change="handleCompletionFileUpload" />
+                                        <button class="btn btn-primary" type="button" @click="submitCompletedImg()">Upload</button>
+                                    </div>
+                                    
+                                    <p v-else-if="!jobDetails.arrivalProofUploaded" class="text-secondary fst-italic">Upload Arrival Proof First</p>
+    
+                                    <p v-else class="text-secondary fst-italic">Job not started</p>
+                                </template>
+
+                                <template v-else>
+                                    <p class="text-secondary mb-1"><font-awesome-icon icon="fa-solid fa-camera" class="me-2" />Completion Proof</p>
+    
+                                    <p v-if="isJobStartBeforeToday(jobDetails.date, jobDetails.startTime)" class="text-secondary fst-italic">Not yet uploaded</p>
+                                    
+                                    <p v-else class="text-secondary fst-italic">Job not started</p>
                                 </template>
                             </div>
                         </div>
@@ -744,7 +794,7 @@ export default {
 
         showJobCompletedWarning() {
             // If proof already uploaded OR job status is COMPLETED, return false
-            if (this.jobDetails.completionProofUpload || this.jobDetails.jobStatus == "COMPLETED") {
+            if (this.jobDetails.completionProofUploaded || this.jobDetails.jobStatus == "COMPLETED") {
                 return false;
             }
 
@@ -778,13 +828,13 @@ export default {
             return {
                 "compressed-parent-container": this.isCompressed,
                 "border border-3 border-danger":
-                    this.isCompressed && this.showJobStartedWarning,
+                    this.isCompressed && (this.showJobStartedWarning || this.showJobCompletedWarning),
             };
         },
 
         jobCardClasses() {
             return {
-                "border border-3 border-danger": this.showJobStartedWarning,
+                "border border-3 border-danger": this.showJobStartedWarning || this.showJobCompletedWarning,
                 "compressed-job-card": this.isCompressed,
                 showPopoverRight: this.popoverRight && this.isCompressed,
                 showPopoverLeft: !this.popoverRight && this.isCompressed,
@@ -912,14 +962,8 @@ export default {
             // API call to update job
             let jobId = this.jobDetails.appointmentId;
             let reqBody = {
-                "client": {
-                    "clientId": this.jobEdit.clientDetails.clientId
-                },
-                "property": {
-                    "propertyId": this.jobEdit.jobAddress.id
-                },
-                "selectedPackage": {
-                    "packageId": this.jobEdit.packageType
+                "subscription": {
+                    "subscriptionId": this.jobEdit.subscriptionId
                 },
                 "date": this.jobEdit.date,
                 "startTime": this.formatTime(this.jobEdit.startTime),
@@ -1019,19 +1063,6 @@ export default {
                     this.allPropertyInfo = allPropertyInfo;
                 });
         },
-        handleAddressChange(newAddressId) {
-            if (newAddressId == null || newAddressId == "") {
-                return;
-            }
-
-            // Updates the address in the jobEdit object
-            const newAddress = this.allPropertyInfo[newAddressId].address;
-            const newPostalCode = this.allPropertyInfo[newAddressId].postalCode;
-
-            this.jobEdit.jobAddress.id = newAddressId;
-            this.jobEdit.jobAddress.address = newAddress;
-            this.jobEdit.jobAddress.postalCode = newPostalCode;
-        },
         calculateHours(startTime, endTime) {
             // Takes in startTime (string in HH:mm format) and endTime (string in HH:mm format) and returns int numHours rounded to closest hour
             // Assume they are in 24-hour format and on the same day
@@ -1075,27 +1106,130 @@ export default {
             // Placeholder function for handling file uploads
             this.completionImg = event.target.files[0];
         },
-        submitArrivalImg() {
+        async submitArrivalImg() {
             const arrivalImg = this.arrivalImg;
 
-            // Placeholder function for submitting arrival image (set arrivalProofUploaded to true) (Change later ADAMBFT)
-            this.jobDetails.arrivalProofUploaded = true;
+            // Submit arrival image to API
+            const formData = new FormData();
+            formData.append("file", arrivalImg);
+
+            try {
+                const response = await fetch(`${this.$apiUrl}/job/${this.jobDetails.appointmentId}/upload-arrival-proof`, {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    this.jobDetails.arrivalProofUploaded = true;
+                } else {
+                    console.error("Error uploading arrival image:", response.statusText);
+                }
+            } catch (error) {
+                console.error("Error uploading arrival image:", error);
+            }
 
             // Close the error message
             this.openErrorMsgCollapse(false);
         },
-        submitCompletedImg() {
+        downloadArrivalImage() {
+            fetch(`${this.$apiUrl}/job/${this.jobDetails.appointmentId}/arrival-proof`)
+                .then((response) => response.blob())
+                .then((blob) => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "arrival_proof.jpg";
+                    a.click();
+                });
+        },
+        async submitCompletedImg() {
             const completionImg = this.completionImg;
 
-            // Placeholder function for submitting completion image (set completionProofUploaded to true) (Change later ADAMBFT)
-            this.jobDetails.completionProofUploaded = true;
+            // Submit completion image to API
+            const formData = new FormData();
+            formData.append("file", completionImg);
+
+            try {
+                const response = await fetch(`${this.$apiUrl}/job/${this.jobDetails.appointmentId}/upload-completion-proof`, {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    this.jobDetails.completionProofUploaded = true;
+                } else {
+                    console.error("Error uploading completion image:", response.statusText);
+                }
+            } catch (error) {
+                console.error("Error uploading completion image:", error);
+            }
+
+            // Update job status to COMPLETED
+            this.confirmJob();
 
             // Close the error message
             this.openErrorMsgCollapseCompleted(false);
         },
+        downloadCompletionImage() {
+            fetch(`${this.$apiUrl}/job/${this.jobDetails.appointmentId}/completion-proof`)
+                .then((response) => response.blob())
+                .then((blob) => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "completion_proof.jpg";
+                    a.click();
+                });
+        },
         confirmJob() {
-            // Send API call to set job status to COMPLETED without photo proof
-            // Placeholder, replace with actual API call (ADAMBFT)
+            // Send API call to set job status to COMPLETED without photo proof (Uses job update endpoint)
+            let jobId = this.jobDetails.appointmentId;
+
+            let reqBody = {
+                "subscription": {
+                    "subscriptionId": this.jobDetails.subscriptionId
+                },
+                "date": this.jobDetails.date,
+                "startTime": this.formatTime(this.jobDetails.startTime),
+                "status": "COMPLETED",  // This is the important part for updating status
+                "actualDuration": this.calculateHours(
+                    this.jobDetails.startTime,
+                    this.jobDetails.endTime
+                ),
+                "employees": []
+            };
+
+            // Add all cleaners to the employees array
+            for (let cleanerId of this.jobDetails.cleaners) {
+                reqBody.employees.push({
+                    "employeeId": cleanerId
+                });
+            }
+
+            fetch(`${this.$apiUrl}/job/${jobId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(reqBody),
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        this.$emit("jobUpdated", jobId);
+                        this.openErrorMsgCollapseCompleted(false);
+                    } else {
+                        console.error(
+                            "Error updating the item:",
+                            response.statusText
+                        );
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error updating the item:", error);
+                });
+            
+            // Set job status to COMPLETED
+            this.jobDetails.jobStatus = "COMPLETED";
         },
         handleMainModalClosed() {
             // Takes user out of edit mode when modal is closed

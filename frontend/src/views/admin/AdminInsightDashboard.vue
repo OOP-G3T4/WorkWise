@@ -426,15 +426,15 @@ export default {
                     const monthData =
                         this.employeeEarnings[employeeId].monthlyData[jobMonth];
 
-                    monthData.totalIncome += job.selectedPackage.price;
+                    monthData.totalIncome += job.subscription.selectedPackage.price;
                     monthData.totalHours += job.actualDuration;
 
                     this.employeeEarnings[employeeId].totalIncome +=
-                        job.selectedPackage.price;
+                        job.subscription.selectedPackage.price;
                     this.employeeEarnings[employeeId].totalHours +=
                         job.actualDuration;
 
-                    const packageId = job.selectedPackage.packageId;
+                    const packageId = job.subscription.selectedPackage.packageId;
                     if (!monthData.packagesWorked[packageId]) {
                         monthData.packagesWorked[packageId] = 0;
                     }

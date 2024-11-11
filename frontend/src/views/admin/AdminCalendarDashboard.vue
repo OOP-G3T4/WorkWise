@@ -84,28 +84,29 @@ export default {
 
                 // Format job details
                 var formattedJob = {
+                    subscriptionId: job.subscription.subscriptionId,
                     appointmentId: job.jobId,
-                    packageType: job.selectedPackage.packageId,
+                    packageType: job.subscription.selectedPackage.packageId,
                     jobAddress: {
-                        id: job.property.propertyId,
-                        address: job.property.address,
-                        postalCode: job.property.postalCode,
+                        id: job.subscription.property.propertyId,
+                        address: job.subscription.property.address,
+                        postalCode: job.subscription.property.postalCode,
                     },
                     date: job.date,
                     startTime: job.startTime,
                     endTime: endTime,
                     cleaners: employeeIds,
                     arrivalProofUploaded: job.arrivalProofUploaded,
-                    completionProofUpload: job.completionProofUploaded,
+                    completionProofUploaded: job.completionProofUploaded,
                     jobStatus: job.status,
                     clientDetails: {
-                        clientId: job.client.clientId,
-                        clientName: job.client.name,
-                        clientContact: job.client.phoneNumber,
-                        clientEmail: job.client.email,
-                        clientAddress: job.client.clientAddress,
-                        clientGender: job.client.gender,
-                        clientAge: job.client.clientAge,
+                        clientId: job.subscription.client.clientId,
+                        clientName: job.subscription.client.name,
+                        clientContact: job.subscription.client.phoneNumber,
+                        clientEmail: job.subscription.client.email,
+                        clientAddress: job.subscription.client.clientAddress,
+                        clientGender: job.subscription.client.gender,
+                        clientAge: job.subscription.client.clientAge,
                     },
                 }
 
@@ -139,9 +140,9 @@ export default {
             for (var i = 0; i < this.allJobsRaw.length; i++) {
                 var job = this.allJobsRaw[i];
 
-                var clientMatch = this.selectedClients.length == 0 || this.selectedClients.includes(String(job.client.clientId));
+                var clientMatch = this.selectedClients.length == 0 || this.selectedClients.includes(String(job.subscription.client.clientId));
                 var employeeMatch = this.selectedEmployees.length == 0 || job.employees.some(employee => this.selectedEmployees.includes(String(employee.employeeId)));
-                var packageMatch = this.selectedPackages.length == 0 || this.selectedPackages.includes(job.selectedPackage.packageId);
+                var packageMatch = this.selectedPackages.length == 0 || this.selectedPackages.includes(job.subscription.selectedPackage.packageId);
                 var statusMatch = this.selectedStatuses.length == 0 || this.selectedStatuses.includes(job.status);
 
                 if (clientMatch && employeeMatch && packageMatch && statusMatch) {
