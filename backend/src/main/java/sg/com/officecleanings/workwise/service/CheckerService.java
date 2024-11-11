@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -92,32 +93,38 @@ public class CheckerService {
     /* ==== AI Post Checkers ==== */
 
 
-    public boolean validateBatchJobAssignments(List<JobAssignmentDTO> jobAssignments) {
+    public Map.Entry<Boolean, String> validateBatchJobAssignments(List<JobAssignmentDTO> jobAssignments) {
         for (JobAssignmentDTO assignment : jobAssignments) {
             Job job = getJobDetails(assignment.getJobId());
             if (job == null) {
                 System.out.println("Job not found: " + assignment.getJobId());
-                return false;
+                return (Map.entry(false, "Job not found: " + assignment.getJobId()));
             }
 
             for (int employeeId : assignment.getEmployeeIds()) {
                 Employee employee = getEmployeeDetails(employeeId);
                 if (employee == null) {
                     System.out.println("Employee not found: " + employeeId);
-                    return false;
+                    return (Map.entry(false, "Employee not found: " + employeeId));
                 }
-
-                if (!hasNonWorkingDay(employee, job, jobAssignments) ||
-                        hasJobTimeClash(employee, job, jobAssignments) ||
-                        !hasProperMealBreak(employee, job, jobAssignments) ||
-                        !hasSufficientTravelTime(employee, job, jobAssignments) ||
-                        hasExceededWorkingHours(employee, job, jobAssignments)) {
-                    System.out.println("Invalid assignment for employee: " + employeeId + " and job: " + assignment.getJobId());
-                    return false;
+                if (!hasNonWorkingDay(employee, job, jobAssignments)) {
+                    return (Map.entry(false, "Employee does not have a non-working day in the week with job " + job.getJobId() + " and employee " + employee.getEmployeeId()));
+                }
+                if (hasJobTimeClash(employee, job, jobAssignments)) {
+                    return (Map.entry(false, "Job time clash detected with job " + job.getJobId() + " and employee " + employee.getEmployeeId()));
+                }
+                if (!hasProperMealBreak(employee, job, jobAssignments)) {
+                    return (Map.entry(false, "Employee does not have proper meal breaks with job " + job.getJobId() + " and employee " + employee.getEmployeeId()));
+                }
+                if (!hasSufficientTravelTime(employee, job, jobAssignments)) {
+                    return (Map.entry(false, "Employee does not have sufficient travel time with job " + job.getJobId() + " and employee " + employee.getEmployeeId()));
+                }
+                if (hasExceededWorkingHours(employee, job, jobAssignments)) {
+                    return (Map.entry(false, "Employee has exceeded working hours with job " + job.getJobId() + " and employee " + employee.getEmployeeId()));
                 }
             }
         }
-        return true;
+        return (Map.entry(true, ""));
     }
 
     // Check if the employee can be assigned to a job

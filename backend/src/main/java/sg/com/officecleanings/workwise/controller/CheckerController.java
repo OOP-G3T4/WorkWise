@@ -32,7 +32,7 @@ public class CheckerController {
     // return boolean
     @GetMapping("/validate")
     public boolean validateBatchJobAssignments() {
-        return checkerService.validateBatchJobAssignments(assignments);
+        return checkerService.validateBatchJobAssignments(assignments).getKey();
     }
 
 

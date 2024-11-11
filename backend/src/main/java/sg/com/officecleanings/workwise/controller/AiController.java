@@ -16,6 +16,7 @@ import sg.com.officecleanings.workwise.service.JobEmployeeService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -48,12 +49,14 @@ public class AiController {
         // Process the API response to create a structured output
         System.out.println(apiResponse);
         List<JobAssignmentDTO> assignments = parseApiResponse(apiResponse);
-        if (checkerService.validateBatchJobAssignments(assignments)) {
+        Map.Entry<Boolean, String> validationResult = checkerService.validateBatchJobAssignments(assignments);
+
+
+        if (validationResult.getKey()) {
             jobEmployeeService.saveAssignments(assignments);
-            // return a json success message
             return new ResponseEntity<>("Schedule saved successfully.", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Schedule not saved. Please check the assignments.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Schedule not saved. " + validationResult.getValue(), HttpStatus.BAD_REQUEST);
         }
     }
 
