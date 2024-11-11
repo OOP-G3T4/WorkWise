@@ -1,5 +1,6 @@
 <script setup>
 import DropdownSearch from "../../general/forms/DropdownSearch.vue"
+import * as bootstrap from "bootstrap";
 </script>
 
 <template>
@@ -9,7 +10,7 @@ import DropdownSearch from "../../general/forms/DropdownSearch.vue"
             <div class="modal-content">
                 <!-- HEADER -->
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="adminAddNewJobModalLabel">Create New Job</h1>
+                    <h1 class="modal-title fs-5" id="adminAddNewJobModalLabel">Create New Subscription</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -19,10 +20,10 @@ import DropdownSearch from "../../general/forms/DropdownSearch.vue"
                     <p v-if="errorMsg" class="text-danger">{{ errorMsg }}</p>
 
                     <!-- [1] Select Client -->
-                    <DropdownSearch :items="allClients" fieldName="Client" :uniqueComponentId="uniqueComponentId" :showId="true" @valChange="clientChange" />
+                    <DropdownSearch :items="allClients" fieldName="Client" :inputValue="clientId" :uniqueComponentId="uniqueComponentId" :showId="true" @valChange="clientChange" />
 
                     <!-- [2] Package Id -->
-                    <DropdownSearch :items="formattedPackages" fieldName="Package" :uniqueComponentId="uniqueComponentId" @valChange="packageChange" />
+                    <DropdownSearch :items="formattedPackages" fieldName="Package" :inputValue="packageId" :uniqueComponentId="uniqueComponentId" @valChange="packageChange" />
 
                     <p v-if="packageId"><span class="fw-bold">Frequency: </span>{{ allPackages[packageId].type }}</p>
 
@@ -48,13 +49,17 @@ import DropdownSearch from "../../general/forms/DropdownSearch.vue"
                     </p>
 
                     <!-- [5] Property -->
-                    <DropdownSearch :items="allProperties" fieldName="Property" :uniqueComponentId="uniqueComponentId" @valChange="propertyChange" :isDisabled="!clientId" />
+                    <DropdownSearch :items="allProperties" fieldName="Property" :inputValue="propertyId" :uniqueComponentId="uniqueComponentId" @valChange="propertyChange" :isDisabled="!clientId" />
                 </div>
 
                 <!-- FOOTER -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Create job</button>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-light" @click="resetForm()">Reset</button>
+
+                    <div>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary ms-2" @click="saveJob()" :disabled="!readySubmit">Create</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,6 +83,9 @@ export default {
 
             // Identifier
             uniqueComponentId: "new_job_modal_9jd28dc3",
+
+            // Modal
+            jobModal: null,
 
             // Possible Values
             allClients: {},
@@ -141,25 +149,64 @@ export default {
             return endTime;
         },
         errorMsg() {
-            if (!this.startTime || !this.packageId) {
-                return "";
-            }
-
             // Check if start and end times are within constraints
             if (this.startTimeObj < this.earliestTimeObj) {
                 return "Start time is too early";
             } else if (this.startTimeObj > this.latestTimeObj) {
                 return "Start time is too late";
-            } else if (this.endTimeObj > this.latestTimeObj) {
+            } else if (this.packageId && this.endTimeObj > this.latestTimeObj) {
                 return "End time is too late";
             } else {
                 return "";
             }
         },
+        readySubmit() {
+            return this.clientId && this.packageId && this.jobDay && this.startTime && this.propertyId && !this.errorMsg;
+        },
     },
     methods: {
         saveJob() {
-            // Save job details to database
+            // Save subscription details to database
+            if (this.errorMsg) {
+                return;
+            }
+
+            // Pad startTime with seconds
+            let startTime = `${this.startTime}:00`;
+
+            let data = {
+                "client": {
+                    "clientId": this.clientId
+                },
+                "property": {
+                    "propertyId": this.propertyId
+                },
+                "selectedPackage": {
+                    "packageId": this.packageId
+                },
+                "jobDay": this.jobDay,
+                "jobStartTime": startTime,
+                "subscriptionStatus": "ACTIVE"
+            }
+
+            fetch(`${this.$apiUrl}/subscription`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    // Close modal
+                    this.openModal(false);
+
+                    // Reset form
+                    this.resetForm();
+
+                    // Emit event to parent
+                    this.$emit("jobUpdated", data);
+                });
         },
         clientChange(clientId) {
             this.clientId = clientId;
@@ -192,8 +239,25 @@ export default {
                     this.allProperties = allProperties;
                 });
         },
+        resetForm() {
+            this.clientId = "";
+            this.packageId = "";
+            this.jobDay = "";
+            this.startTime = "";
+            this.propertyId = "";
+        },
+        openModal(toOpen) {
+            if (toOpen) {
+                this.jobModal.show();
+            } else {
+                this.jobModal.hide();
+            }
+        },
     },
     mounted() {
+        // Initialize modal
+        this.jobModal = new bootstrap.Modal(document.getElementById("adminAddNewJobModal"));
+
         // Fetch all clients
         fetch(`${this.$apiUrl}/client`)
             .then((response) => response.json())
