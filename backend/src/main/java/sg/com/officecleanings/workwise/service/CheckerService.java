@@ -214,14 +214,17 @@ public class CheckerService {
             for (JobAssignmentDTO assignment : jobAssignments) {
                 if (assignment.getEmployeeIds().contains(employee.getEmployeeId())) {
                     Job newJob = getJobDetails(assignment.getJobId());
+                    // if employee has no jobs
                     if (newJob != null && newJob.getDate().equals(job.getDate())) {
                         LocalTime newJobStart = newJob.getStartTime().toLocalTime();
                         LocalTime newJobEnd = newJobStart.plusHours(newJob.getActualDuration() == 0 ? newJob.getSubscription().getSelectedPackage().getHours() : newJob.getActualDuration());
                         if (jobStart.isBefore(newJobEnd) && jobEnd.isAfter(newJobStart)) {
-                            System.out.println("Job time clash detected");
-                            System.out.println("Job 1: " + jobStart + " - " + jobEnd);
-                            System.out.println("Job 2: " + newJobStart + " - " + newJobEnd);
-                            return true;
+                            if (job.getJobId() != newJob.getJobId()) {
+                                System.out.println("Job time clash detected");
+                                System.out.println("Job 1: " + jobStart + " - " + jobEnd);
+                                System.out.println("Job 2: " + newJobStart + " - " + newJobEnd);
+                                return true;
+                            }
                         }
                     }
                 }

@@ -1,22 +1,21 @@
 package sg.com.officecleanings.workwise.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.ai.openai.OpenAiChatModel;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import sg.com.officecleanings.workwise.service.AiService;
-import sg.com.officecleanings.workwise.service.JobEmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sg.com.officecleanings.workwise.service.JobService;
+import sg.com.officecleanings.workwise.dto.JobAssignmentDTO;
+import sg.com.officecleanings.workwise.service.AiService;
+import sg.com.officecleanings.workwise.service.CheckerService;
+import sg.com.officecleanings.workwise.service.JobEmployeeService;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -27,15 +26,19 @@ public class AiController {
     private final AiService aiService;
     private final JobEmployeeService jobEmployeeService;
 
+    private final CheckerService checkerService;
+
     @Autowired
-    public AiController(OpenAiChatModel aiModel, AiService aiService, JobEmployeeService jobEmployeeService) {
+    public AiController(OpenAiChatModel aiModel, AiService aiService, JobEmployeeService jobEmployeeService, CheckerService checkerService) {
         this.aiModel = aiModel;
         this.aiService = aiService;
         this.jobEmployeeService = jobEmployeeService;
+        this.checkerService = checkerService;
     }
 
     @PostMapping("/ai/generate")
-    public Map<String, List<Map<String, Object>>> generate() {
+    // return json
+    public ResponseEntity<String> generate() {
 
         // Call the createEmployeeAssignments method
         StringBuilder prompt = aiService.createEmployeeAssignments();
@@ -43,24 +46,20 @@ public class AiController {
         // Call the GPT-4o API to get the best candidate(s)
         String apiResponse = aiModel.call(prompt.toString());
         // Process the API response to create a structured output
-        return parseApiResponse(apiResponse);
+        System.out.println(apiResponse);
+        List<JobAssignmentDTO> assignments = parseApiResponse(apiResponse);
+        if (checkerService.validateBatchJobAssignments(assignments)) {
+            jobEmployeeService.saveAssignments(assignments);
+            // return a json success message
+            return new ResponseEntity<>("Schedule saved successfully.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Schedule not saved. Please check the assignments.", HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @PostMapping("/saveAssignments")
-    public ResponseEntity<String> saveAssignments(@RequestBody Map<String, List<Map<String, Object>>> assignments) {
-        jobEmployeeService.saveAssignments(assignments);
 
-        // return a json success message
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode responseNode = mapper.createObjectNode();
-        responseNode.put("message", "Schedule saved successfully.");
-
-        return new ResponseEntity<>(responseNode.toString(), HttpStatus.OK);
-    }
-
-    private Map<String, List<Map<String, Object>>> parseApiResponse(String apiResponse) {
-        Map<String, List<Map<String, Object>>> result = new HashMap<>();
-        List<Map<String, Object>> assignments = new ArrayList<>();
+    private List<JobAssignmentDTO> parseApiResponse(String apiResponse) {
+        List<JobAssignmentDTO> assignments = new ArrayList<>();
 
         // Find the first '{' and the last '}'
         int startIndex = apiResponse.indexOf('{');
@@ -75,22 +74,14 @@ public class AiController {
                 JsonNode assignmentsNode = rootNode.path("assignments");
 
                 for (JsonNode assignmentNode : assignmentsNode) {
-                    Map<String, Object> assignment = new LinkedHashMap<>(); // Use LinkedHashMap to maintain order
-                    JsonNode jobIdNode = assignmentNode.path("job_id").get(0);
-                    if (jobIdNode != null && !jobIdNode.isNull()) {
-                        assignment.put("job_id", jobIdNode.asInt());
-                    }
-
+                    int jobId = assignmentNode.path("job_id").get(0).asInt(); // Extract the first element of the array
                     List<Integer> employeeIds = new ArrayList<>();
                     for (JsonNode idNode : assignmentNode.path("employees_id")) {
-                        if (idNode != null && !idNode.isNull()) {
-                            employeeIds.add(idNode.asInt());
-                        }
+                        employeeIds.add(idNode.asInt());
                     }
-                    assignment.put("employees_id", employeeIds);
+                    String reasoning = assignmentNode.path("reasoning").asText();
 
-                    assignment.put("reasoning", assignmentNode.path("reasoning").asText());
-
+                    JobAssignmentDTO assignment = new JobAssignmentDTO(jobId, employeeIds, reasoning);
                     assignments.add(assignment);
                 }
             } catch (IOException e) {
@@ -98,8 +89,8 @@ public class AiController {
             }
         }
 
-        result.put("assignments", assignments);
-        return result;
+        return assignments;
     }
+
 
 }
