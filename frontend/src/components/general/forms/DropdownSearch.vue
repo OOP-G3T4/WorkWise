@@ -30,7 +30,7 @@ import * as bootstrap from 'bootstrap'
             <!-- List of Items -->
             <div class="list-group">
                 <template v-for="(value, id) in filteredItems">
-                    <button type="button" class="list-group-item list-group-item-action" :class="listBtnClass(id)" @click="selectThis(id)">
+                    <button type="button" class="list-group-item list-group-item-action" :class="listBtnClass(id)" @click="selectThis(id)" :disabled="checkDisabled(id)">
                         {{ `${showId ? `[${id}]` : ``} ${value}` }}
                     </button>
                 </template>
@@ -69,6 +69,11 @@ export default {
             type: Boolean,
             required: false,
             default: false,
+        },
+        disabledItems: {
+            type: Array,
+            required: false,
+            default: () => [],
         },
     },
     data() {
@@ -129,6 +134,10 @@ export default {
                 'active': id == this.selectedId,
             }
         },
+        checkDisabled(id) {
+            // Checks if the item is disabled
+            return (this.disabledItems.includes(id)) && (this.selectedId != id);
+        },
     },
     mounted() {
         // Initializes the dropdown
@@ -143,5 +152,10 @@ export default {
 .list-group {
     max-height: 200px;
     overflow-y: auto;
+}
+
+.list-group-item[disabled] {
+    pointer-events: none;
+    opacity: 0.5;
 }
 </style>

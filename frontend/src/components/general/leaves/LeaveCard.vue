@@ -8,7 +8,7 @@ import * as bootstrap from 'bootstrap';
     <div class="accordion mb-3" :id="`leave-id-${leaveDetails.id}`" v-bind="$attrs">
         <div class="accordion-item" :class="accordianClasses">
             <!-- Top Section (Always in view) -->
-            <h2 class="accordion-header">
+            <h2 class="accordion-header cursor-pointer">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="`#flush-collapse-leave-id-${leaveDetails.id}`" aria-expanded="false" :aria-controls="`#flush-collapse-leave-id-${leaveDetails.id}`" :id="`accordian-btn-${leaveDetails.id}`">                    
                     <div class="container-fluid p-0">
                         <!-- Error Message -->
@@ -271,7 +271,7 @@ export default {
             formData.append('file', this.imageUploaded);
 
             try {
-                const response = await fetch(`http://localhost:8081/api/employee-leave/${this.leaveDetails.id}/upload-mc`, {
+                const response = await fetch(`${this.$apiUrl}/employee-leave/${this.leaveDetails.id}/upload-mc`, {
                     method: 'POST',
                     body: formData,
                 });
@@ -290,7 +290,7 @@ export default {
             }
         },
         downloadImage() {
-            fetch(`http://localhost:8081/api/employee-leave/${this.leaveDetails.id}/image`)
+            fetch(`${this.$apiUrl}/employee-leave/${this.leaveDetails.id}/image`)
                 .then(response => response.blob())
                 .then(blob => {
                     const url = window.URL.createObjectURL(new Blob([blob]));

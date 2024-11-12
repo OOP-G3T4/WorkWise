@@ -208,7 +208,7 @@ export default {
             }
 
             try {
-                const response = await fetch('http://localhost:8081/api/employee-leave/apply', {
+                const response = await fetch(`${this.$apiUrl}/employee-leave/apply`, {
                     method: 'POST',
                     body: postData,
                 });

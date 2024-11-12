@@ -35,7 +35,7 @@ export default {
             this.selectedFilters = selectedFilters;
         },
         pullLeavesFromApi() {
-            fetch(`http://localhost:8081/api/employee-leave/employee/${this.userId}`)
+            fetch(`${this.$apiUrl}/employee-leave/employee/${this.userId}`)
             .then(response => response.json())
             .then(data => {
                 // this.leaveDetailsArr = data;

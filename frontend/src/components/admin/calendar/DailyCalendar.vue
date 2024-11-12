@@ -29,7 +29,7 @@ import JobDetails from "../../general/calendar/JobDetails.vue";
 
         <div class="right-calendar-container justify-content-center">
             <!-- Now Line (Horizontal Line that shows you Current Time) -->
-            <div v-if="isToday" class="now-line" :style="nowLineStyle"></div>
+            <div v-if="isToday" class="now-line flash" :style="nowLineStyle"></div>
 
             <!-- Background Grid -->
             <div
@@ -162,6 +162,9 @@ export default {
             // Job Data (Sorted - By Client)
             jobDetailsArrSorted: null,
             clientData: {},
+
+            // Today's date
+            today: new Date(),
         };
     },
     computed: {
@@ -173,7 +176,7 @@ export default {
         },
         getNowLineHeight() {
             // Returns height at bottom/ top of axis if out of range
-            const now = new Date();
+            const now = this.today;
             const timeAxisMinPadded = this.timeAxisMin
                 .toString()
                 .padStart(2, "0");
@@ -238,11 +241,10 @@ export default {
         },
         isToday() {
             // Returns true if the selected date is today
-            var today = new Date();
-            return (
-                today.toISOString().split("T")[0] ==
-                this.dateSelected.toISOString().split("T")[0]
-            );
+            const today = this.today.getFullYear() + "-" + this.today.getMonth() + "-" + this.today.getDate();;
+            const dateSelectedStr = this.dateSelected.getFullYear() + "-" + this.dateSelected.getMonth() + "-" + this.dateSelected.getDate();
+
+            return today == dateSelectedStr;
         },
         hideTopBar() {
             return this.isCompressed || this.jobDetailsArr.length == 0;
@@ -440,6 +442,7 @@ export default {
                 height: this.yHeightPx - padding + "px",
                 width: `${properWidthPerCol * numColsInp}px`,
                 flex: `${flexGrow} 1 ${properWidthPerCol * numColsInp}px`,
+                boxSizing: "content-box",
             };
         },
         handlejobUpdated(jobId) {
@@ -485,6 +488,11 @@ export default {
     },
     mounted() {
         this.updateJobDetailsArrSorted();
+
+        // Update this.today every minute --> To update the now line
+        setInterval(() => {
+            this.today = new Date();
+        }, 60000);
 
         // Initialize ResizeObserver to track the height changes for #main-container-daily-cal
         const observer = new ResizeObserver(this.updateContainerHeight);

@@ -15,7 +15,7 @@
         <div v-for="eRow in datesMaster" class="row flex-grow-1">
             <!-- Skip to week padding -->
             <div :style="skipWeekStyle" class="d-none d-md-block px-0 py-3 me-2">
-                <div class="bg-primary rounded w-100 h-100 cursor-pointer" @click="navigateToWeek(eRow)"></div>
+                <div class="bg-primary rounded w-100 h-100 cursor-pointer" @click="navigateToWeek(eRow)" @mouseover="expandSkipWkPadding(true)" @mouseleave="expandSkipWkPadding(false)"></div>
             </div>
 
             <!-- Date blocks -->
@@ -64,6 +64,8 @@ export default {
 
             // Skip to week button padding
             skipToWeekPadding: 12,
+            stwCollapsedPadding: 12,
+            stwExpandedPadding: 24,
 
             // Color settings
             zeroJobsLightness: 96,
@@ -75,6 +77,10 @@ export default {
         }
     },
     methods: {
+        expandSkipWkPadding(toExpand) {
+            // Expand the skip week padding
+            this.skipToWeekPadding = toExpand ? this.stwExpandedPadding : this.stwCollapsedPadding;
+        },
         getNumJobs(dateObj) {
             // Return -1 if dateObj is null
             if (dateObj == null) {
@@ -209,12 +215,19 @@ export default {
         skipWeekStyle() {
             return {
                 flex: `0 0 ${this.skipToWeekPadding}px`,
+                transition: 'flex 0.1s ease-in-out',
             };
         },
     },
     watch: {
         dateSelected() {
             this.updateMaxJobs();
+        },
+        jobDetails: {
+            handler() {
+                this.updateMaxJobs();
+            },
+            deep: true,
         },
     },
     mounted() {

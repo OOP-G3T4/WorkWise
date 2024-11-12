@@ -8,26 +8,29 @@ import * as bootstrap from "bootstrap";
         <div
             class="bg-light flex-column justify-content-between align-items-center px-3 py-4 d-none d-md-flex"
         >
-            <!-- Logo (Skip for now) -->
-
-            <!-- Navigation -->
-            <div class="d-flex flex-column align-items-center">
-                <template v-for="e_nav_obj in navbarMap[userRole].main">
-                    <button
-                        class="btn w-100 mb-3"
-                        :class="
-                            isActiveRoute(e_nav_obj.route)
-                                ? 'btn-white-selected'
-                                : 'btn-light'
-                        "
-                        @click="redirectTo(e_nav_obj.route)"
-                    >
-                        <font-awesome-icon
-                            class="fa-lg"
-                            :icon="e_nav_obj.icon"
-                        />
-                    </button>
-                </template>
+            <div>
+                <!-- Logo -->
+                <img src="/square_icon.svg" alt="Logo" class="img-fluid mx-2 mb-5" style="max-width: 200px;" />
+    
+                <!-- Navigation -->
+                <div class="d-flex flex-column align-items-center">
+                    <template v-for="e_nav_obj in navbarMap[userRole].main">
+                        <button
+                            class="btn w-100 mb-3"
+                            :class="
+                                isActiveRoute(e_nav_obj.route)
+                                    ? 'btn-white-selected'
+                                    : 'btn-light'
+                            "
+                            @click="redirectTo(e_nav_obj.route)"
+                        >
+                            <font-awesome-icon
+                                class="fa-lg"
+                                :icon="e_nav_obj.icon"
+                            />
+                        </button>
+                    </template>
+                </div>
             </div>
 
             <!-- Expand Button -->
@@ -55,8 +58,8 @@ import * as bootstrap from "bootstrap";
         >
             <!-- Header (Top) -->
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="mainSideNavBarLabel">
-                    WorkWise
+                <h5 class="offcanvas-title row ps-2" id="mainSideNavBarLabel">
+                    <img src="/workwise_main.svg" alt="Logo" class="img-fluid" style="max-width: 200px;" />
                 </h5>
                 <button
                     type="button"
@@ -75,7 +78,7 @@ import * as bootstrap from "bootstrap";
             <div class="offcanvas-body d-flex flex-column">
                 <!-- User Card -->
                 <div
-                    class="bg-dark text-white rounded d-flex p-3 align-items-center"
+                    class="bg-white text-secondary rounded d-flex p-3 align-items-center"
                 >
                     <img
                         :src="`https://placehold.co/200x200?text=${getInitials(
@@ -149,7 +152,9 @@ import * as bootstrap from "bootstrap";
         <!-- Top Navbar (For MD and below) -->
         <nav class="navbar navbar-expand-md bg-light d-md-none">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">WorkWise</a>
+                <a class="navbar-brand" href="#">
+                    <img src="/workwise_main.svg" class="ms-2" alt="Logo" style="width: 120px;" />
+                </a>
 
                 <button
                     class="navbar-toggler"

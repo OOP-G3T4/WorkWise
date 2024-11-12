@@ -3,9 +3,11 @@ import LeaveCard from '../../general/leaves/LeaveCard.vue';
 </script>
 
 <template>
-    <div v-for="e_leave in leaveDetailsArr" class="mb-3">
-        <LeaveCard v-if="selectedLeaveStatusArr.includes(e_leave.status)" :leaveDetails="e_leave" :employeeDetails="empDetailsArr[e_leave.empId]" @selectedChanged="handleSelectChange" />
-    </div>
+    <template v-if="leaveDetailsArr !== null && empDetailsArr !== null">
+        <div v-for="e_leave in leaveDetailsArr">
+            <LeaveCard v-if="selectedLeaveStatusArr.includes(e_leave.status)" class="mb-3" :leaveDetails="e_leave" :employeeDetails="empDetailsArr[e_leave.empId]" @selectedChanged="handleSelectChange" />
+        </div>
+    </template>
 </template>
 
 <script>
@@ -22,122 +24,41 @@ export default {
             required: false,
             default: false,
         },
+        filtersObj: {
+            type: Object,
+            required: false,
+            default: () => ({
+                employees: [],
+                leavetypes: [],
+            }),
+        },
     },
     data() {
         return {
-            leaveDetailsArr: [
-                // Medical Certicificates (MCs) ===================================================================================================
-                // {
-                //     // MC - Pending (No MC Proof + Deadline passed)
-                //     id: 1,
-                //     leaveType: 'MC',
-                //     empId: 1,
-                //     applicationDateTime: "2024-10-14T10:00:00", // When the leave was applied
-                //     startDate: '2024-10-15',
-                //     endDate: '2024-10-16',
-                //     status: 'Pending',
-                //     comments: 'Leg break cos football 1',
-                //     mcProofUploaded: false,
-                //     mcProofImg: '',
-                // },
-                // {
-                //     // MC - Pending (No MC Proof + Deadline NOT passed)
-                //     id: 2,
-                //     leaveType: 'MC',
-                //     empId: 2,
-                //     applicationDateTime: "2024-10-17T10:00:00", // When the leave was applied
-                //     startDate: '2024-10-15',
-                //     endDate: '2024-10-16',
-                //     status: 'Pending',
-                //     comments: 'Leg break cos football 2',
-                //     mcProofUploaded: false,
-                //     mcProofImg: '',
-                // },
-                // {
-                //     // MC - Pending (MC Proof Uploaded)
-                //     id: 3,
-                //     leaveType: 'MC',
-                //     empId: 3,
-                //     applicationDateTime: "2024-10-14T10:00:00", // When the leave was applied
-                //     startDate: '2024-10-15',
-                //     endDate: '2024-10-16',
-                //     status: 'Pending',
-                //     comments: 'Leg break cos football',
-                //     mcProofUploaded: true,
-                //     mcProofImg: 'https://s3.amazonaws.com/creare-websites-wpms-legacy/wp-content/uploads/sites/32/2016/03/01200959/canstockphoto22402523-arcos-creator.com_-1024x1024.jpg',
-                // },
-                // {
-                //     // MC - Approved
-                //     id: 4,
-                //     leaveType: 'MC',
-                //     empId: 4,
-                //     applicationDateTime: "2024-10-14T10:00:00", // When the leave was applied
-                //     startDate: '2024-10-15',
-                //     endDate: '2024-10-15',
-                //     status: 'Approved',
-                //     comments: 'Arm break cos blur',
-                //     mcProofUploaded: true,
-                //     mcProofImg: 'https://s3.amazonaws.com/creare-websites-wpms-legacy/wp-content/uploads/sites/32/2016/03/01200959/canstockphoto22402523-arcos-creator.com_-1024x1024.jpg',
-                // },
-                // {
-                //     // MC - Rejected
-                //     id: 5,
-                //     leaveType: 'MC',
-                //     empId: 5,
-                //     applicationDateTime: "2024-10-14T10:00:00", // When the leave was applied
-                //     startDate: '2024-10-15',
-                //     endDate: '2024-10-19',
-                //     status: 'Rejected',
-                //     comments: 'Headache cos head aching',
-                //     mcProofUploaded: true,
-                //     mcProofImg: 'https://s3.amazonaws.com/creare-websites-wpms-legacy/wp-content/uploads/sites/32/2016/03/01200959/canstockphoto22402523-arcos-creator.com_-1024x1024.jpg',
-                // },
+            rawLeaves: null,
 
-                // // Annual Leaves (ALs) ===================================================================================================
-                // {
-                //     // AL - Pending
-                //     id: 6,
-                //     leaveType: 'AL',
-                //     empId: 1,
-                //     applicationDateTime: "2024-10-13T10:00:00", // When the leave was applied
-                //     startDate: '2024-11-01',
-                //     endDate: '2024-11-05',
-                //     status: 'Pending',
-                //     comments: 'Vacation in Maldives swim swim',
-                //     mcProofUploaded: false, // Note to JS & Seth: Idk if this is needed for ALs
-                //     mcProofImg: '', // Note to JS & Seth: Idk if this is needed for ALs
-                // },
-                // {
-                //     // AL - Approved
-                //     id: 7,
-                //     leaveType: 'AL',
-                //     empId: 2,
-                //     applicationDateTime: "2024-10-10T20:31:00", // When the leave was applied
-                //     startDate: '2024-12-10',
-                //     endDate: '2024-12-12',
-                //     status: 'Approved',
-                //     comments: 'Go to space with Elon Musk',
-                //     mcProofUploaded: false, // Note to JS & Seth: Idk if this is needed for ALs
-                //     mcProofImg: '', // Note to JS & Seth: Idk if this is needed for ALs
-                // },
-                // {
-                //     // AL - Rejected
-                //     id: 8,
-                //     leaveType: 'AL',
-                //     empId: 3,
-                //     applicationDateTime: "2024-10-10T23:05:00", // When the leave was applied
-                //     startDate: '2024-12-10',
-                //     endDate: '2024-12-12',
-                //     status: 'Rejected',
-                //     comments: 'Go to space with Elon Musk',
-                //     mcProofUploaded: false, // Note to JS & Seth: Idk if this is needed for ALs
-                //     mcProofImg: '', // Note to JS & Seth: Idk if this is needed for ALs
-                // }
-            ],
-
-            empDetailsArr: {},
+            empDetailsArr: null,
             selectedLeaveIds: [],
         };
+    },
+    computed: {
+        leaveDetailsArr() {
+            if (this.rawLeaves === null || this.empDetailsArr === null) {
+                return null;
+            }
+
+            let filteredLeaves = this.rawLeaves.filter(e_leave => {
+                let empId = e_leave.empId;
+                let leaveType = e_leave.leaveType;
+
+                let empFilter = this.filtersObj.employees.length === 0 || this.filtersObj.employees.includes(String(empId));
+                let leaveTypeFilter = this.filtersObj.leavetypes.length === 0 || this.filtersObj.leavetypes.includes(leaveType);
+
+                return empFilter && leaveTypeFilter;
+            });
+
+            return filteredLeaves;
+        }
     },
     watch: {
         selectedLeaveIds: {
@@ -148,6 +69,12 @@ export default {
         },
         toUpdateLeaves() {
             this.pullLeavesFromBackend();
+        },
+        filtersObj: {
+            handler() {
+                
+            },
+            deep: true,
         },
     },
     methods: {
@@ -164,7 +91,7 @@ export default {
         },
         pullLeavesFromBackend() {
             // Pull leaves data from backend
-            fetch('http://localhost:8081/api/employee-leave')
+            fetch(`${this.$apiUrl}/employee-leave`)
                 .then(response => response.json())
                 .then(data => {
                     let leaveDetailsArr = [];
@@ -188,13 +115,13 @@ export default {
                         leaveDetailsArr.push(newLeave);
                     }
 
-                    this.leaveDetailsArr = leaveDetailsArr;
+                    this.rawLeaves = leaveDetailsArr;
                 });
         }
     },
     mounted() {
         // Pull employee data from backend
-        fetch('http://localhost:8081/api/employee')
+        fetch(`${this.$apiUrl}/employee`)
             .then(response => response.json())
             .then(data => {
                 let empDetailsArr = {};
