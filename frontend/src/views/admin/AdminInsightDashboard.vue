@@ -212,7 +212,7 @@ ChartJS.register(
                                         emp.name
                                     )}`"
                                     alt="Employee Image"
-                                    class="emp-img d-none d-md-block"
+                                    class="emp-img d-md-block"
                                 />
                             </div>
                             <div>
@@ -401,6 +401,7 @@ export default {
         },
         processJobData(data) {
             this.employeeEarnings = {};
+            console.log(data);
 
             data.forEach((job) => {
                 const jobMonth = new Date(job.date).getMonth() + 1;
@@ -426,15 +427,16 @@ export default {
                     const monthData =
                         this.employeeEarnings[employeeId].monthlyData[jobMonth];
 
-                    monthData.totalIncome += job.selectedPackage.price;
+                    monthData.totalIncome +=
+                        job.subscription.selectedPackage.price;
                     monthData.totalHours += job.actualDuration;
 
                     this.employeeEarnings[employeeId].totalIncome +=
-                        job.selectedPackage.price;
+                        job.subscription.selectedPackage.price;
                     this.employeeEarnings[employeeId].totalHours +=
                         job.actualDuration;
 
-                    const packageId = job.selectedPackage.packageId;
+                    const packageId = job.subscription.selectedPackage.packageId;
                     if (!monthData.packagesWorked[packageId]) {
                         monthData.packagesWorked[packageId] = 0;
                     }

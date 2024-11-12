@@ -114,11 +114,11 @@ export default {
                     // Format job details
                     var formattedJob = {
                         appointmentId: job.jobId,
-                        packageType: job.selectedPackage.packageId,
+                        packageType: job.subscription.selectedPackage.packageId,
                         jobAddress: {
-                            id: job.property.propertyId,
-                            address: job.property.address,
-                            postalCode: job.property.postalCode,
+                            id: job.subscription.property.propertyId,
+                            address: job.subscription.property.address,
+                            postalCode: job.subscription.property.postalCode,
                         },
                         date: job.date,
                         startTime: job.startTime,
@@ -128,13 +128,13 @@ export default {
                         completionProofUpload: job.completionProofUploaded,
                         jobStatus: job.status,
                         clientDetails: {
-                            clientId: job.client.clientId,
-                            clientName: job.client.name,
-                            clientContact: job.client.phoneNumber,
-                            clientEmail: job.client.email,
-                            clientAddress: job.client.clientAddress,
-                            clientGender: job.client.gender,
-                            clientAge: job.client.clientAge,
+                            clientId: job.subscription.client.clientId,
+                            clientName: job.subscription.client.name,
+                            clientContact: job.subscription.client.phoneNumber,
+                            clientEmail: job.subscription.client.email,
+                            clientAddress: job.subscription.client.clientAddress,
+                            clientGender: job.subscription.client.gender,
+                            clientAge: job.subscription.client.clientAge,
                         },
                     }
 
