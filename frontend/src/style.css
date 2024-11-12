@@ -11,7 +11,7 @@
     flex: 0 1 1px;
     position: sticky;
     top: 0;
-    z-index: 1020;
+    z-index: 1025;
 }
 
 .contain-bottom {
@@ -22,10 +22,36 @@
 /* Enabling cursors */
 .cursor-pointer {
     cursor: pointer;
+    transition: filter 0.3s ease;
 }
 
 .cursor-pointer:hover {
     filter: brightness(85%);
+}
+
+.hover-border {
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: box-shadow 0.3s ease;
+}
+
+.hover-border:hover {
+    box-shadow: 0 0 0 0.125rem #0c0f1a;
+}
+
+/* Keyframes to alternate opacity between 1 (visible) and 0 (invisible) */
+@keyframes flash {
+    0%, 100% {
+        opacity: 1; /* fully visible */
+    }
+    50% {
+        opacity: 0.5; /* invisible */
+    }
+}
+
+/* Apply the animation to the element */
+.flash {
+    animation: flash 2s infinite ease-in-out; /* 1s duration, infinite loop */
 }
 
 /* GMaps Autofill (Allow it to be seen on Modals) */

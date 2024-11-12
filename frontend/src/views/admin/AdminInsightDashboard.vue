@@ -369,7 +369,7 @@ export default {
             document.body.removeChild(link);
         },
         fetchEmployees() {
-            fetch("http://localhost:8081/api/employee")
+            fetch(`${this.$apiUrl}/employee`)
                 .then((response) => response.json())
                 .then((data) => {
                     this.employees.push(...data);
@@ -379,7 +379,7 @@ export default {
                 );
         },
         fetchPackageId() {
-            fetch("http://localhost:8081/api/package")
+            fetch(`${this.$apiUrl}/package`)
                 .then((response) => response.json())
                 .then((data) => {
                     for (const packageData of data) {
@@ -392,7 +392,7 @@ export default {
                 );
         },
         fetchJobData() {
-            fetch("http://localhost:8081/api/job")
+            fetch(`${this.$apiUrl}/job`)
                 .then((response) => response.json())
                 .then((data) => this.processJobData(data))
                 .catch((error) =>
@@ -426,15 +426,15 @@ export default {
                     const monthData =
                         this.employeeEarnings[employeeId].monthlyData[jobMonth];
 
-                    monthData.totalIncome += job.selectedPackage.price;
+                    monthData.totalIncome += job.subscription.selectedPackage.price;
                     monthData.totalHours += job.actualDuration;
 
                     this.employeeEarnings[employeeId].totalIncome +=
-                        job.selectedPackage.price;
+                        job.subscription.selectedPackage.price;
                     this.employeeEarnings[employeeId].totalHours +=
                         job.actualDuration;
 
-                    const packageId = job.selectedPackage.packageId;
+                    const packageId = job.subscription.selectedPackage.packageId;
                     if (!monthData.packagesWorked[packageId]) {
                         monthData.packagesWorked[packageId] = 0;
                     }

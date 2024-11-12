@@ -1,5 +1,7 @@
 <template>
-    <div class="w-100 h-100 bg-light d-flex justify-content-center align-items-center">
+    <div class="w-100 h-100 bg-primary-light d-flex flex-column justify-content-center align-items-center">
+        <img src="/workwise_main.svg" alt="Logo" class="img-fluid w-25 mb-3" />
+
         <div class="bg-white p-4 pb-5 rounded-4 m-3">
             <div class="container-fluid">
                 <!-- Login title -->
@@ -79,7 +81,7 @@ export default {
         async handleLoginClick() {
             if (!this.findLoginErrors()) {
                 // Send API call for login [GET - Pass username and id through URL parameters]
-                let api_url = `http://localhost:8081/api/${this.userTypes[this.selectedUserType].navbarFormat}/login?email=${this.userEmail}&password=${this.userPassword}`;
+                let api_url = `${this.$apiUrl}/${this.userTypes[this.selectedUserType].navbarFormat}/login?email=${this.userEmail}&password=${this.userPassword}`;
 
                 try {
                     const response = await fetch(api_url, {
@@ -98,7 +100,7 @@ export default {
                     const userId = await response.json();
                     
                     // Get user name
-                    const nameResponse = await fetch(`http://localhost:8081/api/${this.userTypes[this.selectedUserType].navbarFormat}/${userId}`);
+                    const nameResponse = await fetch(`${this.$apiUrl}/${this.userTypes[this.selectedUserType].navbarFormat}/${userId}`);
                     const userNameTemp = await nameResponse.json();
                     const userName = userNameTemp.name;
 

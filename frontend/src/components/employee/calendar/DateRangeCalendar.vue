@@ -34,7 +34,7 @@ import { mapState } from "vuex";
             <template v-for="(eDateObj, idx) in arrDates" :key="idx">
                 <div class="container-fluid d-flex flex-column position-relative" :class="canClientColExpand ? 'w-100' : ''" :style="clientColStyles">
                     <!-- Now Line (Horizontal Line that shows you Current Time) -->
-                    <div v-if="isToday(eDateObj.dateStr)" class="now-line" :style="nowLineStyle"></div>
+                    <div v-if="isToday(eDateObj.dateStr)" class="now-line flash" :style="nowLineStyle"></div>
 
                     <!-- Client Details (TOP) -->
                     <div class="sticky-top bg-white row justify-content-center align-items-center pt-2" :style="{flex: `0 1 ${topPaddingPx}px`}">
@@ -296,14 +296,14 @@ export default {
         },
         pullJobData() {
             // Pulls jobs data for this employee from the API
-            fetch(`http://localhost:8081/api/job/employee/${this.userId}`)
+            fetch(`${this.$apiUrl}/job/employee/${this.userId}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok:', response.statusText);
                     }
                     
                     return response.json().then(data => {
-                        // Handle blank response [ADAMBFT: Await backend implementation to return 200 with empty array]
+                        // Handle blank response
                         if (!data) {
                             this.jobDetailsArr = [];
                             return;
@@ -321,28 +321,29 @@ export default {
 
                                 // Format job details
                                 var formattedJob = {
+                                    subscriptionId: job.subscription.subscriptionId,
                                     appointmentId: job.jobId,
-                                    packageType: job.selectedPackage.packageId,
+                                    packageType: job.subscription.selectedPackage.packageId,
                                     jobAddress: {
-                                        id: job.property.propertyId,
-                                        address: job.property.address,
-                                        postalCode: job.property.postalCode,
+                                        id: job.subscription.property.propertyId,
+                                        address: job.subscription.property.address,
+                                        postalCode: job.subscription.property.postalCode,
                                     },
                                     date: job.date,
                                     startTime: job.startTime,
                                     endTime: endTime,
                                     cleaners: employeeIds,
                                     arrivalProofUploaded: job.arrivalProofUploaded,
-                                    completionProofUpload: job.completionProofUploaded,
+                                    completionProofUploaded: job.completionProofUploaded,
                                     jobStatus: job.status,
                                     clientDetails: {
-                                        clientId: job.client.clientId,
-                                        clientName: job.client.name,
-                                        clientContact: job.client.phoneNumber,
-                                        clientEmail: job.client.email,
-                                        clientAddress: job.client.clientAddress,
-                                        clientGender: job.client.gender,
-                                        clientAge: job.client.clientAge,
+                                        clientId: job.subscription.client.clientId,
+                                        clientName: job.subscription.client.name,
+                                        clientContact: job.subscription.client.phoneNumber,
+                                        clientEmail: job.subscription.client.email,
+                                        clientAddress: job.subscription.client.clientAddress,
+                                        clientGender: job.subscription.client.gender,
+                                        clientAge: job.subscription.client.clientAge,
                                     },
                                 }
 
@@ -504,6 +505,11 @@ export default {
         },
     },
     mounted() {
+        // Update this.today every minute
+        setInterval(() => {
+            this.today = new Date();
+        }, 60000);
+
         // Initialize ResizeObserver to track the height changes for #main-container-range-cal
         const observer = new ResizeObserver(this.updateContainerHeight);
         const mainContainer = document.querySelector('#main-container-range-cal');

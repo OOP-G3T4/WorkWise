@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import store from "./store";
 import router from "./router";
 import VueGoogleMaps from "@fawmi/vue-google-maps";
+import { API_URL } from "./config";
 
 import {
     faUser,
@@ -114,6 +115,9 @@ app.mixin({
 })
 
 app.component("font-awesome-icon", FontAwesomeIcon);
+
+// Attach variables globally
+app.config.globalProperties.$apiUrl = API_URL;
 
 app.use(router)
     .use(store)
