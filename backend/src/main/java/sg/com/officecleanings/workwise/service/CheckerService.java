@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -92,32 +93,38 @@ public class CheckerService {
     /* ==== AI Post Checkers ==== */
 
 
-    public boolean validateBatchJobAssignments(List<JobAssignmentDTO> jobAssignments) {
+    public Map.Entry<Boolean, String> validateBatchJobAssignments(List<JobAssignmentDTO> jobAssignments) {
         for (JobAssignmentDTO assignment : jobAssignments) {
             Job job = getJobDetails(assignment.getJobId());
             if (job == null) {
                 System.out.println("Job not found: " + assignment.getJobId());
-                return false;
+                return (Map.entry(false, "Job not found: " + assignment.getJobId()));
             }
 
             for (int employeeId : assignment.getEmployeeIds()) {
                 Employee employee = getEmployeeDetails(employeeId);
                 if (employee == null) {
                     System.out.println("Employee not found: " + employeeId);
-                    return false;
+                    return (Map.entry(false, "Employee not found: " + employeeId));
                 }
-
-                if (!hasNonWorkingDay(employee, job, jobAssignments) ||
-                        hasJobTimeClash(employee, job, jobAssignments) ||
-                        !hasProperMealBreak(employee, job, jobAssignments) ||
-                        !hasSufficientTravelTime(employee, job, jobAssignments) ||
-                        hasExceededWorkingHours(employee, job, jobAssignments)) {
-                    System.out.println("Invalid assignment for employee: " + employeeId + " and job: " + assignment.getJobId());
-                    return false;
+                if (!hasNonWorkingDay(employee, job, jobAssignments)) {
+                    return (Map.entry(false, "Employee does not have a non-working day in the week with job " + job.getJobId() + " and employee " + employee.getEmployeeId()));
+                }
+                if (hasJobTimeClash(employee, job, jobAssignments)) {
+                    return (Map.entry(false, "Job time clash detected with job " + job.getJobId() + " and employee " + employee.getEmployeeId()));
+                }
+                if (!hasProperMealBreak(employee, job, jobAssignments)) {
+                    return (Map.entry(false, "Employee does not have proper meal breaks with job " + job.getJobId() + " and employee " + employee.getEmployeeId()));
+                }
+                if (hasInsufficientTravelTime(employee, job, jobAssignments)) {
+                    return (Map.entry(false, "Employee does not have sufficient travel time with job " + job.getJobId() + " and employee " + employee.getEmployeeId()));
+                }
+                if (hasExceededWorkingHours(employee, job, jobAssignments)) {
+                    return (Map.entry(false, "Employee has exceeded working hours with job " + job.getJobId() + " and employee " + employee.getEmployeeId()));
                 }
             }
         }
-        return true;
+        return (Map.entry(true, ""));
     }
 
     // Check if the employee can be assigned to a job
@@ -143,7 +150,7 @@ public class CheckerService {
         }
 
         // Check if employee has a sufficient travel buffer
-        if (!hasSufficientTravelTime(employee, job, null)) {
+        if (hasInsufficientTravelTime(employee, job, null)) {
             System.out.println("Employee does not have sufficient travel time");
             return false;
         }
@@ -214,14 +221,17 @@ public class CheckerService {
             for (JobAssignmentDTO assignment : jobAssignments) {
                 if (assignment.getEmployeeIds().contains(employee.getEmployeeId())) {
                     Job newJob = getJobDetails(assignment.getJobId());
+                    // if employee has no jobs
                     if (newJob != null && newJob.getDate().equals(job.getDate())) {
                         LocalTime newJobStart = newJob.getStartTime().toLocalTime();
                         LocalTime newJobEnd = newJobStart.plusHours(newJob.getActualDuration() == 0 ? newJob.getSubscription().getSelectedPackage().getHours() : newJob.getActualDuration());
                         if (jobStart.isBefore(newJobEnd) && jobEnd.isAfter(newJobStart)) {
-                            System.out.println("Job time clash detected");
-                            System.out.println("Job 1: " + jobStart + " - " + jobEnd);
-                            System.out.println("Job 2: " + newJobStart + " - " + newJobEnd);
-                            return true;
+                            if (job.getJobId() != newJob.getJobId()) {
+                                System.out.println("Job time clash detected");
+                                System.out.println("Job 1: " + jobStart + " - " + jobEnd);
+                                System.out.println("Job 2: " + newJobStart + " - " + newJobEnd);
+                                return true;
+                            }
                         }
                     }
                 }
@@ -269,14 +279,16 @@ public class CheckerService {
     }
 
     // hasSufficientTravelTime method
-    private boolean hasSufficientTravelTime(Employee employee, Job job, List<JobAssignmentDTO> jobAssignments) {
-        Optional<Job> lastJobOptional = findLastJobForEmployee(employee);
-        if (lastJobOptional.isEmpty()) {
-            // If there is no last job, assume sufficient travel time
-            return true;
+    private boolean hasInsufficientTravelTime(Employee employee, Job job, List<JobAssignmentDTO> jobAssignments) {
+        // Get the last job the employee worked on the same day
+        List<Job> jobsOnSameDay = jobEmployeeRepository.findByEmployeeAndDate(employee.getEmployeeId(), job.getDate());
+
+        if (jobsOnSameDay.isEmpty()) {
+            // If there are no jobs on the same day, assume sufficient travel time
+            return false;
         }
 
-        Job lastJob = lastJobOptional.get();
+        Job lastJob = jobsOnSameDay.get(jobsOnSameDay.size() - 1);
         LocalTime lastJobEnd = lastJob.getStartTime().toLocalTime().plusHours(lastJob.getActualDuration());
         LocalTime newJobStart = job.getStartTime().toLocalTime();
 
@@ -294,14 +306,14 @@ public class CheckerService {
                         LocalTime newJobEnd = newJob.getStartTime().toLocalTime().plusHours(newJob.getActualDuration());
                         if (lastJobEnd.plusMinutes(travelTime).isAfter(newJob.getStartTime().toLocalTime()) ||
                                 newJobEnd.plusMinutes(travelTime).isAfter(newJobStart)) {
-                            return false;
+                            return true;
                         }
                     }
                 }
             }
         }
 
-        return hasSufficientTime;
+        return !hasSufficientTime;
     }
 
     private boolean hasProperMealBreak(Employee employee, Job job, List<JobAssignmentDTO> jobAssignments) {
