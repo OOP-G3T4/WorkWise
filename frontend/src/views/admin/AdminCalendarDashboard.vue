@@ -190,6 +190,72 @@ export default {
             .then(response => response.json())
             .then(data => {
                 this.allJobsRaw = data;
+                // Initialize jobDetails object
+                this.jobDetails = {};
+
+                for (var i = 0; i < data.length; i++) {
+                    // Handle each job object
+                    var job = data[i];
+
+                    // Get employee IDs and end time
+                    const employeeIds = job.employees.map(employee => String(employee.employeeId));
+                    const endTime = this.getEndTime(job.startTime, job.actualDuration);
+
+                    // Update min and max time axis if needed
+                    var startHour = parseInt(job.startTime.split(":")[0]);
+                    var endHour = parseInt(endTime.split(":")[0]) + 1;
+
+                    if (startHour < this.timeAxisMin) {
+                        this.timeAxisMin = startHour;
+                    }
+
+                    if (endHour > this.timeAxisMax) {
+                        this.timeAxisMax = endHour;
+                    }
+
+                    // Get job month in "mm-yyyy" and day in "dd" format
+                    var jobDate = new Date(job.date);
+                    var jobMonthStr = (jobDate.getMonth()+1) + "-" + jobDate.getFullYear();
+                    var jobDay = jobDate.getDate();
+
+                    // Format job details
+                    var formattedJob = {
+                        appointmentId: job.jobId,
+                        packageType: job.subscription.selectedPackage.packageId,
+                        jobAddress: {
+                            id: job.subscription.property.propertyId,
+                            address: job.subscription.property.address,
+                            postalCode: job.subscription.property.postalCode,
+                        },
+                        date: job.date,
+                        startTime: job.startTime,
+                        endTime: endTime,
+                        cleaners: employeeIds,
+                        arrivalProofUploaded: job.arrivalProofUploaded,
+                        completionProofUpload: job.completionProofUploaded,
+                        jobStatus: job.status,
+                        clientDetails: {
+                            clientId: job.subscription.client.clientId,
+                            clientName: job.subscription.client.name,
+                            clientContact: job.subscription.client.phoneNumber,
+                            clientEmail: job.subscription.client.email,
+                            clientAddress: job.subscription.client.clientAddress,
+                            clientGender: job.subscription.client.gender,
+                            clientAge: job.subscription.client.clientAge,
+                        },
+                    }
+
+                    // Add job to jobDetails object
+                    if (!(jobMonthStr in this.jobDetails)) {
+                        this.jobDetails[jobMonthStr] = {};
+                    }
+
+                    if (!(jobDay in this.jobDetails[jobMonthStr])) {
+                        this.jobDetails[jobMonthStr][jobDay] = [];
+                    }
+
+                    this.jobDetails[jobMonthStr][jobDay].push(formattedJob);
+                }
             })
         },
         handlejobUpdated(jobId) {

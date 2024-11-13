@@ -212,7 +212,7 @@ ChartJS.register(
                                         emp.name
                                     )}`"
                                     alt="Employee Image"
-                                    class="emp-img d-none d-md-block"
+                                    class="emp-img d-md-block"
                                 />
                             </div>
                             <div>
@@ -426,7 +426,8 @@ export default {
                     const monthData =
                         this.employeeEarnings[employeeId].monthlyData[jobMonth];
 
-                    monthData.totalIncome += job.subscription.selectedPackage.price;
+                    monthData.totalIncome +=
+                        job.subscription.selectedPackage.price;
                     monthData.totalHours += job.actualDuration;
 
                     this.employeeEarnings[employeeId].totalIncome +=
