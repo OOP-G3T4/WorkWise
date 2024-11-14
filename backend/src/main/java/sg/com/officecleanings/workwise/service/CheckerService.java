@@ -107,6 +107,9 @@ public class CheckerService {
                     System.out.println("Employee not found: " + employeeId);
                     return (Map.entry(false, "Employee not found: " + employeeId));
                 }
+                if (isOnLeave(employee, job.getDate())) {
+                    return (Map.entry(false, "Employee is on leave with job " + job.getJobId() + " and employee " + employee.getEmployeeId()));
+                }
                 if (!hasNonWorkingDay(employee, job, jobAssignments)) {
                     return (Map.entry(false, "Employee does not have a non-working day in the week with job " + job.getJobId() + " and employee " + employee.getEmployeeId()));
                 }
