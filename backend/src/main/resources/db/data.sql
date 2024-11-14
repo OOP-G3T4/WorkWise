@@ -340,7 +340,9 @@ VALUES (1, 'Marky McFly', '4 Tampines Central 5, Singapore 529510, East', '91234
         (17, 'Mike Hawk', '55 Hillview Ave, Singapore 669567', '91234555', 'mike.hawk@example.com', 'Mike is on the job!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
         (18, 'Moe Lester', '1 Jurong West Street 72, Singapore 649223', '94123456', 'm.lester@example.com', 'Can clean up any mess!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
         (19, 'Sum Ting Wong', '1 Clementi Ave 3, Singapore 129902', '95123456', 'sm.wong@example.com', 'Nothing is wrong when you choose Sum Ting Wong!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
-        (20, 'Hugh Mungus', '25 Cove Way, 098209', '96123456', 'hugh.mung@example.com', 'No mess is too huge!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO');
+        (20, 'Hugh Mungus', '25 Cove Way, 098209', '96123456', 'hugh.mung@example.com', 'No mess is too huge!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
+       (21, 'Pooh Joon Sui', '2 Jalan Bukit Merah, Singapore 150002, Central', '94123457', 'pooh.joon.sui@example.com', 'Honey Cleaner!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
+       (22, 'Pooh Juin Sui', '2 Jalan Bukit Merah, Singapore 150002, Central', '94123458', 'pooh.juin.sui@example.com', 'Honey Cleaner!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO');
 
 -- Insert admin
 INSERT INTO admin (admin_id, name, email, phone_number, password)

@@ -140,14 +140,14 @@ public class Employee {
     public String toString() {
         return "Employee{" +
                 "employeeId=" + employeeId +
-                ", name='" + name + '\'' +
+                //", name='" + name + '\'' +
                 ", homeAddress='" + homeAddress + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", shortBio='" + shortBio + '\'' +
-                ", email='" + email + '\'' +
-                ", alBalance=" + alBalance +
-                ", mcBalance=" + mcBalance +
-                ", password='" + password + '\'' +
+                //", phoneNumber='" + phoneNumber + '\'' +
+                //", shortBio='" + shortBio + '\'' +
+                //", email='" + email + '\'' +
+                //", alBalance=" + alBalance +
+                //", mcBalance=" + mcBalance +
+                //", password='" + password + '\'' +
                 '}';
     }
 }

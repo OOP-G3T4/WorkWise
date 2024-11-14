@@ -325,9 +325,9 @@ public class CheckerService {
         LocalTime jobEnd = jobStart.plusHours(job.getActualDuration() == 0 ? job.getSubscription().getSelectedPackage().getHours() : job.getActualDuration());
 
         LocalTime lunchStart = LocalTime.of(11, 0);
-        LocalTime lunchEnd = LocalTime.of(13, 0);
+        LocalTime lunchEnd = LocalTime.of(14, 0);
         LocalTime dinnerStart = LocalTime.of(17, 0);
-        LocalTime dinnerEnd = LocalTime.of(19, 0);
+        LocalTime dinnerEnd = LocalTime.of(20, 0);
 
         List<Job> jobs = jobEmployeeRepository.findByEmployeeAndDate(employee.getEmployeeId(), jobDate);
         jobs.add(job);

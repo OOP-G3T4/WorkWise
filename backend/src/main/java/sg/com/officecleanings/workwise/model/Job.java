@@ -3,7 +3,6 @@ package sg.com.officecleanings.workwise.model;
 import jakarta.persistence.*;
 
 import java.sql.Time;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -189,17 +188,16 @@ public class Job {
     public String toString() {
         return "Job{" +
                 "jobId=" + jobId +
-                // ", client=" + client +
-                // ", property=" + property +
-                // ", selectedPackage=" + selectedPackage +
-                ", subscription=" + subscription +
+                ", propertyAddress=" + subscription.getProperty().getAddress() +
+                ", propertyPostalCode=" + subscription.getProperty().getPostalCode() +
+                ", pax=" + subscription.getSelectedPackage().getPax() +
                 ", date=" + date +
                 ", startTime=" + startTime +
-                ", status='" + status + '\'' +
-                ", actualDuration=" + actualDuration +
-                ", employees=" + employees +
-                ", arrivalProofUploaded=" + arrivalProofUploaded +
-                ", completionProofUploaded=" + completionProofUploaded +
+                //", status='" + status + '\'' +
+                ", endTime=" + (startTime.toLocalTime().plusMinutes(subscription.getSelectedPackage().getHours() * 60L)) +
+                //", employees=" + employees +
+                //", arrivalProofUploaded=" + arrivalProofUploaded +
+                //", completionProofUploaded=" + completionProofUploaded +
                 '}';
     }
 

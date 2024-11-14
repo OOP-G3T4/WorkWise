@@ -77,7 +77,7 @@ public class AiController {
                 JsonNode assignmentsNode = rootNode.path("assignments");
 
                 for (JsonNode assignmentNode : assignmentsNode) {
-                    int jobId = assignmentNode.path("job_id").get(0).asInt(); // Extract the first element of the array
+                    int jobId = assignmentNode.path("job_id").asInt(); // Extract the first element of the array
                     List<Integer> employeeIds = new ArrayList<>();
                     for (JsonNode idNode : assignmentNode.path("employees_id")) {
                         employeeIds.add(idNode.asInt());
