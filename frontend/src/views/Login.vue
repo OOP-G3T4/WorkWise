@@ -80,7 +80,7 @@ export default {
         },
         async handleLoginClick() {
             if (!this.findLoginErrors()) {
-                // Send API call for login [GET - Pass username and id through URL parameters]
+                // Send API call for login [POST - Pass username and id through URL parameters]
                 let api_url = `${this.$apiUrl}/${this.userTypes[this.selectedUserType].navbarFormat}/login?email=${this.userEmail}&password=${this.userPassword}`;
 
                 try {
