@@ -1,6 +1,7 @@
 <script setup>
 import { mapState } from "vuex";
 import DropdownSearch from "../forms/DropdownSearch.vue";
+import axios from "axios";
 </script>
 
 <template>
@@ -846,6 +847,22 @@ export default {
         },
     },
     methods: {
+        sendWhatsAppMessage(date, startTime) {
+            axios
+                .post("http://localhost:3000/send-message", {
+                    date: date,
+                    time: startTime,
+                })
+                .then((response) => {
+                    console.log("Message sent:", response.data.sid);
+                })
+                .catch((error) => {
+                    console.error(
+                        "Error sending message:",
+                        error.response.data.error
+                    );
+                });
+        },
         showHoverContent(toShow = true) {
             this.isHovering = toShow;
         },
@@ -996,7 +1013,7 @@ export default {
 
                         // Close modal
                         this.openMainModal(false);
-                        
+                        this.sendWhatsAppMessage(this.jobEdit.date, this.jobEdit.startTime);
                     } else {
                         console.error(
                             "Error updating the item:",
