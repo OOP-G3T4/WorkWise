@@ -17,7 +17,7 @@ import axios from "axios";
     >
         <!-- Job Card -->
         <div @click="openMainModal(true)" class="card" :class="jobCardClasses">
-            <!-- Client Name and Warning (optional) -->
+            <!-- Client Name and Warning (optional) -->            
             <div
                 class="fs-9 fs-md-7 card-header fw-semibold px-2 px-md-3 py-1 py-md-2 text-truncate flex-shrink-0"
             >
@@ -135,51 +135,28 @@ import axios from "axios";
 
                         <!-- IF ARRIVAL PROOF NOT UPLOADED ERROR -->
                         <div v-show="showJobStartedWarning">
-                            <hr
-                                class="border-2 rounded border-secondary mt-0"
-                            />
+                            <hr class="border-2 rounded border-secondary mt-0" />
 
-                            <button
-                                class="btn btn-sm btn-danger mb-3"
-                                data-bs-toggle="collapse"
-                                :href="`#error-msg-collapse-${jobDetails.appointmentId}`"
-                                role="button"
-                                :aria-controls="`error-msg-collapse-${jobDetails.appointmentId}`"
-                            >
-                                <font-awesome-icon
-                                    class="me-2"
-                                    icon="fa-solid fa-caret-down"
-                                />ACTION REQUIRED
-                            </button>
-
-                            <div
-                                class="row mb-3 collapse"
-                                :id="`error-msg-collapse-${jobDetails.appointmentId}`"
-                            >
+                            <button class="btn btn-sm btn-danger mb-3" data-bs-toggle="collapse" :href="`#error-msg-collapse-${jobDetails.appointmentId}`" role="button" :aria-controls="`error-msg-collapse-${jobDetails.appointmentId}`"><font-awesome-icon class="me-2" icon="fa-solid fa-caret-down" />ACTION REQUIRED</button>
+    
+                            <div class="row mb-3 collapse" :id="`error-msg-collapse-${jobDetails.appointmentId}`">
                                 <template v-if="userType == 'admin'">
                                     <div class="col-12">
                                         <p>
-                                            Employee did not upload proof of
-                                            arrival within
-                                            {{ arrivalBufferMinutes }} min.
+                                            Employee did not upload proof of arrival
+                                            within {{ arrivalBufferMinutes }} min.
                                             Would you like to cancel this job?
                                         </p>
                                     </div>
 
                                     <div class="col-6">
-                                        <button
-                                            class="btn btn-sm btn-light w-100"
-                                            @click="openErrorMsgCollapse(false)"
-                                        >
+                                        <button class="btn btn-sm btn-light w-100" @click="openErrorMsgCollapse(false)">
                                             Dismiss
                                         </button>
                                     </div>
 
                                     <div class="col-6">
-                                        <button
-                                            class="btn btn-sm btn-outline-danger w-100"
-                                            @click="openDelModal(true)"
-                                        >
+                                        <button class="btn btn-sm btn-outline-danger w-100" @click="openDelModal(true)">
                                             Cancel Job
                                         </button>
                                     </div>
@@ -188,8 +165,7 @@ import axios from "axios";
                                 <template v-else-if="userType == 'employee'">
                                     <div class="col-12">
                                         <p class="m-0">
-                                            Upload proof of arrival to continue
-                                            this job
+                                            Upload proof of arrival to continue this job
                                         </p>
                                     </div>
                                 </template>
@@ -198,65 +174,36 @@ import axios from "axios";
 
                         <!-- IF JOB COMPLETED BUT NO PROOF UPLOADED -->
                         <div v-show="showJobCompletedWarning">
-                            <hr
-                                class="border-2 rounded border-secondary mt-0"
-                            />
+                            <hr class="border-2 rounded border-secondary mt-0" />
 
-                            <button
-                                class="btn btn-sm btn-danger mb-3"
-                                data-bs-toggle="collapse"
-                                :href="`#error-msg-collapse-completed-${jobDetails.appointmentId}`"
-                                role="button"
-                                :aria-controls="`error-msg-collapse-completed-${jobDetails.appointmentId}`"
-                            >
-                                <font-awesome-icon
-                                    class="me-2"
-                                    icon="fa-solid fa-caret-down"
-                                />ACTION REQUIRED
-                            </button>
-
-                            <div
-                                class="row mb-3 collapse"
-                                :id="`error-msg-collapse-completed-${jobDetails.appointmentId}`"
-                            >
+                            <button class="btn btn-sm btn-danger mb-3" data-bs-toggle="collapse" :href="`#error-msg-collapse-completed-${jobDetails.appointmentId}`" role="button" :aria-controls="`error-msg-collapse-completed-${jobDetails.appointmentId}`"><font-awesome-icon class="me-2" icon="fa-solid fa-caret-down" />ACTION REQUIRED</button>
+    
+                            <div class="row mb-3 collapse" :id="`error-msg-collapse-completed-${jobDetails.appointmentId}`">
                                 <template v-if="userType == 'admin'">
                                     <div class="col-12">
                                         <p>
-                                            Employee did not upload proof of
-                                            completion after end of job. Would
-                                            you like to confirm job completion
-                                            anyways?
+                                            Employee did not upload proof of completion after end of job.
+                                            Would you like to confirm job completion anyways?
                                         </p>
                                     </div>
-
+    
                                     <div class="col-6">
-                                        <button
-                                            class="btn btn-sm btn-light w-100"
-                                            @click="
-                                                openErrorMsgCollapseCompleted(
-                                                    false
-                                                )
-                                            "
-                                        >
+                                        <button class="btn btn-sm btn-light w-100" @click="openErrorMsgCollapseCompleted(false)">
                                             Dismiss
                                         </button>
                                     </div>
-
+    
                                     <div class="col-6">
-                                        <button
-                                            class="btn btn-sm btn-success w-100"
-                                            @click="confirmJob()"
-                                        >
+                                        <button class="btn btn-sm btn-success w-100" @click="confirmJob()">
                                             Confirm Job Completion
                                         </button>
                                     </div>
                                 </template>
-
+    
                                 <template v-else-if="userType == 'employee'">
                                     <div class="col-12">
                                         <p class="m-0">
-                                            Upload proof of completion to finish
-                                            this job
+                                            Upload proof of completion to finish this job
                                         </p>
                                     </div>
                                 </template>
@@ -473,12 +420,7 @@ import axios from "axios";
                                     Cleaner{{ overOneCleaner ? `s` : `` }}
                                 </p>
 
-                                <h6
-                                    v-if="jobDetails.cleaners.length == 0"
-                                    class="m-0"
-                                >
-                                    NIL
-                                </h6>
+                                <h6 v-if="jobDetails.cleaners.length==0" class="m-0">NIL</h6>
 
                                 <h6 v-else class="m-0">
                                     <template
@@ -521,35 +463,21 @@ import axios from "axios";
                                     </button>
                                 </div>
 
-                                <template
-                                    v-for="(e_emp_id, idx) in jobEdit.cleaners"
-                                    :key="idx"
-                                >
+                                <template v-for="(e_emp_id, idx) in jobEdit.cleaners" :key="idx">
                                     <div class="d-flex">
                                         <DropdownSearch
                                             :items="allEmployees"
                                             :inputValue="e_emp_id"
                                             :fieldName="`Cleaner ${idx + 1}`"
                                             :uniqueComponentId="`${jobDetails.appointmentId}-${idx}`"
-                                            @valChange="
-                                                (data) =>
-                                                    handleCleanerChange(
-                                                        data,
-                                                        idx
-                                                    )
-                                            "
+                                            @valChange="(data) => handleCleanerChange(data, idx)"
                                             :showId="true"
                                             class="flex-grow-1"
                                             :disabled-items="jobEdit.cleaners"
                                         />
 
-                                        <button
-                                            class="btn btn-outline-danger mb-3 ms-2"
-                                            @click="deleteCleaner(e_emp_id)"
-                                        >
-                                            <font-awesome-icon
-                                                icon="fa-solid fa-trash"
-                                            />
+                                        <button class="btn btn-outline-danger mb-3 ms-2" @click="deleteCleaner(e_emp_id)">
+                                            <font-awesome-icon icon="fa-solid fa-trash" />
                                         </button>
                                     </div>
                                 </template>
@@ -561,193 +489,65 @@ import axios from "axios";
                             <!-- ARRIVAL PROOF SECTION -->
 
                             <!-- Download Arrival Proof -->
-                            <div
-                                class="col"
-                                v-if="jobDetails.arrivalProofUploaded"
-                            >
-                                <button
-                                    class="btn btn-light w-100 mb-3"
-                                    @click="downloadArrivalImage()"
-                                >
-                                    <font-awesome-icon
-                                        icon="fa-solid fa-download"
-                                        class="me-2"
-                                    />Arrival Proof
+                            <div class="col" v-if="jobDetails.arrivalProofUploaded">
+                                <button class="btn btn-light w-100 mb-3" @click="downloadArrivalImage()">
+                                    <font-awesome-icon icon="fa-solid fa-download" class="me-2" />Arrival Proof
                                 </button>
                             </div>
 
                             <!-- Upload Arrival Proof Input -->
-                            <div
-                                :class="
-                                    isJobStartBeforeToday(
-                                        jobDetails.date,
-                                        jobDetails.startTime
-                                    )
-                                        ? 'col-12'
-                                        : 'col'
-                                "
-                                v-else
-                            >
+                            <div :class="isJobStartBeforeToday(jobDetails.date, jobDetails.startTime) ? 'col-12' : 'col'" v-else>
                                 <template v-if="userType != 'admin'">
-                                    <p class="text-secondary mb-1">
-                                        <font-awesome-icon
-                                            icon="fa-solid fa-camera"
-                                            class="me-2"
-                                        />Upload Arrival Proof
-                                    </p>
-
-                                    <div
-                                        v-if="
-                                            isJobStartBeforeToday(
-                                                jobDetails.date,
-                                                jobDetails.startTime
-                                            )
-                                        "
-                                        class="input-group mb-3"
-                                    >
-                                        <input
-                                            type="file"
-                                            class="form-control"
-                                            @change="handleArrivalFileUpload"
-                                        />
-                                        <button
-                                            class="btn btn-primary"
-                                            type="button"
-                                            @click="submitArrivalImg()"
-                                        >
-                                            Upload
-                                        </button>
+                                    <p class="text-secondary mb-1"><font-awesome-icon icon="fa-solid fa-camera" class="me-2" />Upload Arrival Proof</p>
+    
+                                    <div v-if="isJobStartBeforeToday(jobDetails.date, jobDetails.startTime)" class="input-group mb-3">
+                                        <input type="file" class="form-control" @change="handleArrivalFileUpload" />
+                                        <button class="btn btn-primary" type="button" @click="submitArrivalImg()">Upload</button>
                                     </div>
-
-                                    <p v-else class="text-secondary fst-italic">
-                                        Job not started
-                                    </p>
+                                    
+                                    <p v-else class="text-secondary fst-italic">Job not started</p>
                                 </template>
 
                                 <template v-else>
-                                    <p class="text-secondary mb-1">
-                                        <font-awesome-icon
-                                            icon="fa-solid fa-camera"
-                                            class="me-2"
-                                        />Arrival Proof
-                                    </p>
-
-                                    <p
-                                        v-if="
-                                            isJobStartBeforeToday(
-                                                jobDetails.date,
-                                                jobDetails.startTime
-                                            )
-                                        "
-                                        class="text-secondary fst-italic"
-                                    >
-                                        Not yet uploaded
-                                    </p>
-
-                                    <p v-else class="text-secondary fst-italic">
-                                        Job not started
-                                    </p>
+                                    <p class="text-secondary mb-1"><font-awesome-icon icon="fa-solid fa-camera" class="me-2" />Arrival Proof</p>
+    
+                                    <p v-if="isJobStartBeforeToday(jobDetails.date, jobDetails.startTime)" class="text-secondary fst-italic">Not yet uploaded</p>
+                                    
+                                    <p v-else class="text-secondary fst-italic">Job not started</p>
                                 </template>
                             </div>
+
 
                             <!-- COMPLETION PROOF SECTION -->
 
                             <!-- Download Completion Proof -->
-                            <div
-                                class="col-12"
-                                v-if="jobDetails.completionProofUploaded"
-                            >
-                                <button
-                                    class="btn btn-light w-100"
-                                    @click="downloadCompletionImage()"
-                                >
-                                    <font-awesome-icon
-                                        icon="fa-solid fa-download"
-                                        class="me-2"
-                                    />Completion Proof
+                            <div class="col-12" v-if="jobDetails.completionProofUploaded">
+                                <button class="btn btn-light w-100" @click="downloadCompletionImage()">
+                                    <font-awesome-icon icon="fa-solid fa-download" class="me-2" />Completion Proof
                                 </button>
                             </div>
 
                             <!-- Upload Completion Proof Input -->
-                            <div
-                                :class="
-                                    isJobStartBeforeToday(
-                                        jobDetails.date,
-                                        jobDetails.startTime
-                                    )
-                                        ? 'col-12'
-                                        : 'col'
-                                "
-                                v-else
-                            >
+                            <div :class="isJobStartBeforeToday(jobDetails.date, jobDetails.startTime) ? 'col-12' : 'col'" v-else>
                                 <template v-if="userType != 'admin'">
-                                    <p class="text-secondary mb-1">
-                                        <font-awesome-icon
-                                            icon="fa-solid fa-camera"
-                                            class="me-2"
-                                        />Upload Completion Proof
-                                    </p>
-
-                                    <div
-                                        v-if="
-                                            isJobStartBeforeToday(
-                                                jobDetails.date,
-                                                jobDetails.startTime
-                                            ) && jobDetails.arrivalProofUploaded
-                                        "
-                                        class="input-group mb-3"
-                                    >
-                                        <input
-                                            type="file"
-                                            class="form-control"
-                                            @change="handleCompletionFileUpload"
-                                        />
-                                        <button
-                                            class="btn btn-primary"
-                                            type="button"
-                                            @click="submitCompletedImg()"
-                                        >
-                                            Upload
-                                        </button>
+                                    <p class="text-secondary mb-1"><font-awesome-icon icon="fa-solid fa-camera" class="me-2" />Upload Completion Proof</p>
+    
+                                    <div v-if="isJobStartBeforeToday(jobDetails.date, jobDetails.startTime) && jobDetails.arrivalProofUploaded" class="input-group mb-3">
+                                        <input type="file" class="form-control" @change="handleCompletionFileUpload" />
+                                        <button class="btn btn-primary" type="button" @click="submitCompletedImg()">Upload</button>
                                     </div>
-
-                                    <p
-                                        v-else-if="
-                                            !jobDetails.arrivalProofUploaded
-                                        "
-                                        class="text-secondary fst-italic"
-                                    >
-                                        Upload Arrival Proof First
-                                    </p>
-
-                                    <p v-else class="text-secondary fst-italic">
-                                        Job not started
-                                    </p>
+                                    
+                                    <p v-else-if="!jobDetails.arrivalProofUploaded" class="text-secondary fst-italic">Upload Arrival Proof First</p>
+    
+                                    <p v-else class="text-secondary fst-italic">Job not started</p>
                                 </template>
 
                                 <template v-else>
-                                    <p class="text-secondary mb-1">
-                                        <font-awesome-icon
-                                            icon="fa-solid fa-camera"
-                                            class="me-2"
-                                        />Completion Proof
-                                    </p>
-
-                                    <p
-                                        v-if="
-                                            isJobStartBeforeToday(
-                                                jobDetails.date,
-                                                jobDetails.startTime
-                                            )
-                                        "
-                                        class="text-secondary fst-italic"
-                                    >
-                                        Not yet uploaded
-                                    </p>
-
-                                    <p v-else class="text-secondary fst-italic">
-                                        Job not started
-                                    </p>
+                                    <p class="text-secondary mb-1"><font-awesome-icon icon="fa-solid fa-camera" class="me-2" />Completion Proof</p>
+    
+                                    <p v-if="isJobStartBeforeToday(jobDetails.date, jobDetails.startTime)" class="text-secondary fst-italic">Not yet uploaded</p>
+                                    
+                                    <p v-else class="text-secondary fst-italic">Job not started</p>
                                 </template>
                             </div>
                         </div>
@@ -809,15 +609,8 @@ import axios from "axios";
                     </div>
                 </div>
 
-                <div
-                    class="modal-footer d-flex justify-content-between"
-                    v-if="isEditMode"
-                >
-                    <button
-                        type="button"
-                        class="btn btn-outline-danger"
-                        @click="openDelModal(true)"
-                    >
+                <div class="modal-footer d-flex justify-content-between" v-if="isEditMode">
+                    <button type="button" class="btn btn-outline-danger" @click="openDelModal(true)">
                         <font-awesome-icon icon="fa-solid fa-trash" />
                     </button>
 
@@ -854,60 +647,24 @@ import axios from "axios";
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1
-                        class="modal-title fs-5 ms-1"
-                        :id="`job-del-modal-label-${jobDetails.appointmentId}`"
-                    >
-                        Confirm Cancellation?
-                    </h1>
-                    <button
-                        type="button"
-                        class="btn-close"
-                        @click="openMainModal(true)"
-                    ></button>
+                    <h1 class="modal-title fs-5 ms-1" :id="`job-del-modal-label-${jobDetails.appointmentId}`">Confirm Cancellation?</h1>
+                    <button type="button" class="btn-close" @click="openMainModal(true)"></button>
                 </div>
 
                 <div class="modal-body">
                     <p>Are you sure you want to cancel this job?:</p>
-                    <p>
-                        <span class="fw-bold">Client:</span>
-                        {{ jobDetails.clientDetails.clientName }}
-                    </p>
-                    <p>
-                        <span class="fw-bold">Address:</span>
-                        {{ jobDetails.jobAddress.address }}
-                    </p>
-                    <p>
-                        <span class="fw-bold">Date:</span> {{ jobDetails.date }}
-                    </p>
-                    <p>
-                        <span class="fw-bold">Time:</span>
-                        {{ convertTimeToReadable(jobDetails.startTime) }} -
-                        {{ convertTimeToReadable(jobDetails.endTime) }}
-                    </p>
-
+                    <p><span class="fw-bold">Client:</span> {{ jobDetails.clientDetails.clientName }}</p>
+                    <p><span class="fw-bold">Address:</span> {{ jobDetails.jobAddress.address }}</p>
+                    <p><span class="fw-bold">Date:</span> {{ jobDetails.date }}</p>
+                    <p><span class="fw-bold">Time:</span> {{ convertTimeToReadable(jobDetails.startTime) }} - {{ convertTimeToReadable(jobDetails.endTime) }}</p>
+                    
                     <br />
                     <p>Job cancellations cannot be undone.</p>
                 </div>
 
                 <div class="modal-footer">
-                    <button
-                        type="button"
-                        class="btn btn-light"
-                        @click="openMainModal(true)"
-                    >
-                        Go Back
-                    </button>
-                    <button
-                        type="button"
-                        class="btn btn-outline-danger"
-                        @click="confirmCancelJob()"
-                    >
-                        <font-awesome-icon
-                            icon="fa-solid fa-trash"
-                            class="me-2"
-                        />Confirm
-                    </button>
+                    <button type="button" class="btn btn-light" @click="openMainModal(true)" >Go Back</button>
+                    <button type="button" class="btn btn-outline-danger" @click="confirmCancelJob()"><font-awesome-icon icon="fa-solid fa-trash" class="me-2" />Confirm</button>
                 </div>
             </div>
         </div>
@@ -961,12 +718,12 @@ export default {
             // SETTINGS BELOW ===================================
             // To change color of statuses
             statusColorMap: {
-                PENDING: "#858585",
-                SCHEDULED: "#858585",
-                CANCELLED: "#FF5E5B",
-                IN_PROGRESS: "#F3B73E",
-                ACTION_REQUIRED: "#2a86b4",
-                COMPLETED: "#008761",
+                PENDING: '#858585',
+                SCHEDULED: '#858585',
+                CANCELLED: '#FF5E5B',
+                IN_PROGRESS: '#F3B73E',
+                ACTION_REQUIRED: '#2a86b4',
+                COMPLETED: '#008761',
             },
 
             // Buffer time allowed after job starts before warning is shown if arrivalProof is not uploaded
@@ -1003,7 +760,7 @@ export default {
                 }
             },
             immediate: true,
-        },
+        }
     },
     computed: {
         ...mapState(["userType"]), // Access userType from Vuex state
@@ -1015,12 +772,9 @@ export default {
 
         showJobStartedWarning() {
             // Returns True if (job is more than X minutes after start time) AND (arrivalProofUploaded is False)
-
+            
             // Return False if photo has been uploaded OR job status is COMPLETED
-            if (
-                this.jobDetails.arrivalProofUploaded ||
-                this.jobDetails.jobStatus == "COMPLETED"
-            ) {
+            if (this.jobDetails.arrivalProofUploaded || this.jobDetails.jobStatus == "COMPLETED") {
                 return false;
             }
 
@@ -1041,10 +795,7 @@ export default {
 
         showJobCompletedWarning() {
             // If proof already uploaded OR job status is COMPLETED, return false
-            if (
-                this.jobDetails.completionProofUploaded ||
-                this.jobDetails.jobStatus == "COMPLETED"
-            ) {
+            if (this.jobDetails.completionProofUploaded || this.jobDetails.jobStatus == "COMPLETED") {
                 return false;
             }
 
@@ -1078,24 +829,19 @@ export default {
             return {
                 "compressed-parent-container": this.isCompressed,
                 "border border-3 border-danger":
-                    this.isCompressed &&
-                    (this.showJobStartedWarning ||
-                        this.showJobCompletedWarning),
+                    this.isCompressed && (this.showJobStartedWarning || this.showJobCompletedWarning),
             };
         },
 
         jobCardClasses() {
             return {
-                "border border-3 border-danger":
-                    this.showJobStartedWarning || this.showJobCompletedWarning,
+                "border border-3 border-danger": this.showJobStartedWarning || this.showJobCompletedWarning,
                 "compressed-job-card": this.isCompressed,
                 showPopoverRight: this.popoverRight && this.isCompressed,
                 showPopoverLeft: !this.popoverRight && this.isCompressed,
                 "h-100": !this.isCompressed,
-                "hide-card-right invisible opacity-0":
-                    this.isCompressed && !this.isHovering && this.popoverRight,
-                "hide-card-left invisible opacity-0":
-                    this.isCompressed && !this.isHovering && !this.popoverRight,
+                "hide-card-right invisible opacity-0": this.isCompressed && !this.isHovering && this.popoverRight,
+                "hide-card-left invisible opacity-0": this.isCompressed && !this.isHovering && !this.popoverRight,
                 "animate-card": this.isAnimate,
             };
         },
@@ -1133,7 +879,7 @@ export default {
 
         toggleEditMode() {
             this.isEditMode = !this.isEditMode;
-
+            
             if (!this.isEditMode) {
                 this.revertEdits();
             }
@@ -1233,23 +979,23 @@ export default {
             // API call to update job
             let jobId = this.jobDetails.appointmentId;
             let reqBody = {
-                subscription: {
-                    subscriptionId: this.jobEdit.subscriptionId,
+                "subscription": {
+                    "subscriptionId": this.jobEdit.subscriptionId
                 },
-                date: this.jobEdit.date,
-                startTime: this.formatTime(this.jobEdit.startTime),
-                status: this.jobEdit.jobStatus,
-                actualDuration: this.calculateHours(
+                "date": this.jobEdit.date,
+                "startTime": this.formatTime(this.jobEdit.startTime),
+                "status": this.jobEdit.jobStatus,
+                "actualDuration": this.calculateHours(
                     this.jobEdit.startTime,
                     this.jobEdit.endTime
                 ),
-                employees: [],
-            };
+                "employees": []
+            }
 
             // Add all cleaners to the employees array
             for (let cleanerId of this.jobEdit.cleaners) {
                 reqBody.employees.push({
-                    employeeId: cleanerId,
+                    "employeeId": cleanerId
                 });
             }
 
@@ -1267,10 +1013,7 @@ export default {
 
                         // Close modal
                         this.openMainModal(false);
-                        this.sendWhatsAppMessage(
-                            this.jobEdit.date,
-                            this.formatTime(this.jobEdit.startTime)
-                        );
+                        this.sendWhatsAppMessage(this.jobEdit.date, this.jobEdit.startTime);
                     } else {
                         console.error(
                             "Error updating the item:",
@@ -1301,29 +1044,24 @@ export default {
 
             try {
                 const response = await fetch(`${this.$apiUrl}/job/${jobId}`, {
-                    method: "DELETE",
+                    method: 'DELETE',
                 });
                 if (response.ok) {
-                    this.$emit("jobUpdated", jobId);
+                    this.$emit('jobUpdated', jobId);
                 } else {
-                    console.error(
-                        "Error deleting the item:",
-                        response.statusText
-                    );
+                    console.error('Error deleting the item:', response.statusText);
                 }
             } catch (error) {
-                console.error("Error deleting the item:", error);
+                console.error('Error deleting the item:', error);
             }
 
             // Close modal
             this.openDelModal(false);
         },
         fetchAllCientProperties() {
-            fetch(
-                `${this.$apiUrl}/client/${this.jobDetails.clientDetails.clientId}/properties`
-            )
-                .then((response) => response.json())
-                .then((data) => {
+            fetch (`${this.$apiUrl}/client/${this.jobDetails.clientDetails.clientId}/properties`)
+                .then(response => response.json())
+                .then(data => {
                     // Format data to match clientAddresses object
                     let allProperties = {};
                     let allPropertyInfo = {};
@@ -1331,9 +1069,7 @@ export default {
                     for (let i = 0; i < data.length; i++) {
                         let e_property = data[i];
 
-                        allProperties[
-                            e_property.propertyId
-                        ] = `${e_property.address}, ${e_property.postalCode}`;
+                        allProperties[e_property.propertyId] = `${e_property.address}, ${e_property.postalCode}`;
                         allPropertyInfo[e_property.propertyId] = {
                             address: e_property.address,
                             postalCode: e_property.postalCode,
@@ -1350,8 +1086,8 @@ export default {
             const [startHour, startMin] = startTime.split(":");
             const [endHour, endMin] = endTime.split(":");
 
-            const startTotal = parseInt(startHour) + parseInt(startMin) / 60;
-            const endTotal = parseInt(endHour) + parseInt(endMin) / 60;
+            const startTotal = parseInt(startHour) + (parseInt(startMin) / 60);
+            const endTotal = parseInt(endHour) + (parseInt(endMin) / 60);
 
             return Math.round(endTotal - startTotal);
         },
@@ -1395,21 +1131,15 @@ export default {
             formData.append("file", arrivalImg);
 
             try {
-                const response = await fetch(
-                    `${this.$apiUrl}/job/${this.jobDetails.appointmentId}/upload-arrival-proof`,
-                    {
-                        method: "POST",
-                        body: formData,
-                    }
-                );
+                const response = await fetch(`${this.$apiUrl}/job/${this.jobDetails.appointmentId}/upload-arrival-proof`, {
+                    method: "POST",
+                    body: formData,
+                });
 
                 if (response.ok) {
                     this.jobDetails.arrivalProofUploaded = true;
                 } else {
-                    console.error(
-                        "Error uploading arrival image:",
-                        response.statusText
-                    );
+                    console.error("Error uploading arrival image:", response.statusText);
                 }
             } catch (error) {
                 console.error("Error uploading arrival image:", error);
@@ -1419,9 +1149,7 @@ export default {
             this.openErrorMsgCollapse(false);
         },
         downloadArrivalImage() {
-            fetch(
-                `${this.$apiUrl}/job/${this.jobDetails.appointmentId}/arrival-proof`
-            )
+            fetch(`${this.$apiUrl}/job/${this.jobDetails.appointmentId}/arrival-proof`)
                 .then((response) => response.blob())
                 .then((blob) => {
                     const url = window.URL.createObjectURL(blob);
@@ -1439,21 +1167,15 @@ export default {
             formData.append("file", completionImg);
 
             try {
-                const response = await fetch(
-                    `${this.$apiUrl}/job/${this.jobDetails.appointmentId}/upload-completion-proof`,
-                    {
-                        method: "POST",
-                        body: formData,
-                    }
-                );
+                const response = await fetch(`${this.$apiUrl}/job/${this.jobDetails.appointmentId}/upload-completion-proof`, {
+                    method: "POST",
+                    body: formData,
+                });
 
                 if (response.ok) {
                     this.jobDetails.completionProofUploaded = true;
                 } else {
-                    console.error(
-                        "Error uploading completion image:",
-                        response.statusText
-                    );
+                    console.error("Error uploading completion image:", response.statusText);
                 }
             } catch (error) {
                 console.error("Error uploading completion image:", error);
@@ -1466,9 +1188,7 @@ export default {
             this.openErrorMsgCollapseCompleted(false);
         },
         downloadCompletionImage() {
-            fetch(
-                `${this.$apiUrl}/job/${this.jobDetails.appointmentId}/completion-proof`
-            )
+            fetch(`${this.$apiUrl}/job/${this.jobDetails.appointmentId}/completion-proof`)
                 .then((response) => response.blob())
                 .then((blob) => {
                     const url = window.URL.createObjectURL(blob);
@@ -1483,23 +1203,23 @@ export default {
             let jobId = this.jobDetails.appointmentId;
 
             let reqBody = {
-                subscription: {
-                    subscriptionId: this.jobDetails.subscriptionId,
+                "subscription": {
+                    "subscriptionId": this.jobDetails.subscriptionId
                 },
-                date: this.jobDetails.date,
-                startTime: this.formatTime(this.jobDetails.startTime),
-                status: "COMPLETED", // This is the important part for updating status
-                actualDuration: this.calculateHours(
+                "date": this.jobDetails.date,
+                "startTime": this.formatTime(this.jobDetails.startTime),
+                "status": "COMPLETED",  // This is the important part for updating status
+                "actualDuration": this.calculateHours(
                     this.jobDetails.startTime,
                     this.jobDetails.endTime
                 ),
-                employees: [],
+                "employees": []
             };
 
             // Add all cleaners to the employees array
             for (let cleanerId of this.jobDetails.cleaners) {
                 reqBody.employees.push({
-                    employeeId: cleanerId,
+                    "employeeId": cleanerId
                 });
             }
 
@@ -1524,7 +1244,7 @@ export default {
                 .catch((error) => {
                     console.error("Error updating the item:", error);
                 });
-
+            
             // Set job status to COMPLETED
             this.jobDetails.jobStatus = "COMPLETED";
         },
@@ -1586,7 +1306,7 @@ export default {
                     this.allEmployees[employee.employeeId] = employee.name;
                 }
             });
-
+        
         // Also pull any employees already assigned to the job
         let jobCleaners = this.jobDetails.cleaners;
 
@@ -1594,10 +1314,10 @@ export default {
             // Only run if the employee is not already in the allEmployees object
             if (!this.allEmployees[e_cleaner_id]) {
                 fetch(`${this.$apiUrl}/employee/${e_cleaner_id}`)
-                    .then((response) => response.json())
-                    .then((data) => {
-                        this.allEmployees[e_cleaner_id] = data.name;
-                    });
+                .then((response) => response.json())
+                .then((data) => {
+                    this.allEmployees[e_cleaner_id] = data.name;
+                });
             }
         }
     },
