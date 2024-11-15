@@ -52,16 +52,15 @@ public class AiService {
         LocalDate date = LocalDate.now();
 
         // Retrieve all pending jobs
-
         List<Job> allPendingJobs = jobService.getPendingJobsInNextWeek(date);
 
-        // retrieve all employee events in that week
+        // Retrieve all employee events in that week
         List<EmployeeEvent> affectedEmployeeEvents = employeeEventService.getEmployeeEventsByWeek(date);
 
-        // retrieve all package details
+        // Retrieve all package details
         List<SelectedPackage> allPackages = packageService.getAllPackages();
 
-        // retrieve all property details
+        // Retrieve all property details
         List<Property> allProperties = propertyService.getAllProperties();
 
         // Construct the prompt for OpenAI
@@ -77,6 +76,7 @@ public class AiService {
                 "If the job has a package that states pax 2, then assign 2 employees to the job" +
                 "Account for the travel time" +
                 "Duration is in hours" +
+                "Ensure that employee have NO time clash with another job by looking at the date, start time and duration" +
                 "Ensure that all employees have a similar number of jobs" +
                 "Do not return any other words and only the following format:\n" +
                 "{\n" +
