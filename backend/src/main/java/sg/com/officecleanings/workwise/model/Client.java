@@ -11,7 +11,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-// For LocalDate fields
 import java.time.LocalDate;
 
 @Entity
@@ -128,8 +127,6 @@ public class Client {
     public void setJoinDate(LocalDate joinDate) {
         this.joinDate = joinDate;
     }
-
-    // Getters and Setters
 
     @Override
     public String toString() {

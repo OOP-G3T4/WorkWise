@@ -35,11 +35,11 @@ public class SelectedPackage {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private HouseSize houseSize; // can change to enum
+    private HouseSize houseSize; 
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private HouseType houseType; // can change to enum
+    private HouseType houseType;
 
     @Min(0)
     private int hourlyRate;

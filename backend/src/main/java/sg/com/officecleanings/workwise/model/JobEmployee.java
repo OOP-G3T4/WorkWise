@@ -25,7 +25,7 @@ public class JobEmployee {
 
     // Default constructor
     public JobEmployee() {
-        this.reasoning = null; // Default value
+        this.reasoning = null;
     }
 
     // Constructor with Job, Employee, and reasoning
