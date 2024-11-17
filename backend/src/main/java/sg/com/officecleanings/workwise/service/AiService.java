@@ -60,7 +60,7 @@ public class AiService {
         List<Employee> allEmployees = employeeRepository.findAll();
 
         // Retrieve all pending jobs
-        LocalDate date = LocalDate.parse("2024-11-10");
+        LocalDate date = LocalDate.now();
         List<Job> allPendingJobs = jobService.getPendingJobsInNextWeek(date);
 
         // retrieve all employee events in that week
