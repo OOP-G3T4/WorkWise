@@ -34,7 +34,6 @@ public class CheckerService {
     @Autowired
     private JobEmployeeRepository jobEmployeeRepository;
 
-    /* ==== SubscriptionEligibilityChecker ==== */
 
     /* ==== JobEditAvailabilityChecker ==== */
     // Get the job details
