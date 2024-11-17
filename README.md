@@ -91,7 +91,12 @@ git clone https://github.com/OOP-G3T4/WorkWise.git
   ```bash
   npm run dev
   ```
-4. If you would like to set up WhatsApp Service, create an `.env` file in the `frontend` directory. Note: you need a Twilio account.
+4. Create an `.env` file in the `frontend` directory. 
+  ```bash
+  VITE_GOOGLE_MAPS_API_KEY=your-google-maps-api-key
+  ```
+
+5. If you would like to set up WhatsApp Service, create an `.env` file in the `frontend/server` directory. In your terminal, write the command `node server.js` Note: you need a Twilio account.
   ```bash
   VITE_TWILIO_ACCOUNT_SID=your-twilio-account-sid
   VITE_TWILIO_AUTH_TOKEN=your-twilio-auth-token
