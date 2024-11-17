@@ -95,7 +95,7 @@ public class JobService {
 
     public boolean createJobsFromActiveSubscriptions() {
         System.out.println("Creating jobs from active subscriptions method called.");
-        LocalDate today = LocalDate.of(2024, 11, 17);
+        LocalDate today = LocalDate.now();
 
         LocalDate targetWeekStart = today.plusWeeks(4).with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).plusDays(1);
         LocalDate targetWeekEnd = targetWeekStart.plusDays(6);
