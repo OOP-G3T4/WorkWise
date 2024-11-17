@@ -20,7 +20,6 @@ import java.util.Map;
 
 
 @RestController
-// @CrossOrigin(origins = "${cors.allowedOrigins}") SHOULD I ADD? ADAMBFT
 public class AiController {
 
     private final OpenAiChatModel aiModel;
