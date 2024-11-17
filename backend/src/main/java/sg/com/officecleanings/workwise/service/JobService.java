@@ -115,14 +115,15 @@ public class JobService {
     }
 
     private boolean canScheduleBiWeeklyJob(Subscription subscription, LocalDate targetWeekStart) {
-        LocalDate lastJobDate = jobRepository.findLatestJobDateByClientIdAndPropertyId(subscription.getClient().getClientId(), subscription.getProperty().getPropertyId());
+        LocalDate lastJobDate = jobRepository.findLatestJobDateBySubscriptionId(subscription.getSubscriptionId());
 
         int jobsThisMonth = jobRepository.countJobsForSubscriptionInMonth(subscription.getSubscriptionId(), targetWeekStart.getMonthValue(), targetWeekStart.getYear());
         if (jobsThisMonth >= 2) {
             return false;
         }
 
-        return lastJobDate == null || lastJobDate.plusDays(10).isBefore(targetWeekStart);
+        boolean isJobDateValid = lastJobDate == null || lastJobDate.plusDays(10).isBefore(targetWeekStart);
+        return isJobDateValid;
     }
 
     private void createAndSaveJob(Subscription subscription, LocalDate targetWeekStart) {
