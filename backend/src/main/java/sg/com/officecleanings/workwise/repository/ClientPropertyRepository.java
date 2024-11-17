@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface ClientPropertyRepository extends JpaRepository<ClientProperty, ClientPropertyId> {
     List<ClientProperty> findByClientClientId(int clientId);
+
     ClientProperty findByPropertyPropertyId(int propertyId);
+    
     void deleteByClient_ClientId(int clientId);
 }

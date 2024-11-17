@@ -26,6 +26,7 @@ public interface JobEmployeeRepository extends JpaRepository<JobEmployee, JobEmp
     // Only employeeId is used as parameter because job date and job start time are already present in Job object
     @Query("SELECT j FROM JobEmployee je JOIN je.job j WHERE je.employee.employeeId = :employeeId ORDER BY j.date DESC, j.startTime DESC")
     List<Job> findLastJobForEmployee(@Param("employeeId") int employeeId, Pageable pageable);
+    
     @Query("SELECT COALESCE(SUM(j.actualDuration), 0) FROM JobEmployee je JOIN je.job j WHERE je.employee.employeeId = :employeeId AND j.date BETWEEN :startDate AND :endDate")
     Integer getWeeklyWorkedHours(@Param("employeeId") int employeeId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
     //findByEmployeeAndDate

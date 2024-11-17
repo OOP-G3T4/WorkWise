@@ -13,7 +13,9 @@ import java.util.Optional;
 @Repository
 public interface AdminEmployeeRepository extends JpaRepository<AdminEmployee, Integer> {
     List<AdminEmployee> findByAdminAdminId(int adminId); 
+
     Optional<AdminEmployee> findByEmployeeEmployeeId(int employeeId);
+    
     void deleteByEmployeeEmployeeId(int employeeId);
 
 

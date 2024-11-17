@@ -32,7 +32,6 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
 
     List<Job> findBySubscriptionSubscriptionId(int subscriptionId);
 
-    // List<Job> findByPropertyPropertyId(int propertyId);
     @Query("SELECT j FROM Job j WHERE j.subscription.property.propertyId = :propertyId")
     List<Job> findByPropertyId(@Param("propertyId") int propertyId);
 }
