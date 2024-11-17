@@ -74,8 +74,8 @@ public class EmployeeController {
         newEmployee = employeeService.insert(newEmployee);
         AdminEmployee adminEmployee = new AdminEmployee(adminOptional.get(), newEmployee);
         AdminEmployeeService.save(adminEmployee);
-        return ResponseEntity.created(URI.create("/employees/" + newEmployee.getEmployeeId())).body(newEmployee); // Fixed
-                                                                                                                  // getId()
+        return ResponseEntity.created(URI.create("/employees/" + newEmployee.getEmployeeId())).body(newEmployee); 
+                                                                                                                
     }
 
     @PutMapping("/{employeeId}")

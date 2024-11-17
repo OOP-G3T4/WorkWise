@@ -40,33 +40,3 @@ public class AdminEmployeeService {
     }
 
 }
-
-// public void createAdminEmployee(int employeeId, int adminId) {
-// AdminEmployee adminEmployee = new AdminEmployee(new Admin(adminId), new
-// Employee(employeeId));
-// adminEmployeeRepository.save(adminEmployee);
-// }
-
-// public void deleteAdminEmployeeByEmployeeId(int employeeId) {
-// adminEmployeeRepository.deleteByEmployeeId(employeeId);
-// }
-
-// public List<AdminEmployee> getAllAdminEmployees() {
-// return adminEmployeeRepository.findAll();
-// }
-
-// public List<AdminEmployee> getAdminEmployeesByEmployeeId(int employeeId) {
-// return adminEmployeeRepository.findByEmployeeEmployeeId(employeeId);
-// }
-
-// public List<AdminEmployee> getAdminEmployeesByAdminId(int adminId) {
-// return adminEmployeeRepository.findByAdminAdminId(adminId);
-// }
-
-// public AdminEmployee saveAdminEmployee(AdminEmployee adminEmployee) {
-// return adminEmployeeRepository.save(adminEmployee);
-// }
-
-// public void deleteAdminEmployee(int id) {
-// adminEmployeeRepository.deleteById(id);
-// }

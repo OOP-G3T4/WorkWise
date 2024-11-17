@@ -340,7 +340,9 @@ VALUES (1, 'Marky McFly', '4 Tampines Central 5, Singapore 529510, East', '91234
         (17, 'Mike Hawk', '55 Hillview Ave, Singapore 669567', '91234555', 'mike.hawk@example.com', 'Mike is on the job!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
         (18, 'Moe Lester', '1 Jurong West Street 72, Singapore 649223', '94123456', 'm.lester@example.com', 'Can clean up any mess!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
         (19, 'Sum Ting Wong', '1 Clementi Ave 3, Singapore 129902', '95123456', 'sm.wong@example.com', 'Nothing is wrong when you choose Sum Ting Wong!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
-        (20, 'Hugh Mungus', '25 Cove Way, 098209', '96123456', 'hugh.mung@example.com', 'No mess is too huge!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO');
+        (20, 'Hugh Mungus', '25 Cove Way, 098209', '96123456', 'hugh.mung@example.com', 'No mess is too huge!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
+       (21, 'Pooh Joon Sui', '2 Jalan Bukit Merah, Singapore 150002, Central', '94123457', 'pooh.joon.sui@example.com', 'Honey Cleaner!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO'),
+       (22, 'Pooh Juin Sui', '2 Jalan Bukit Merah, Singapore 150002, Central', '94123458', 'pooh.juin.sui@example.com', 'Honey Cleaner!', 5, 8, '$2a$12$tBNct/zE2xNJ29sGKa/d4OGhgyJhKY55PPdPpGKs/3GxmsjAffotO');
 
 -- Insert admin
 INSERT INTO admin (admin_id, name, email, phone_number, password)
@@ -383,7 +385,17 @@ VALUES (1, 1, 'MC', '2024-09-01 10:00:00', '2024-09-05', '2024-09-07', 'APPROVED
        (2, 2, 'AL', '2024-09-10 09:00:00', '2024-09-15', '2024-09-20', 'APPROVED', 'Annual leave for vacation', FALSE, NULL),
        (3, 3, 'MC', '2024-10-01 11:00:00', '2024-10-05', '2024-10-07', 'PENDING', 'Medical leave for surgery', TRUE, 'mc_proof_2.jpg'),
        (4, 4, 'AL', '2024-10-15 08:00:00', '2024-10-20', '2024-10-25', 'REJECTED', 'Annual leave for personal reasons', FALSE, NULL),
-       (5, 5, 'MC', '2024-11-01 10:00:00', '2024-11-05', '2024-11-07', 'APPROVED', 'Medical leave for injury', TRUE, 'mc_proof_3.jpg');
+       (5, 5, 'MC', '2024-11-01 10:00:00', '2024-11-05', '2024-11-07', 'APPROVED', 'Medical leave for injury', TRUE, 'mc_proof_3.jpg'),
+       -- Sample Data Here
+       (6, 1, 'MC', '2024-11-15 10:00:00', '2024-11-15', '2024-11-16', 'PENDING', 'Broke my legs and arms', TRUE, 'mc_proof_4.jpg'),
+       (7, 1, 'AL', '2024-10-01 10:00:00', '2024-10-05', '2024-10-10', 'REJECTED', 'Lazy to work, good weather to sleep in', TRUE, NULL),
+       (8, 1, 'MC', '2024-9-01 10:00:00', '2024-09-01', '2024-09-03', 'REJECTED', 'Lovesick, my girlfriend broke up with me', TRUE, 'mc_proof_5.jpg'),
+       (9, 1, 'AL', '2024-8-01 10:00:00', '2024-08-15', '2024-08-16', 'APPROVED', 'Admitted into IMH for Bipolar Disorder', TRUE, NULL),
+       (10, 1, 'MC', '2024-7-01 10:00:00', '2024-07-01', '2024-07-07', 'APPROVED', 'Runny nose, and diarrhea', TRUE, 'mc_proof_6.jpg'),
+       (11, 18, 'AL', '2024-11-15 10:00:00', '2024-12-01', '2024-12-31', 'PENDING', 'I need to work as Santa Claus full-time for December', TRUE, NULL),
+       (12, 19, 'MC', '2024-09-01 10:00:00', '2024-09-12', '2024-09-13', 'APPROVED', 'Midlife crisis gives me headaches', TRUE, 'mc_proof_7.jpg');
+
+       
 
 -- Insert sample subscription
 INSERT INTO `subscription` (`subscription_id`, `client_id`, `property_id`, `package_id`, `job_day`, `job_starttime`, `subscription_status`)
@@ -665,7 +677,6 @@ VALUES
 (66, 18, '2024-11-20', '09:00:00', 'PENDING', 3, FALSE, FALSE),
 (67, 19, '2024-11-20', '13:00:00', 'PENDING', 3, FALSE, FALSE),
 (68, 20, '2024-11-20', '14:00:00', 'PENDING', 4, FALSE, FALSE),
-(171, 41, '2024-11-18', '08:00:00', 'PENDING', 3, FALSE, FALSE),
 (172, 42, '2024-11-19', '14:00:00', 'PENDING', 3, FALSE, FALSE),
 (173, 43, '2024-11-20', '13:00:00', 'PENDING', 4, FALSE, FALSE),
 (174, 44, '2024-11-21', '08:00:00', 'PENDING', 4, FALSE, FALSE),
@@ -1979,7 +1990,11 @@ VALUES (77, 1, 'Testing purpose only'),
        (83, 3, 'Testing purpose only'),
        (84, 4, 'Testing purpose only'),
        -- New sample data here
-       (185, 14, 'Testing purpose only'),
+       (114, 1, 'Testing purpose only'),
+       (114, 19, 'Testing purpose only'),
+       (122, 18, 'Testing purpose only'),
+       (122, 2, 'Testing purpose only'),
+       (179, 6, 'Testing purpose only'),
         (186, 1, 'Testing purpose only'),
         (187, 4, 'Testing purpose only'),
         (188, 4, 'Testing purpose only'),

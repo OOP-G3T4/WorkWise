@@ -20,7 +20,6 @@ import java.util.Map;
 
 
 @RestController
-// @CrossOrigin(origins = "${cors.allowedOrigins}") SHOULD I ADD? ADAMBFT
 public class AiController {
 
     private final OpenAiChatModel aiModel;
@@ -38,22 +37,39 @@ public class AiController {
     }
 
     @PostMapping("/ai/generate")
-    // return json
     public ResponseEntity<String> generate() {
+        int maxAttempts = 10;
+        int attempt = 0;
+        boolean success = false;
+        String apiResponse = null;
+        List<JobAssignmentDTO> assignments = new ArrayList<>();
+        Map.Entry<Boolean, String> validationResult = null;
 
-        // Call the createEmployeeAssignments method
-        StringBuilder prompt = aiService.createEmployeeAssignments();
+        while (attempt < maxAttempts && !success) {
+            try {
+                // Call the createEmployeeAssignments method
+                StringBuilder prompt = aiService.createEmployeeAssignments();
 
-        // Call the GPT-4o API to get the best candidate(s)
-        String apiResponse = aiModel.call(prompt.toString());
-        // Process the API response to create a structured output
-        System.out.println(apiResponse);
-        List<JobAssignmentDTO> assignments = parseApiResponse(apiResponse);
-        Map.Entry<Boolean, String> validationResult = checkerService.validateBatchJobAssignments(assignments);
+                // Call the GPT-4o API to get the best candidate(s)
+                apiResponse = aiModel.call(prompt.toString());
 
+                // Process the API response to create a structured output
+                assignments = parseApiResponse(apiResponse);
+                validationResult = checkerService.validateBatchJobAssignments(assignments);
 
-        if (validationResult.getKey()) {
-            jobEmployeeService.saveAssignments(assignments);
+                if (validationResult.getKey()) {
+                    jobEmployeeService.saveAssignments(assignments);
+                    success = true;
+                } else {
+                    attempt++;
+                }
+            } catch (Exception e) {
+
+                attempt++;
+            }
+        }
+
+        if (success) {
             return new ResponseEntity<>("Schedule saved successfully.", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Schedule not saved. " + validationResult.getValue(), HttpStatus.BAD_REQUEST);
@@ -77,7 +93,7 @@ public class AiController {
                 JsonNode assignmentsNode = rootNode.path("assignments");
 
                 for (JsonNode assignmentNode : assignmentsNode) {
-                    int jobId = assignmentNode.path("job_id").get(0).asInt(); // Extract the first element of the array
+                    int jobId = assignmentNode.path("job_id").asInt(); // Extract the first element of the array
                     List<Integer> employeeIds = new ArrayList<>();
                     for (JsonNode idNode : assignmentNode.path("employees_id")) {
                         employeeIds.add(idNode.asInt());

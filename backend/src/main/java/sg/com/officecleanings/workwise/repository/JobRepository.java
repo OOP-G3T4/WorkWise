@@ -12,8 +12,8 @@ import java.time.LocalDate;
 @Repository
 public interface JobRepository extends JpaRepository<Job, Integer> {
 
-    @Query("SELECT MAX(j.date) FROM Job j WHERE j.subscription.client.clientId = :clientId AND j.subscription.property.propertyId = :propertyId")
-    LocalDate findLatestJobDateByClientIdAndPropertyId(@Param("clientId") Integer clientId, @Param("propertyId") Integer propertyId);
+    @Query("SELECT MAX(j.date) FROM Job j WHERE j.subscription.subscriptionId = :subscriptionId")
+    LocalDate findLatestJobDateBySubscriptionId(@Param("subscriptionId") Integer subscriptionId);
 
     @Query("SELECT COUNT(j) FROM Job j WHERE j.subscription.subscriptionId = :subscriptionId AND MONTH(j.date) = :month AND YEAR(j.date) = :year")
     int countJobsForSubscriptionInMonth(@Param("subscriptionId") Integer subscriptionId, @Param("month") int month, @Param("year") int year);
@@ -32,7 +32,6 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
 
     List<Job> findBySubscriptionSubscriptionId(int subscriptionId);
 
-    // List<Job> findByPropertyPropertyId(int propertyId);
     @Query("SELECT j FROM Job j WHERE j.subscription.property.propertyId = :propertyId")
     List<Job> findByPropertyId(@Param("propertyId") int propertyId);
 }
